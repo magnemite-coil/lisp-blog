@@ -171,116 +171,7 @@ exit
 ---
 
 ## プロジェクトのセットアップ
-
-### 1. プロジェクトのクローン/作成
-
-```bash
-# プロジェクトディレクトリの作成
-mkdir -p ~/projects/lisp-blog
-cd ~/projects/lisp-blog
-```
-
-### 2. ディレクトリ構造の作成
-
-```bash
-mkdir -p src static/css static/js
-```
-
-プロジェクト構造：
-
-```
-lisp-blog/
-├── README.md
-├── lisp-blog.asd
-├── main.lisp
-├── src/
-│   ├── package.lisp
-│   ├── database.lisp
-│   ├── models.lisp
-│   ├── handlers.lisp
-│   └── server.lisp
-└── static/
-    ├── css/
-    │   └── style.css
-    └── js/
-        └── app.js
-```
-
-### 3. ファイルの作成
-
-各ファイルを以下の内容で作成してください。
-
-#### lisp-blog.asd
-
-```lisp
-(defsystem "lisp-blog"
-  :version "0.1.0"
-  :author "Your Name"
-  :license "MIT"
-  :depends-on (:hunchentoot
-               :spinneret
-               :postmodern
-               :yason
-               :cl-ppcre
-               :local-time)
-  :components ((:module "src"
-                :components
-                ((:file "package")
-                 (:file "database" :depends-on ("package"))
-                 (:file "models" :depends-on ("package" "database"))
-                 (:file "handlers" :depends-on ("package" "models"))
-                 (:file "server" :depends-on ("package" "handlers")))))
-  :description "A blog system built with Common Lisp")
-```
-
-#### src/package.lisp
-
-```lisp
-(defpackage :lisp-blog
-  (:use :cl :hunchentoot :spinneret :postmodern)
-  (:export #:start-server
-           #:stop-server
-           #:init-db))
-```
-
-#### src/database.lisp
-
-```lisp
-(in-package :lisp-blog)
-
-(defparameter *db-spec* 
-  '("blogdb" "bloguser" "" "localhost")
-  "データベース接続仕様")
-
-(defmacro with-db (&body body)
-  "データベース接続を自動管理"
-  `(with-connection *db-spec*
-     ,@body))
-
-(defun init-db ()
-  "データベーステーブルの初期化"
-  (with-db
-    (execute "CREATE TABLE IF NOT EXISTS posts (
-                id SERIAL PRIMARY KEY,
-                title VARCHAR(255) NOT NULL,
-                content TEXT NOT NULL,
-                author VARCHAR(100) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-              )")
-    (execute "CREATE TABLE IF NOT EXISTS comments (
-                id SERIAL PRIMARY KEY,
-                post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
-                author VARCHAR(100) NOT NULL,
-                content TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-              )")
-    (format t "Database initialized successfully.~%")))
-```
-
-その他のファイル（models.lisp、handlers.lisp、server.lisp、main.lisp、static/css/style.css、static/js/app.js）は、前述の手順書を参照してください。
-
-### 4. シンボリックリンクの作成
+### 1. シンボリックリンクの作成
 
 ```bash
 # Quicklispのlocal-projectsディレクトリにシンボリックリンクを作成
@@ -289,18 +180,6 @@ ln -s ~/projects/lisp-blog ~/quicklisp/local-projects/lisp-blog
 # または Roswellを使用している場合
 ln -s ~/projects/lisp-blog ~/.roswell/local-projects/lisp-blog
 ```
-
-### 5. データベース設定の確認
-
-`src/database.lisp`でデータベース接続情報を確認・修正してください：
-
-```lisp
-(defparameter *db-spec* 
-  '("blogdb" "bloguser" "" "localhost")
-  ;; ("データベース名" "ユーザー名" "パスワード" "ホスト")
-```
-
-パスワードを設定している場合は、3番目のパラメータにパスワードを指定してください。
 
 ---
 
@@ -453,18 +332,6 @@ Error: System "lisp-blog" not found
 ```bash
 rm ~/quicklisp/local-projects/lisp-blog
 ln -s ~/projects/lisp-blog ~/quicklisp/local-projects/lisp-blog
-```
-
-### yasonライブラリが見つからない
-
-```
-Error: Component "yason" not found
-```
-
-**解決方法:**
-
-```lisp
-(ql:quickload :yason)
 ```
 
 ---
@@ -624,14 +491,6 @@ Masonryは、Pinterest風のグリッドレイアウトを作成します。
 ## ライセンス
 
 MIT License
-
-## 作者
-
-Your Name
-
-## 貢献
-
-プルリクエストを歓迎します！
 
 ---
 
