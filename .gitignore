@@ -1,0 +1,27 @@
+# Common Lisp
+*.fasl
+*.dx32fsl
+*.dx64fsl
+*.lx32fsl
+*.lx64fsl
+*.x86f
+*.err
+*.log
+*.tmp
+
+# ASDF
+*.asd~
+
+# Quicklisp
+quicklisp/
+
+# Editor
+*~
+*.swp
+*.swo
+.DS_Store
+.idea/
+*.sublime-*
+
+# OS
+Thumbs.db

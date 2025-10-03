@@ -1,0 +1,33 @@
+/* Masonry Grid Layout */
+.masonry-grid {
+  column-count: 3;
+  column-gap: 1.5rem;
+  padding: 0;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 1024px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .masonry-grid {
+    column-count: 1;
+  }
+}
+
+/* スムーズなアニメーション */
+.masonry-item > div {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.masonry-item > div:hover {
+  transform: translateY(-5px);
+}
