@@ -46,7 +46,7 @@ jobs:
                       padding: 40px 20px;
                   }
                   .container {
-                      max-width: 1200px;
+                      max-width: 1400px;
                       margin: 0 auto;
                   }
                   h1 {
@@ -64,21 +64,42 @@ jobs:
                   }
                   .themes-grid {
                       display: grid;
-                      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-                      gap: 20px;
+                      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+                      gap: 24px;
                       margin-top: 40px;
                   }
                   .theme-card {
                       background: #161b22;
                       border: 1px solid #30363d;
                       border-radius: 12px;
-                      padding: 20px;
+                      overflow: hidden;
                       transition: all 0.3s ease;
                   }
                   .theme-card:hover {
                       border-color: #58a6ff;
                       transform: translateY(-2px);
                       box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+                  }
+                  .theme-thumbnail {
+                      height: 200px;
+                      position: relative;
+                      overflow: hidden;
+                      border-radius: 8px 8px 0 0;
+                      margin: 12px 12px 0 12px;
+                  }
+                  .mini-blog {
+                      width: 100%;
+                      height: 100%;
+                      transform: scale(0.25);
+                      transform-origin: 0 0;
+                      width: 400%;
+                      height: 400%;
+                      border-radius: 8px;
+                      overflow: hidden;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                  }
+                  .theme-info {
+                      padding: 20px;
                   }
                   .theme-name {
                       font-size: 1.3rem;
@@ -111,6 +132,163 @@ jobs:
                       border-top: 1px solid #30363d;
                       color: #8b949e;
                   }
+
+                  /* テーマ別サムネイルスタイル */
+                  .solarized-dark {
+                      background: #002b36;
+                      color: #839496;
+                      padding: 20px;
+                  }
+                  .solarized-dark .header { color: #268bd2; border-bottom: 1px solid #073642; padding-bottom: 10px; margin-bottom: 15px; }
+                  .solarized-dark .title { color: #2aa198; font-size: 24px; margin-bottom: 8px; }
+                  .solarized-dark .code { background: #073642; color: #93a1a1; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .solarized-dark .accent { color: #b58900; }
+
+                  .tokyo-night {
+                      background: #1a1b26;
+                      color: #c0caf5;
+                      padding: 20px;
+                  }
+                  .tokyo-night .header { color: #7dcfff; border-bottom: 1px solid #292e42; padding-bottom: 10px; margin-bottom: 15px; }
+                  .tokyo-night .title { color: #7aa2f7; font-size: 24px; margin-bottom: 8px; }
+                  .tokyo-night .code { background: #24283b; color: #c0caf5; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .tokyo-night .accent { color: #bb9af7; }
+
+                  .dracula {
+                      background: #282a36;
+                      color: #f8f8f2;
+                      padding: 20px;
+                  }
+                  .dracula .header { color: #bd93f9; border-bottom: 1px solid #44475a; padding-bottom: 10px; margin-bottom: 15px; }
+                  .dracula .title { color: #ff79c6; font-size: 24px; margin-bottom: 8px; }
+                  .dracula .code { background: #44475a; color: #f8f8f2; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .dracula .accent { color: #8be9fd; }
+
+                  .nord {
+                      background: #2e3440;
+                      color: #d8dee9;
+                      padding: 20px;
+                  }
+                  .nord .header { color: #88c0d0; border-bottom: 1px solid #3b4252; padding-bottom: 10px; margin-bottom: 15px; }
+                  .nord .title { color: #81a1c1; font-size: 24px; margin-bottom: 8px; }
+                  .nord .code { background: #3b4252; color: #e5e9f0; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .nord .accent { color: #a3be8c; }
+
+                  .one-dark {
+                      background: #282c34;
+                      color: #abb2bf;
+                      padding: 20px;
+                  }
+                  .one-dark .header { color: #61afef; border-bottom: 1px solid #3e4451; padding-bottom: 10px; margin-bottom: 15px; }
+                  .one-dark .title { color: #c678dd; font-size: 24px; margin-bottom: 8px; }
+                  .one-dark .code { background: #3e4451; color: #abb2bf; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .one-dark .accent { color: #e06c75; }
+
+                  .gruvbox-dark {
+                      background: #1d2021;
+                      color: #ebdbb2;
+                      padding: 20px;
+                  }
+                  .gruvbox-dark .header { color: #fe8019; border-bottom: 1px solid #3c3836; padding-bottom: 10px; margin-bottom: 15px; }
+                  .gruvbox-dark .title { color: #fabd2f; font-size: 24px; margin-bottom: 8px; }
+                  .gruvbox-dark .code { background: #3c3836; color: #ebdbb2; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .gruvbox-dark .accent { color: #b8bb26; }
+
+                  .material-palenight {
+                      background: #292d3e;
+                      color: #a6accd;
+                      padding: 20px;
+                  }
+                  .material-palenight .header { color: #82aaff; border-bottom: 1px solid #444267; padding-bottom: 10px; margin-bottom: 15px; }
+                  .material-palenight .title { color: #c792ea; font-size: 24px; margin-bottom: 8px; }
+                  .material-palenight .code { background: #444267; color: #a6accd; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .material-palenight .accent { color: #f78c6c; }
+
+                  .night-owl {
+                      background: #011627;
+                      color: #d6deeb;
+                      padding: 20px;
+                  }
+                  .night-owl .header { color: #80a4c2; border-bottom: 1px solid #1e2a3a; padding-bottom: 10px; margin-bottom: 15px; }
+                  .night-owl .title { color: #c792ea; font-size: 24px; margin-bottom: 8px; }
+                  .night-owl .code { background: #1e2a3a; color: #d6deeb; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .night-owl .accent { color: #82aaff; }
+
+                  .ayu-dark {
+                      background: #0a0e14;
+                      color: #b3b1ad;
+                      padding: 20px;
+                  }
+                  .ayu-dark .header { color: #39bae6; border-bottom: 1px solid #1f2430; padding-bottom: 10px; margin-bottom: 15px; }
+                  .ayu-dark .title { color: #ffb454; font-size: 24px; margin-bottom: 8px; }
+                  .ayu-dark .code { background: #1f2430; color: #b3b1ad; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .ayu-dark .accent { color: #f07178; }
+
+                  .monokai-pro {
+                      background: #2d2a2e;
+                      color: #fcfcfa;
+                      padding: 20px;
+                  }
+                  .monokai-pro .header { color: #78dce8; border-bottom: 1px solid #403e41; padding-bottom: 10px; margin-bottom: 15px; }
+                  .monokai-pro .title { color: #ff6188; font-size: 24px; margin-bottom: 8px; }
+                  .monokai-pro .code { background: #403e41; color: #fcfcfa; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .monokai-pro .accent { color: #a9dc76; }
+
+                  .synthwave-84 {
+                      background: #262335;
+                      color: #ffffff;
+                      padding: 20px;
+                  }
+                  .synthwave-84 .header { color: #ff7edb; border-bottom: 1px solid #463465; padding-bottom: 10px; margin-bottom: 15px; }
+                  .synthwave-84 .title { color: #72f1b8; font-size: 24px; margin-bottom: 8px; }
+                  .synthwave-84 .code { background: #463465; color: #ffffff; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .synthwave-84 .accent { color: #f92aad; }
+
+                  .cobalt2 {
+                      background: #193549;
+                      color: #ffffff;
+                      padding: 20px;
+                  }
+                  .cobalt2 .header { color: #80ffbb; border-bottom: 1px solid #0d3a58; padding-bottom: 10px; margin-bottom: 15px; }
+                  .cobalt2 .title { color: #ffc600; font-size: 24px; margin-bottom: 8px; }
+                  .cobalt2 .code { background: #0d3a58; color: #ffffff; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .cobalt2 .accent { color: #ff628c; }
+
+                  .oceanic-next {
+                      background: #1b2b34;
+                      color: #d8dee9;
+                      padding: 20px;
+                  }
+                  .oceanic-next .header { color: #6699cc; border-bottom: 1px solid #343d46; padding-bottom: 10px; margin-bottom: 15px; }
+                  .oceanic-next .title { color: #c594c5; font-size: 24px; margin-bottom: 8px; }
+                  .oceanic-next .code { background: #343d46; color: #d8dee9; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .oceanic-next .accent { color: #5fb3b3; }
+
+                  .spacegray {
+                      background: #2c2e3b;
+                      color: #b7c5d3;
+                      padding: 20px;
+                  }
+                  .spacegray .header { color: #89ddff; border-bottom: 1px solid #3a3c4e; padding-bottom: 10px; margin-bottom: 15px; }
+                  .spacegray .title { color: #c792ea; font-size: 24px; margin-bottom: 8px; }
+                  .spacegray .code { background: #3a3c4e; color: #b7c5d3; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .spacegray .accent { color: #82aaff; }
+
+                  .moonlight {
+                      background: #212337;
+                      color: #c8d3f5;
+                      padding: 20px;
+                  }
+                  .moonlight .header { color: #82aaff; border-bottom: 1px solid #2d3748; padding-bottom: 10px; margin-bottom: 15px; }
+                  .moonlight .title { color: #c099ff; font-size: 24px; margin-bottom: 8px; }
+                  .moonlight .code { background: #2d3748; color: #c8d3f5; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .moonlight .accent { color: #65bcff; }
+
+                  @media (max-width: 768px) {
+                      .themes-grid {
+                          grid-template-columns: 1fr;
+                      }
+                  }
               </style>
           </head>
           <body>
@@ -123,93 +301,258 @@ jobs:
 
                   <div class="themes-grid">
                       <div class="theme-card">
-                          <div class="theme-name">Solarized Dark</div>
-                          <div class="theme-description">科学的に設計された精密な色彩バランス</div>
-                          <a href="solarized-dark-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog solarized-dark">
+                                  <div class="header">🌊 Solarized Blog</div>
+                                  <div class="title">React Hooks入門</div>
+                                  <p>科学的に設計された配色で長時間のコーディングでも目が疲れにくい...</p>
+                                  <div class="code">const [state, setState] = useState();</div>
+                                  <p class="accent">詳細な解説とサンプルコード</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Solarized Dark</div>
+                              <div class="theme-description">科学的に設計された精密な色彩バランス</div>
+                              <a href="solarized-dark-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Tokyo Night</div>
-                          <div class="theme-description">東京の夜景をイメージした深い青基調</div>
-                          <a href="tokyo-night-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog tokyo-night">
+                                  <div class="header">🌃 Tokyo Night Blog</div>
+                                  <div class="title">TypeScript活用術</div>
+                                  <p>東京の夜景をイメージした深い青基調のテーマ...</p>
+                                  <div class="code">interface User { id: number; }</div>
+                                  <p class="accent">型安全な開発体験</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Tokyo Night</div>
+                              <div class="theme-description">東京の夜景をイメージした深い青基調</div>
+                              <a href="tokyo-night-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Dracula</div>
-                          <div class="theme-description">紫をアクセントにした人気の高いダークテーマ</div>
-                          <a href="dracula-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog dracula">
+                                  <div class="header">🧛 Dracula Blog</div>
+                                  <div class="title">Go API開発</div>
+                                  <p>紫とピンクが映える人気の高いダークテーマ...</p>
+                                  <div class="code">func main() { fmt.Println("Hello") }</div>
+                                  <p class="accent">美しく鮮やかな配色</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Dracula</div>
+                              <div class="theme-description">紫をアクセントにした人気の高いダークテーマ</div>
+                              <a href="dracula-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Nord</div>
-                          <div class="theme-description">北欧の寒色系パレット、落ち着いた青とグレーの調和</div>
-                          <a href="nord-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog nord">
+                                  <div class="header">❄️ Nord Blog</div>
+                                  <div class="title">Rust システム開発</div>
+                                  <p>北欧の寒色系パレット、落ち着いた青とグレーの調和...</p>
+                                  <div class="code">let result = vec![1, 2, 3];</div>
+                                  <p class="accent">穏やかで集中しやすい環境</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Nord</div>
+                              <div class="theme-description">北欧の寒色系パレット、落ち着いた青とグレーの調和</div>
+                              <a href="nord-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">One Dark</div>
-                          <div class="theme-description">Atom由来の定番、バランスの取れた暗色系</div>
-                          <a href="one-dark-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog one-dark">
+                                  <div class="header">⚡ One Dark Blog</div>
+                                  <div class="title">JavaScript モダン開発</div>
+                                  <p>Atom由来の定番、バランスの取れた暗色系...</p>
+                                  <div class="code">const data = await fetch(url);</div>
+                                  <p class="accent">定番で安心の配色</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">One Dark</div>
+                              <div class="theme-description">Atom由来の定番、バランスの取れた暗色系</div>
+                              <a href="one-dark-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Gruvbox Dark</div>
-                          <div class="theme-description">レトロで温かみのある茶色とオレンジ</div>
-                          <a href="gruvbox-dark-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog gruvbox-dark">
+                                  <div class="header">🏺 Gruvbox Blog</div>
+                                  <div class="title">Vue.js 開発テクニック</div>
+                                  <p>レトロで温かみのある茶色とオレンジの配色...</p>
+                                  <div class="code">const { ref, computed } = Vue;</div>
+                                  <p class="accent">温かく親しみやすい雰囲気</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Gruvbox Dark</div>
+                              <div class="theme-description">レトロで温かみのある茶色とオレンジ</div>
+                              <a href="gruvbox-dark-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Material Palenight</div>
-                          <div class="theme-description">マテリアルデザインの紫基調バリエーション</div>
-                          <a href="material-palenight-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog material-palenight">
+                                  <div class="header">🎨 Material Blog</div>
+                                  <div class="title">C# LINQ活用法</div>
+                                  <p>マテリアルデザインの紫基調バリエーション...</p>
+                                  <div class="code">var result = data.Where(x => x.IsActive);</div>
+                                  <p class="accent">モダンで洗練されたデザイン</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Material Palenight</div>
+                              <div class="theme-description">マテリアルデザインの紫基調バリエーション</div>
+                              <a href="material-palenight-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Night Owl</div>
-                          <div class="theme-description">夜型エンジニア向けの柔らかいコントラスト</div>
-                          <a href="night-owl-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog night-owl">
+                                  <div class="header">🦉 Night Owl Blog</div>
+                                  <div class="title">Elixir 並行処理</div>
+                                  <p>夜型エンジニア向けの柔らかいコントラスト...</p>
+                                  <div class="code">Task.async(fn -> process_data() end)</div>
+                                  <p class="accent">目に優しく集中しやすい</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Night Owl</div>
+                              <div class="theme-description">夜型エンジニア向けの柔らかいコントラスト</div>
+                              <a href="night-owl-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Ayu Dark</div>
-                          <div class="theme-description">ミニマルで目に優しい、控えめなコントラスト</div>
-                          <a href="ayu-dark-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog ayu-dark">
+                                  <div class="header">🌊 Ayu Blog</div>
+                                  <div class="title">Swift SwiftUI</div>
+                                  <p>ミニマルで目に優しい、控えめなコントラスト...</p>
+                                  <div class="code">@State private var isPresented = false</div>
+                                  <p class="accent">シンプルで美しい</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Ayu Dark</div>
+                              <div class="theme-description">ミニマルで目に優しい、控えめなコントラスト</div>
+                              <a href="ayu-dark-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Monokai Pro</div>
-                          <div class="theme-description">鮮やかながら目に優しいコントラスト</div>
-                          <a href="monokai-pro-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog monokai-pro">
+                                  <div class="header">🎭 Monokai Blog</div>
+                                  <div class="title">JavaScript 非同期処理</div>
+                                  <p>鮮やかながら目に優しいコントラスト...</p>
+                                  <div class="code">async function fetchData() { }</div>
+                                  <p class="accent">鮮やかで見やすい配色</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Monokai Pro</div>
+                              <div class="theme-description">鮮やかながら目に優しいコントラスト</div>
+                              <a href="monokai-pro-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Synthwave '84</div>
-                          <div class="theme-description">レトロフューチャーなネオンカラーテーマ</div>
-                          <a href="synthwave-84-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog synthwave-84">
+                                  <div class="header">🌈 Synthwave Blog</div>
+                                  <div class="title">Rust WebAssembly</div>
+                                  <p>レトロフューチャーなネオンカラーテーマ...</p>
+                                  <div class="code">#[wasm_bindgen] pub fn greet() { }</div>
+                                  <p class="accent">ユニークで個性的な体験</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Synthwave '84</div>
+                              <div class="theme-description">レトロフューチャーなネオンカラーテーマ</div>
+                              <a href="synthwave-84-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Cobalt2</div>
-                          <div class="theme-description">深い青を基調としたクールなテーマ</div>
-                          <a href="cobalt2-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog cobalt2">
+                                  <div class="header">🌊 Cobalt2 Blog</div>
+                                  <div class="title">Scala 関数型プログラミング</div>
+                                  <p>深い青を基調としたクールなテーマ...</p>
+                                  <div class="code">val result = list.map(_.toUpperCase)</div>
+                                  <p class="accent">クールで視認性抜群</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Cobalt2</div>
+                              <div class="theme-description">深い青を基調としたクールなテーマ</div>
+                              <a href="cobalt2-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Oceanic Next</div>
-                          <div class="theme-description">海をイメージした青緑系の爽やかなテーマ</div>
-                          <a href="oceanic-next-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog oceanic-next">
+                                  <div class="header">🌊 Oceanic Blog</div>
+                                  <div class="title">Haskell 純粋関数型</div>
+                                  <p>海をイメージした青緑系の爽やかなテーマ...</p>
+                                  <div class="code">fibonacci = 0 : 1 : zipWith (+) fibonacci</div>
+                                  <p class="accent">爽やかで集中力向上</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Oceanic Next</div>
+                              <div class="theme-description">海をイメージした青緑系の爽やかなテーマ</div>
+                              <a href="oceanic-next-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Spacegray</div>
-                          <div class="theme-description">グレー基調のミニマルで洗練されたテーマ</div>
-                          <a href="spacegray-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog spacegray">
+                                  <div class="header">🚀 Spacegray Blog</div>
+                                  <div class="title">Dart Flutter</div>
+                                  <p>グレー基調のミニマルで洗練されたテーマ...</p>
+                                  <div class="code">Widget build(BuildContext context) { }</div>
+                                  <p class="accent">洗練されたミニマルデザイン</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Spacegray</div>
+                              <div class="theme-description">グレー基調のミニマルで洗練されたテーマ</div>
+                              <a href="spacegray-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
 
                       <div class="theme-card">
-                          <div class="theme-name">Moonlight</div>
-                          <div class="theme-description">月明かりをイメージした神秘的な紫青系</div>
-                          <a href="moonlight-blog.html" class="theme-link">プレビュー</a>
+                          <div class="theme-thumbnail">
+                              <div class="mini-blog moonlight">
+                                  <div class="header">🌙 Moonlight Blog</div>
+                                  <div class="title">Zig システムプログラミング</div>
+                                  <p>月明かりをイメージした神秘的な紫青系...</p>
+                                  <div class="code">const std = @import("std");</div>
+                                  <p class="accent">神秘的で静かな集中環境</p>
+                              </div>
+                          </div>
+                          <div class="theme-info">
+                              <div class="theme-name">Moonlight</div>
+                              <div class="theme-description">月明かりをイメージした神秘的な紫青系</div>
+                              <a href="moonlight-blog.html" class="theme-link">プレビュー</a>
+                          </div>
                       </div>
                   </div>
 
