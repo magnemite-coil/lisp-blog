@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayu Dark - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Ayu Dark カラーパレット */
+            --bg-primary: #0a0e14;
+            --bg-secondary: #0d1017;
+            --bg-tertiary: #1f2430;
+            --text-primary: #b3b1ad;
+            --text-secondary: #8a8986;
+            --text-muted: #4d5566;
+            --orange: #ff8f40;
+            --yellow: #ffb454;
+            --green: #c2d94c;
+            --blue: #59c2ff;
+            --purple: #d2a6ff;
+            --red: #f07178;
+            --cyan: #95e6cb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--orange);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        p code, li code {
+            background: var(--bg-secondary);
+            color: var(--blue);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Ayu Dark */
+        .keyword { color: var(--orange); }
+        .function { color: var(--yellow); }
+        .string { color: var(--green); }
+        .number { color: var(--purple); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .constant { color: var(--purple); }
+        .property { color: var(--blue); }
+        .operator { color: var(--orange); }
+        .tag { color: var(--red); }
+        .attr-name { color: var(--blue); }
+        .attr-value { color: var(--green); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--text-muted);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--orange);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--cyan);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--cyan);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--text-muted);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--bg-tertiary);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--orange);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--text-primary);
+            font-style: italic;
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--orange);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌅 Ayu Dark Dev Blog</h1>
+            <p class="subtitle">ミニマルで目に優しい、控えめなコントラスト</p>
+        </header>
+
+        <article>
+            <h2>SwiftUIで宣言的UIを構築</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 ios_developer</span>
+                <span>⏱️ 11分で読める</span>
+            </div>
+
+            <p>
+                SwiftUIは、宣言的な構文でiOSアプリのUIを構築できる革新的なフレームワークです。
+                Viewプロトコルとモディファイアを組み合わせて、美しいインターフェースを作成しましょう。
+            </p>
+
+            <h3>基本的なViewの構造</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Swift</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> SwiftUI
+
+<span class="keyword">struct</span> <span class="function">ContentView</span>: <span class="constant">View</span> {
+    <span class="keyword">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> <span class="property">counter</span> <span class="operator">=</span> <span class="number">0</span>
+    <span class="keyword">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> <span class="property">isShowingDetail</span> <span class="operator">=</span> <span class="constant">false</span>
+    
+    <span class="keyword">var</span> <span class="property">body</span>: <span class="keyword">some</span> <span class="constant">View</span> {
+        <span class="function">VStack</span>(<span class="property">spacing</span>: <span class="number">20</span>) {
+            <span class="function">Text</span>(<span class="string">"カウンター: \(counter)"</span>)
+                .<span class="function">font</span>(.<span class="property">title</span>)
+                .<span class="function">fontWeight</span>(.<span class="property">bold</span>)
+            
+            <span class="function">HStack</span>(<span class="property">spacing</span>: <span class="number">15</span>) {
+                <span class="function">Button</span>(<span class="string">"減らす"</span>) {
+                    counter <span class="operator">-=</span> <span class="number">1</span>
+                }
+                .<span class="function">buttonStyle</span>(.<span class="property">bordered</span>)
+                
+                <span class="function">Button</span>(<span class="string">"増やす"</span>) {
+                    counter <span class="operator">+=</span> <span class="number">1</span>
+                }
+                .<span class="function">buttonStyle</span>(.<span class="property">borderedProminent</span>)
+            }
+            
+            <span class="function">Button</span>(<span class="string">"詳細を表示"</span>) {
+                isShowingDetail.<span class="function">toggle</span>()
+            }
+        }
+        .<span class="function">padding</span>()
+        .<span class="function">sheet</span>(<span class="property">isPresented</span>: <span class="operator">$</span>isShowingDetail) {
+            <span class="function">DetailView</span>(<span class="property">count</span>: counter)
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>カスタムビューとモディファイア</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Swift</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">struct</span> <span class="function">DetailView</span>: <span class="constant">View</span> {
+    <span class="keyword">let</span> <span class="property">count</span>: <span class="constant">Int</span>
+    <span class="keyword">@Environment</span>(\.<span class="property">dismiss</span>) <span class="keyword">var</span> <span class="property">dismiss</span>
+    
+    <span class="keyword">var</span> <span class="property">body</span>: <span class="keyword">some</span> <span class="constant">View</span> {
+        <span class="function">NavigationView</span> {
+            <span class="function">VStack</span> {
+                <span class="function">Image</span>(<span class="property">systemName</span>: <span class="string">"star.fill"</span>)
+                    .<span class="function">resizable</span>()
+                    .<span class="function">scaledToFit</span>()
+                    .<span class="function">frame</span>(<span class="property">width</span>: <span class="number">100</span>, <span class="property">height</span>: <span class="number">100</span>)
+                    .<span class="function">foregroundColor</span>(.<span class="property">yellow</span>)
+                
+                <span class="function">Text</span>(<span class="string">"現在のカウント"</span>)
+                    .<span class="function">font</span>(.<span class="property">headline</span>)
+                
+                <span class="function">Text</span>(<span class="string">"\(count)"</span>)
+                    .<span class="function">font</span>(.<span class="function">system</span>(<span class="property">size</span>: <span class="number">72</span>, <span class="property">weight</span>: .<span class="property">bold</span>))
+                    .<span class="function">foregroundColor</span>(.<span class="property">blue</span>)
+            }
+            .<span class="function">navigationTitle</span>(<span class="string">"詳細"</span>)
+            .<span class="function">toolbar</span> {
+                <span class="function">Button</span>(<span class="string">"閉じる"</span>) {
+                    <span class="function">dismiss</span>()
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Ayuテーマは、最小限のコントラストで目の疲労を軽減し、
+                長時間のコーディングに最適な設計となっています。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Swift</span>
+                <span class="tag">#SwiftUI</span>
+                <span class="tag">#iOS開発</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Ayu Dark Dev Blog. Minimal serenity.</p>
+        </footer>
+    </div>
+</body>
+</html>

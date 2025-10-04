@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthwave '84 - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Synthwave '84 カラーパレット */
+            --bg-primary: #262335;
+            --bg-secondary: #2a2139;
+            --bg-tertiary: #34294f;
+            --text-primary: #f0ede4;
+            --text-secondary: #e5e5e5;
+            --text-muted: #848bbd;
+            --neon-pink: #ff7edb;
+            --neon-blue: #72f1b8;
+            --neon-cyan: #36f9f6;
+            --neon-yellow: #fede5d;
+            --neon-orange: #fe4450;
+            --neon-purple: #b381c5;
+            --neon-green: #72f1b8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 2px solid var(--neon-pink);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--neon-pink);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--neon-purple);
+            margin: 30px 0 15px;
+            font-weight: 600;
+            text-shadow: 0 0 6px var(--neon-purple);
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 0 10px rgba(255, 126, 219, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        p code, li code {
+            background: var(--bg-secondary);
+            color: var(--neon-cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Synthwave */
+        .keyword { color: var(--neon-pink); font-weight: 600; }
+        .function { color: var(--neon-yellow); }
+        .string { color: var(--neon-green); }
+        .number { color: var(--neon-orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .constant { color: var(--neon-orange); }
+        .property { color: var(--neon-cyan); }
+        .operator { color: var(--neon-pink); }
+        .tag { color: var(--neon-pink); }
+        .attr-name { color: var(--neon-yellow); }
+        .attr-value { color: var(--neon-green); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--neon-pink);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--neon-yellow);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-shadow: 0 0 5px var(--neon-yellow);
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg-secondary);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            color: var(--neon-pink);
+            text-shadow: 0 0 8px var(--neon-pink);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--neon-green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 8px rgba(114, 241, 184, 0.3);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 2px solid var(--neon-pink);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--neon-cyan);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--text-primary);
+            font-style: italic;
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 0 10px rgba(54, 249, 246, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--neon-pink);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--neon-pink);
+            font-weight: 600;
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌆 Synthwave '84 Dev Blog</h1>
+            <p class="subtitle">レトロフューチャーなネオンの世界</p>
+        </header>
+
+        <article>
+            <h2>WebAssemblyでブラウザを高速化</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 wasm_enthusiast</span>
+                <span>⏱️ 14分で読める</span>
+            </div>
+
+            <p>
+                WebAssembly (Wasm) は、ブラウザ上でネイティブに近い速度でコードを実行できる技術です。
+                RustやC++で書いたコードをWasmにコンパイルして、高速なWebアプリを作りましょう。
+            </p>
+
+            <h3>Rustからのコンパイル</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Rust (Wasm)</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">use</span> wasm_bindgen::prelude::*;
+
+<span class="comment">// JavaScriptから呼び出せる関数</span>
+<span class="keyword">#[wasm_bindgen]</span>
+<span class="keyword">pub fn</span> <span class="function">fibonacci</span>(<span class="property">n</span>: <span class="keyword">u32</span>) <span class="operator">-&gt;</span> <span class="keyword">u32</span> {
+    <span class="keyword">match</span> n {
+        <span class="number">0</span> <span class="operator">=&gt;</span> <span class="number">0</span>,
+        <span class="number">1</span> <span class="operator">=&gt;</span> <span class="number">1</span>,
+        _ <span class="operator">=&gt;</span> <span class="function">fibonacci</span>(n <span class="operator">-</span> <span class="number">1</span>) <span class="operator">+</span> <span class="function">fibonacci</span>(n <span class="operator">-</span> <span class="number">2</span>)
+    }
+}
+
+<span class="keyword">#[wasm_bindgen]</span>
+<span class="keyword">pub fn</span> <span class="function">process_array</span>(<span class="property">data</span>: &amp;[<span class="keyword">f64</span>]) <span class="operator">-&gt;</span> <span class="keyword">f64</span> {
+    <span class="keyword">let</span> <span class="property">sum</span>: <span class="keyword">f64</span> <span class="operator">=</span> data.<span class="function">iter</span>().<span class="function">sum</span>();
+    sum <span class="operator">/</span> data.<span class="function">len</span>() <span class="keyword">as</span> <span class="keyword">f64</span>
+}
+
+<span class="keyword">#[wasm_bindgen]</span>
+<span class="keyword">pub struct</span> <span class="function">ImageProcessor</span> {
+    <span class="property">width</span>: <span class="keyword">u32</span>,
+    <span class="property">height</span>: <span class="keyword">u32</span>,
+}
+
+<span class="keyword">#[wasm_bindgen]</span>
+<span class="keyword">impl</span> <span class="function">ImageProcessor</span> {
+    <span class="keyword">pub fn</span> <span class="function">new</span>(<span class="property">width</span>: <span class="keyword">u32</span>, <span class="property">height</span>: <span class="keyword">u32</span>) <span class="operator">-&gt;</span> <span class="function">ImageProcessor</span> {
+        <span class="function">ImageProcessor</span> { width, height }
+    }
+
+    <span class="keyword">pub fn</span> <span class="function">grayscale</span>(&amp;<span class="keyword">self</span>, <span class="property">pixels</span>: &amp;<span class="keyword">mut</span> [<span class="keyword">u8</span>]) {
+        <span class="keyword">for</span> chunk <span class="keyword">in</span> pixels.<span class="function">chunks_mut</span>(<span class="number">4</span>) {
+            <span class="keyword">let</span> <span class="property">gray</span> <span class="operator">=</span> (<span class="number">0.299</span> <span class="operator">*</span> chunk[<span class="number">0</span>] <span class="keyword">as</span> <span class="keyword">f32</span> <span class="operator">+</span>
+                         <span class="number">0.587</span> <span class="operator">*</span> chunk[<span class="number">1</span>] <span class="keyword">as</span> <span class="keyword">f32</span> <span class="operator">+</span>
+                         <span class="number">0.114</span> <span class="operator">*</span> chunk[<span class="number">2</span>] <span class="keyword">as</span> <span class="keyword">f32</span>) <span class="keyword">as</span> <span class="keyword">u8</span>;
+            chunk[<span class="number">0</span>] <span class="operator">=</span> gray;
+            chunk[<span class="number">1</span>] <span class="operator">=</span> gray;
+            chunk[<span class="number">2</span>] <span class="operator">=</span> gray;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>JavaScriptからの利用</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">JavaScript</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> <span class="function">init</span>, { fibonacci, ImageProcessor } <span class="keyword">from</span> <span class="string">'./pkg/wasm_module.js'</span>;
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">run</span>() {
+  <span class="comment">// Wasmモジュールを初期化</span>
+  <span class="keyword">await</span> <span class="function">init</span>();
+
+  <span class="comment">// フィボナッチ数列を計算</span>
+  <span class="keyword">const</span> <span class="property">result</span> <span class="operator">=</span> <span class="function">fibonacci</span>(<span class="number">20</span>);
+  <span class="property">console</span>.<span class="function">log</span>(<span class="string">`Fibonacci(20) = ${result}`</span>);
+
+  <span class="comment">// 画像処理</span>
+  <span class="keyword">const</span> <span class="property">canvas</span> <span class="operator">=</span> <span class="property">document</span>.<span class="function">getElementById</span>(<span class="string">'canvas'</span>);
+  <span class="keyword">const</span> <span class="property">ctx</span> <span class="operator">=</span> canvas.<span class="function">getContext</span>(<span class="string">'2d'</span>);
+  <span class="keyword">const</span> <span class="property">imageData</span> <span class="operator">=</span> ctx.<span class="function">getImageData</span>(<span class="number">0</span>, <span class="number">0</span>, canvas.<span class="property">width</span>, canvas.<span class="property">height</span>);
+  
+  <span class="keyword">const</span> <span class="property">processor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="function">ImageProcessor</span>(canvas.<span class="property">width</span>, canvas.<span class="property">height</span>);
+  processor.<span class="function">grayscale</span>(imageData.<span class="property">data</span>);
+  
+  ctx.<span class="function">putImageData</span>(imageData, <span class="number">0</span>, <span class="number">0</span>);
+}
+
+<span class="function">run</span>();</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Synthwave '84は、1980年代のレトロフューチャーな美学を
+                コードエディタに持ち込んだユニークなテーマです。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#WebAssembly</span>
+                <span class="tag">#Rust</span>
+                <span class="tag">#高速化</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Synthwave '84 Dev Blog. Neon dreams.</p>
+        </footer>
+    </div>
+</body>
+</html>

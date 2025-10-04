@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spacegray - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Spacegray カラーパレット */
+            --bg-primary: #2c2e3b;
+            --bg-secondary: #24262f;
+            --bg-tertiary: #373945;
+            --text-primary: #c7ccd1;
+            --text-secondary: #adb3ba;
+            --text-muted: #65737e;
+            --red: #d95468;
+            --orange: #d98e48;
+            --yellow: #ebbf83;
+            --green: #8bd49c;
+            --cyan: #5ccfe6;
+            --blue: #539afc;
+            --purple: #b62d65;
+            --pink: #e27e8d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--blue);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--pink);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        p code, li code {
+            background: var(--bg-secondary);
+            color: var(--cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Spacegray */
+        .keyword { color: var(--purple); }
+        .function { color: var(--blue); }
+        .string { color: var(--green); }
+        .number { color: var(--orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .constant { color: var(--orange); }
+        .property { color: var(--cyan); }
+        .operator { color: var(--purple); }
+        .tag { color: var(--red); }
+        .attr-name { color: var(--yellow); }
+        .attr-value { color: var(--green); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--text-muted);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--cyan);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--cyan);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--text-muted);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--bg-tertiary);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--blue);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--text-primary);
+            font-style: italic;
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 Spacegray Dev Blog</h1>
+            <p class="subtitle">グレー基調のミニマルで洗練されたテーマ</p>
+        </header>
+
+        <article>
+            <h2>Dartで効率的なFlutterアプリ開発</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 flutter_dev</span>
+                <span>⏱️ 12分で読める</span>
+            </div>
+
+            <p>
+                DartとFlutterを使えば、一つのコードベースでiOS・Android・Webアプリを開発できます。
+                Widgetツリーの最適化と状態管理を理解して、高パフォーマンスなアプリを作りましょう。
+            </p>
+
+            <h3>StatefulWidgetとライフサイクル</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Dart</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;
+
+<span class="keyword">class</span> <span class="function">CounterWidget</span> <span class="keyword">extends</span> <span class="constant">StatefulWidget</span> {
+  <span class="keyword">final</span> <span class="constant">String</span> <span class="property">title</span>;
+
+  <span class="keyword">const</span> <span class="function">CounterWidget</span>({<span class="constant">Key</span>? key, <span class="keyword">required</span> <span class="keyword">this</span>.<span class="property">title</span>}) : <span class="keyword">super</span>(key: key);
+
+  <span class="keyword">@override</span>
+  <span class="function">_CounterWidgetState</span> <span class="function">createState</span>() <span class="operator">=&gt;</span> <span class="function">_CounterWidgetState</span>();
+}
+
+<span class="keyword">class</span> <span class="function">_CounterWidgetState</span> <span class="keyword">extends</span> <span class="constant">State</span>&lt;CounterWidget&gt; {
+  <span class="keyword">int</span> <span class="property">_counter</span> <span class="operator">=</span> <span class="number">0</span>;
+
+  <span class="keyword">@override</span>
+  <span class="keyword">void</span> <span class="function">initState</span>() {
+    <span class="keyword">super</span>.<span class="function">initState</span>();
+    <span class="function">print</span>(<span class="string">'Widgetが初期化されました'</span>);
+  }
+
+  <span class="keyword">void</span> <span class="function">_incrementCounter</span>() {
+    <span class="function">setState</span>(() {
+      _counter<span class="operator">++</span>;
+    });
+  }
+
+  <span class="keyword">@override</span>
+  <span class="constant">Widget</span> <span class="function">build</span>(<span class="constant">BuildContext</span> context) {
+    <span class="keyword">return</span> <span class="function">Scaffold</span>(
+      <span class="property">appBar</span>: <span class="function">AppBar</span>(
+        <span class="property">title</span>: <span class="function">Text</span>(widget.<span class="property">title</span>),
+      ),
+      <span class="property">body</span>: <span class="function">Center</span>(
+        <span class="property">child</span>: <span class="function">Column</span>(
+          <span class="property">mainAxisAlignment</span>: MainAxisAlignment.<span class="property">center</span>,
+          <span class="property">children</span>: &lt;Widget&gt;[
+            <span class="keyword">const</span> <span class="function">Text</span>(<span class="string">'ボタンを押した回数:'</span>),
+            <span class="function">Text</span>(
+              <span class="string">'$_counter'</span>,
+              <span class="property">style</span>: Theme.<span class="function">of</span>(context).<span class="property">textTheme</span>.<span class="property">headline4</span>,
+            ),
+          ],
+        ),
+      ),
+      <span class="property">floatingActionButton</span>: <span class="function">FloatingActionButton</span>(
+        <span class="property">onPressed</span>: _incrementCounter,
+        <span class="property">tooltip</span>: <span class="string">'Increment'</span>,
+        <span class="property">child</span>: <span class="keyword">const</span> <span class="function">Icon</span>(Icons.<span class="property">add</span>),
+      ),
+    );
+  }
+
+  <span class="keyword">@override</span>
+  <span class="keyword">void</span> <span class="function">dispose</span>() {
+    <span class="function">print</span>(<span class="string">'Widgetが破棄されました'</span>);
+    <span class="keyword">super</span>.<span class="function">dispose</span>();
+  }
+}</code></pre>
+            </div>
+
+            <h3>Providerで状態管理</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Dart</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> <span class="string">'package:flutter/foundation.dart'</span>;
+<span class="keyword">import</span> <span class="string">'package:provider/provider.dart'</span>;
+
+<span class="comment">// モデルクラス</span>
+<span class="keyword">class</span> <span class="function">TodoModel</span> <span class="keyword">extends</span> <span class="constant">ChangeNotifier</span> {
+  <span class="keyword">final</span> <span class="constant">List</span>&lt;<span class="constant">String</span>&gt; <span class="property">_todos</span> <span class="operator">=</span> [];
+
+  <span class="constant">List</span>&lt;<span class="constant">String</span>&gt; <span class="keyword">get</span> <span class="property">todos</span> <span class="operator">=&gt;</span> <span class="constant">List</span>.<span class="function">unmodifiable</span>(_todos);
+
+  <span class="keyword">void</span> <span class="function">addTodo</span>(<span class="constant">String</span> task) {
+    _todos.<span class="function">add</span>(task);
+    <span class="function">notifyListeners</span>();
+  }
+
+  <span class="keyword">void</span> <span class="function">removeTodo</span>(<span class="keyword">int</span> index) {
+    _todos.<span class="function">removeAt</span>(index);
+    <span class="function">notifyListeners</span>();
+  }
+}
+
+<span class="comment">// Widgetでの使用</span>
+<span class="keyword">class</span> <span class="function">TodoListWidget</span> <span class="keyword">extends</span> <span class="constant">StatelessWidget</span> {
+  <span class="keyword">@override</span>
+  <span class="constant">Widget</span> <span class="function">build</span>(<span class="constant">BuildContext</span> context) {
+    <span class="keyword">return</span> <span class="function">Consumer</span>&lt;TodoModel&gt;(
+      <span class="property">builder</span>: (context, todoModel, child) {
+        <span class="keyword">return</span> <span class="function">ListView</span>.<span class="function">builder</span>(
+          <span class="property">itemCount</span>: todoModel.<span class="property">todos</span>.<span class="property">length</span>,
+          <span class="property">itemBuilder</span>: (context, index) {
+            <span class="keyword">return</span> <span class="function">ListTile</span>(
+              <span class="property">title</span>: <span class="function">Text</span>(todoModel.<span class="property">todos</span>[index]),
+              <span class="property">trailing</span>: <span class="function">IconButton</span>(
+                <span class="property">icon</span>: <span class="function">Icon</span>(Icons.<span class="property">delete</span>),
+                <span class="property">onPressed</span>: () <span class="operator">=&gt;</span> todoModel.<span class="function">removeTodo</span>(index),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Spacegrayは、宇宙のような静寂と深みを持つ
+                シンプルで美しいグレートーンのテーマです。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Dart</span>
+                <span class="tag">#Flutter</span>
+                <span class="tag">#モバイル開発</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Spacegray Dev Blog. Minimal cosmos.</p>
+        </footer>
+    </div>
+</body>
+</html>

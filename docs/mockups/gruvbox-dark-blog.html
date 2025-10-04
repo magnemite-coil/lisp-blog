@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gruvbox Dark - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Gruvbox Dark カラーパレット */
+            --bg0-hard: #1d2021;
+            --bg0: #282828;
+            --bg1: #3c3836;
+            --bg2: #504945;
+            --bg3: #665c54;
+            --fg0: #fbf1c7;
+            --fg1: #ebdbb2;
+            --fg2: #d5c4a1;
+            --fg3: #bdae93;
+            --red: #fb4934;
+            --green: #b8bb26;
+            --yellow: #fabd2f;
+            --blue: #83a598;
+            --purple: #d3869b;
+            --aqua: #8ec07c;
+            --orange: #fe8019;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg0-hard);
+            color: var(--fg1);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--bg2);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--yellow);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--fg2);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--fg3);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--aqua);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--blue);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--fg1);
+        }
+
+        pre {
+            background: var(--bg1);
+            border: 1px solid var(--bg2);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--fg1);
+        }
+
+        p code, li code {
+            background: var(--bg1);
+            color: var(--aqua);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Gruvbox */
+        .keyword { color: var(--red); }
+        .function { color: var(--green); }
+        .string { color: var(--yellow); }
+        .number { color: var(--purple); }
+        .comment { color: var(--fg3); font-style: italic; }
+        .constant { color: var(--purple); }
+        .property { color: var(--blue); }
+        .operator { color: var(--orange); }
+        .tag { color: var(--red); }
+        .attr-name { color: var(--aqua); }
+        .attr-value { color: var(--yellow); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg2);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--bg3);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--orange);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--bg3);
+            color: var(--fg2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg1);
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--fg1);
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--aqua);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg2);
+            color: var(--green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--bg3);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--bg2);
+            text-align: center;
+            color: var(--fg3);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--orange);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--fg1);
+            font-style: italic;
+            background: var(--bg1);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--bg2);
+        }
+
+        th {
+            background: var(--bg1);
+            color: var(--yellow);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--fg1);
+        }
+
+        tr:hover {
+            background: var(--bg1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍂 Gruvbox Dark Dev Blog</h1>
+            <p class="subtitle">レトロで温かみのある配色</p>
+        </header>
+
+        <article>
+            <h2>Vueでリアクティブなデータバインディング</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 vue_master</span>
+                <span>⏱️ 7分で読める</span>
+            </div>
+
+            <p>
+                Vue 3のComposition APIは、ロジックの再利用性を大幅に向上させます。
+                refとreactiveを使ったリアクティブなデータ管理の基本を学びましょう。
+            </p>
+
+            <h3>Composition APIの基礎</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Vue 3</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="tag">&lt;script</span> <span class="attr-name">setup</span><span class="tag">&gt;</span>
+<span class="keyword">import</span> { ref, reactive, computed } <span class="keyword">from</span> <span class="string">'vue'</span>
+
+<span class="comment">// refを使ったプリミティブ値の管理</span>
+<span class="keyword">const</span> <span class="property">count</span> <span class="operator">=</span> <span class="function">ref</span>(<span class="number">0</span>)
+<span class="keyword">const</span> <span class="property">message</span> <span class="operator">=</span> <span class="function">ref</span>(<span class="string">'Hello Vue!'</span>)
+
+<span class="comment">// reactiveを使ったオブジェクトの管理</span>
+<span class="keyword">const</span> <span class="property">user</span> <span class="operator">=</span> <span class="function">reactive</span>({
+  <span class="property">name</span>: <span class="string">'山田太郎'</span>,
+  <span class="property">age</span>: <span class="number">25</span>,
+  <span class="property">email</span>: <span class="string">'yamada@example.com'</span>
+})
+
+<span class="comment">// 算出プロパティ</span>
+<span class="keyword">const</span> <span class="property">doubleCount</span> <span class="operator">=</span> <span class="function">computed</span>(() <span class="operator">=&gt;</span> count.<span class="property">value</span> <span class="operator">*</span> <span class="number">2</span>)
+
+<span class="comment">// メソッド</span>
+<span class="keyword">const</span> <span class="function">increment</span> <span class="operator">=</span> () <span class="operator">=&gt;</span> {
+  count.<span class="property">value</span><span class="operator">++</span>
+}
+
+<span class="keyword">const</span> <span class="function">updateUser</span> <span class="operator">=</span> () <span class="operator">=&gt;</span> {
+  user.<span class="property">age</span><span class="operator">++</span>
+}
+<span class="tag">&lt;/script&gt;</span></code></pre>
+            </div>
+
+            <h3>テンプレートでの使用</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Vue Template</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="tag">&lt;template&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr-name">class</span><span class="operator">=</span><span class="attr-value">"container"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>{{ message }}<span class="tag">&lt;/h2&gt;</span>
+    
+    <span class="tag">&lt;div</span> <span class="attr-name">class</span><span class="operator">=</span><span class="attr-value">"counter"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;p&gt;</span>カウント: {{ count }}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;p&gt;</span>2倍: {{ doubleCount }}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr-name">@click</span><span class="operator">=</span><span class="attr-value">"increment"</span><span class="tag">&gt;</span>
+        増やす
+      <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="tag">&lt;div</span> <span class="attr-name">class</span><span class="operator">=</span><span class="attr-value">"user-info"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;p&gt;</span>名前: {{ user.name }}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;p&gt;</span>年齢: {{ user.age }}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr-name">@click</span><span class="operator">=</span><span class="attr-value">"updateUser"</span><span class="tag">&gt;</span>
+        年齢を増やす
+      <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/template&gt;</span></code></pre>
+            </div>
+
+            <blockquote>
+                💡 Gruvboxは、レトロなターミナルの雰囲気を持ちながら
+                現代的な読みやすさを実現したテーマです。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Vue.js</span>
+                <span class="tag">#Composition API</span>
+                <span class="tag">#フロントエンド</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Gruvbox Dark Dev Blog. Retro warmth.</p>
+        </footer>
+    </div>
+</body>
+</html>
