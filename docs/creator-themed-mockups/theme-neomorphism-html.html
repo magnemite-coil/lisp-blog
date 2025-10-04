@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ニューモーフィズム - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #e0e5ec;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .header {
+            background: #e0e5ec;
+            border-radius: 30px;
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            box-shadow: 
+                20px 20px 60px #bebebe,
+                -20px -20px 60px #ffffff;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #444;
+            letter-spacing: -2px;
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #e0e5ec;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 
+                12px 12px 24px #bebebe,
+                -12px -12px 24px #ffffff;
+            transition: all 0.3s;
+        }
+
+        .post:hover {
+            box-shadow: 
+                8px 8px 16px #bebebe,
+                -8px -8px 16px #ffffff;
+        }
+
+        .post-icon {
+            width: 60px;
+            height: 60px;
+            background: #e0e5ec;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            box-shadow: 
+                6px 6px 12px #bebebe,
+                -6px -6px 12px #ffffff;
+        }
+
+        .post-number {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .post-date {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            color: #666;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .post-content p {
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #e0e5ec;
+            border-radius: 12px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 
+                6px 6px 12px #bebebe,
+                -6px -6px 12px #ffffff;
+            transition: all 0.3s;
+        }
+
+        .button:hover {
+            box-shadow: 
+                inset 4px 4px 8px #bebebe,
+                inset -4px -4px 8px #ffffff;
+        }
+
+        .divider {
+            height: 4px;
+            background: #e0e5ec;
+            border-radius: 2px;
+            margin: 25px 0;
+            box-shadow: 
+                inset 2px 2px 4px #bebebe,
+                inset -2px -2px 4px #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Neomorphism</h1>
+        <div class="tagline">柔らかな影が生み出す、触覚的なUI</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-icon">🎨</div>
+            <div class="post-number">Design 01</div>
+            <h2 class="post-title">柔らかな影の芸術</h2>
+            <div class="post-date">2025年10月4日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムは、2019年末にDribbbleで爆発的に人気を博したデザイントレンドです。フラットデザインとスキューモーフィズムの中間点として登場し、ソフトシャドウで要素が背景から浮き出る独特の質感を特徴としています。
+                </p>
+                <p>
+                    この design language の核心は、light source（光源）の概念にあります。左上から光が当たっているという前提で、右下に暗い影、左上に明るいハイライトを配置します。これにより、要素が物理的に押し出されているか、押し込まれているかのような錯覚が生まれます。
+                </p>
+                <p>
+                    ウクライナのデザイナー Alexander Plyuto が、Skeuomorphism/Neumorphism という概念を提唱し、UI design community に大きな影響を与えました。彼の作品は、数千のデザイナーにインスピレーションを与え、新しいトレンドを生み出しました。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">💡</div>
+            <div class="post-number">Design 02</div>
+            <h2 class="post-title">触れたくなるUI</h2>
+            <div class="post-date">2025年10月3日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムの最大の魅力は、その tactile（触覚的）な質感です。物理的な質感を思わせる陰影が、インターフェースに触覚的な魅力を与えます。ボタンは押せそうに見え、スイッチは切り替えられそうに見えます。
+                </p>
+                <p>
+                    この効果は、二つの box-shadow を使用することで実現されます。一つは暗い影（#bebebe など）、もう一つは明るい影（#ffffff）。この組み合わせが、soft な立体感を作り出します。背景色と要素の色を同じにすることが、ニューモーフィズムの重要な原則です。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    Apple の design philosophy との親和性も高く、iOS や macOS の一部の要素にニューモーフィックな influence が見られます。特に Control Center や Widget のデザインに、その傾向が現れています。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">🔲</div>
+            <div class="post-number">Design 03</div>
+            <h2 class="post-title">凹凸の表現</h2>
+            <div class="post-date">2025年10月2日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムには、二つの主要なスタイルがあります。Extruded（押し出し）と Debossed（押し込み）です。押し出しスタイルは、要素が表面から浮き上がっているように見えます。押し込みスタイルは、inset shadow を使用して、要素が表面に埋め込まれているように見せます。
+                </p>
+                <p>
+                    この二つのスタイルを組み合わせることで、complex で interactive な UI を作成できます。ボタンは通常時は押し出され、pressed 状態では押し込まれる。この物理的なフィードバックが、ユーザー体験を向上させます。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    トグルスイッチ、スライダー、カード。あらゆる UI 要素がニューモーフィックスタイルで表現可能です。しかし、過度の使用は避けるべきです。重要な interactive 要素にのみ適用することで、最大の効果が得られます。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">🎯</div>
+            <div class="post-number">Design 04</div>
+            <h2 class="post-title">カラーパレットの制約</h2>
+            <div class="post-date">2025年10月1日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムは、限られた color palette で最も効果的です。明るいグレー（#e0e5ec）が最も一般的な背景色ですが、パステルカラーでも機能します。重要なのは、低コントラストであることです。
+                </p>
+                <p>
+                    Dark mode でのニューモーフィズムは challenging です。暗い背景では、影の効果が less visible になります。しかし、適切な調整により、dark neumorphism も実現可能です。背景色を #2e2e2e 程度にし、より subtle な shadow を使用します。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    グラデーションとニューモーフィズムの組み合わせも人気があります。Soft な色の変化が、さらに豊かな質感を生み出します。ただし、accessibility を損なわないよう注意が必要です。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">⚠️</div>
+            <div class="post-number">Design 05</div>
+            <h2 class="post-title">アクセシビリティの課題</h2>
+            <div class="post-date">2025年9月30日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムの最大の criticism は、accessibility issues です。低コントラストにより、視覚障害のあるユーザーには要素が見づらくなります。WCAG guidelines を満たすことが difficult です。
+                </p>
+                <p>
+                    この問題に対する solution の一つは、ニューモーフィズムを decorative 要素にのみ使用し、重要な UI 要素には十分なコントラストを確保することです。また、hover や focus 状態で、より明確な visual feedback を提供することも重要です。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    Inclusive design の観点から、ニューモーフィズムは補助的な役割に留めるべきです。美しさと usability のバランスを取ることが、responsible なデザイナーの責務です。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">🔧</div>
+            <div class="post-number">Design 06</div>
+            <h2 class="post-title">実装のテクニック</h2>
+            <div class="post-date">2025年9月29日</div>
+            <div class="post-content">
+                <p>
+                    CSS での implementation は比較的 straightforward です。box-shadow property を使用し、複数の shadow を組み合わせます。12px 12px 24px #bebebe と -12px -12px 24px #ffffff が典型的な値です。
+                </p>
+                <p>
+                    Border-radius も重要な要素です。Sharp corners よりも、15-30px の丸みを帯びた角が、ニューモーフィックな aesthetic に合います。すべての要素が soft で organic に見えるべきです。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    Online tools（neumorphism.io など）を使用すれば、簡単に CSS code を生成できます。しかし、手動で調整することで、より精緻な結果が得られます。Light source の角度、shadow の距離、blur の強さ。すべてが絶妙なバランスを必要とします。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">📱</div>
+            <div class="post-number">Design 07</div>
+            <h2 class="post-title">モバイルでの応用</h2>
+            <div class="post-date">2025年9月28日</div>
+            <div class="post-content">
+                <p>
+                    Mobile interfaces でのニューモーフィズムは、特に challenging です。小さな screen では、subtle な shadow が見えにくくなります。また、outdoor での visibility も問題となります。直射日光下では、低コントラストの UI は almost invisible になります。
+                </p>
+                <p>
+                    これらの制約にもかかわらず、music player や calculator など、特定の app カテゴリーでは効果的に使用されています。限定的な context で、decorative な目的で使用するのが best practice です。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+
+        <div class="post">
+            <div class="post-icon">🚀</div>
+            <div class="post-number">Design 08</div>
+            <h2 class="post-title">トレンドの未来</h2>
+            <div class="post-date">2025年9月27日</div>
+            <div class="post-content">
+                <p>
+                    ニューモーフィズムは、pure form では mainstream にはなりませんでした。しかし、その influence は残っています。Modern UI design には、subtle な elevation と soft shadows が広く使用されています。
+                </p>
+                <p>
+                    将来的には、glassmorphism や other design trends と融合し、新しい hybrid styles が生まれるでしょう。Design は常に evolution しており、ニューモーフィズムはその journey の一部です。
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="post-content">
+                <p>
+                    重要なのは、トレンドを blindly に follow するのではなく、適切な context で適切な technique を使用することです。ニューモーフィズムが教えてくれたのは、質感と depth の重要性、そして美しさだけでは十分ではないということです。
+                </p>
+            </div>
+            <a href="#" class="button">もっと読む</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>映画ポスター風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bebas Neue', cursive;
+            background: #000;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 80px;
+            font-weight: 900;
+            color: #ffd700;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: #fff;
+            letter-spacing: 4px;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+            border: 1px solid #333;
+            aspect-ratio: 2/3;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.7;
+        }
+
+        .post:nth-child(2)::before {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .post:nth-child(3)::before {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .post:nth-child(4)::before {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .post:nth-child(5)::before {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .post:nth-child(6)::before {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .post:nth-child(7)::before {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .post:nth-child(8)::before {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+        }
+
+        .post:hover {
+            transform: translateY(-10px);
+        }
+
+        .post-content {
+            position: relative;
+            z-index: 1;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .rating {
+            font-size: 16px;
+            color: #ffd700;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-size: 48px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 3px 3px 10px #000;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .post-description {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .credits {
+            font-size: 11px;
+            color: #aaa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+        }
+
+        .credits strong {
+            color: #fff;
+        }
+
+        .genre-tag {
+            display: inline-block;
+            background: rgba(255,215,0,0.2);
+            border: 1px solid #ffd700;
+            padding: 5px 10px;
+            margin: 0 5px 10px 0;
+            font-size: 10px;
+            color: #ffd700;
+            letter-spacing: 1px;
+        }
+
+        .coming-soon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff0000;
+            color: #fff;
+            padding: 8px 15px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transform: rotate(5deg);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.5);
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .posts {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .post-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CINEMATIC STORIES</h1>
+        <div class="tagline">Coming Soon to Your Screen</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="coming-soon">NOW SHOWING</div>
+            <div class="post-content">
+                <div class="rating">★★★★★ MASTERPIECE</div>
+                <h2 class="post-title">THE GREAT<br>DESIGN</h2>
+                <div class="post-description">
+                    映画ポスターは、2時間の物語を1枚の画像に凝縮する芸術です。タイトル、ビジュアル、キャッチコピーが織りなすドラマ。Saul Bass、Drew Struzan、そして現代の Mondo。ポスターデザインは映画史と共に進化してきました。
+                </div>
+                <div class="genre-tag">DOCUMENTARY</div>
+                <div class="genre-tag">ART</div>
+                <div class="credits">
+                    <strong>Director:</strong> Creative Vision<br>
+                    <strong>Cast:</strong> Typography, Color, Composition<br>
+                    <strong>Runtime:</strong> Timeless
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-content">
+                <div class="rating">★★★★☆ BRILLIANT</div>
+                <h2 class="post-title">VISUAL<br>STORYTELLING</h2>
+                <div class="post-description">
+                    色彩が感情を語り、タイポグラフィがトーンを決定し、レイアウトが期待を煽る。ポスターデザインの全てが物語の一部です。『ジョーズ』の恐怖、『スター・ウォーズ』の冒険、『ブレードランナー』の dark future。一目で世界観を伝える力。
+                </div>
+                <div class="genre-tag">THRILLER</div>
+                <div class="genre-tag">DRAMA</div>
+                <div class="credits">
+                    <strong>Director:</strong> Visual Master<br>
+                    <strong>Cinematography:</strong> Bold & Beautiful<br>
+                    <strong>Music:</strong> Silent Impact
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="coming-soon">CRITICS' CHOICE</div>
+            <div class="post-content">
+                <div class="rating">★★★★★ ICONIC</div>
+                <h2 class="post-title">GOLDEN AGE<br>POSTERS</h2>
+                <div class="post-description">
+                    1920-1960年代は、映画ポスターの黄金時代でした。手描きのイラストレーション、活版印刷、lithography。Josef Fenneker、Heinz Schulz-Neudamm（『メトロポリス』）。芸術作品として価値を持つポスターたちが生まれました。
+                </div>
+                <div class="genre-tag">CLASSIC</div>
+                <div class="genre-tag">HISTORY</div>
+                <div class="credits">
+                    <strong>Era:</strong> 1920s-1960s<br>
+                    <strong>Style:</strong> Hand-painted Illustration<br>
+                    <strong>Legacy:</strong> Eternal
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-content">
+                <div class="rating">★★★★☆ REVOLUTIONARY</div>
+                <h2 class="post-title">SAUL BASS<br>LEGACY</h2>
+                <div class="post-description">
+                    Saul Bass は、ポスターデザインに革命をもたらしました。『黄金の腕』『めまい』『シャイニング』。シンプルな geometric shapes、bold な typography、symbolic な imagery。彼の作品は、minimalism の power を証明しました。
+                </div>
+                <div class="genre-tag">DESIGN</div>
+                <div class="genre-tag">MINIMALIST</div>
+                <div class="credits">
+                    <strong>Designer:</strong> Saul Bass<br>
+                    <strong>Philosophy:</strong> Less is More<br>
+                    <strong>Influence:</strong> Infinite
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="coming-soon">EXCLUSIVE</div>
+            <div class="post-content">
+                <div class="rating">★★★★★ SPECTACULAR</div>
+                <h2 class="post-title">BLOCKBUSTER<br>ERA</h2>
+                <div class="post-description">
+                    1970年代以降、blockbuster の時代が到来しました。『スター・ウォーズ』『ジュラシック・パーク』『アベンジャーズ』。Epic な scale、multiple characters、action-packed composition。Drew Struzan の painted posters は、この時代を象徴しています。
+                </div>
+                <div class="genre-tag">ACTION</div>
+                <div class="genre-tag">SCI-FI</div>
+                <div class="credits">
+                    <strong>Style:</strong> Epic Fantasy<br>
+                    <strong>Technique:</strong> Photo-manipulation<br>
+                    <strong>Impact:</strong> Box Office Gold
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-content">
+                <div class="rating">★★★★☆ ARTISTIC</div>
+                <h2 class="post-title">INDIE<br>AESTHETICS</h2>
+                <div class="post-content">
+                    Independent films は、unique なポスターデザインで知られています。Wes Anderson の symmetrical compositions、A24 の minimalist approach、Criterion Collection の sophisticated layouts。Budget の制約が、創造性を生み出します。
+                </div>
+                <div class="genre-tag">INDIE</div>
+                <div class="genre-tag">ARTHOUSE</div>
+                <div class="credits">
+                    <strong>Vibe:</strong> Authentic & Original<br>
+                    <strong>Market:</strong> Film Festival Circuit<br>
+                    <strong>Appeal:</strong> Cult Following
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="coming-soon">TRENDING</div>
+            <div class="post-content">
+                <div class="rating">★★★★☆ MODERN</div>
+                <h2 class="post-title">DIGITAL<br>REVOLUTION</h2>
+                <div class="post-description">
+                    Photoshop、Illustrator、3D rendering。Digital tools が poster design を変革しました。Unlimited possibilities、instant iterations、global distribution。しかし、core principles は変わりません。Attention を grab し、emotion を evoke し、story を tell する。
+                </div>
+                <div class="genre-tag">CONTEMPORARY</div>
+                <div class="genre-tag">DIGITAL</div>
+                <div class="credits">
+                    <strong>Tools:</strong> Adobe Creative Suite<br>
+                    <strong>Distribution:</strong> Worldwide<br>
+                    <strong>Format:</strong> Print & Digital
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-content">
+                <div class="rating">★★★★★ COLLECTIBLE</div>
+                <h2 class="post-title">ALTERNATIVE<br>POSTERS</h2>
+                <div class="post-description">
+                    Mondo、Olly Moss、Tyler Stout。Alternative poster movement は、fan art を商業的成功に変えました。Limited editions、screen printing、artist interpretations。Classic films への新しい視点を提供し、poster を collectible art に昇華させています。
+                </div>
+                <div class="genre-tag">FAN ART</div>
+                <div class="genre-tag">LIMITED EDITION</div>
+                <div class="credits">
+                    <strong>Market:</strong> Collectors & Fans<br>
+                    <strong>Technique:</strong> Screen Printing<br>
+                    <strong>Value:</strong> Investment Grade
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

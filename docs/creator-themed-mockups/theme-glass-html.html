@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガラスモーフィズム - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -2px;
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 35px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .post:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .post:hover::before {
+            left: 100%;
+        }
+
+        .post-number {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .post-date {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .post-content p {
+            margin-bottom: 15px;
+        }
+
+        .tag-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Glassmorphism</h1>
+        <div class="tagline">透明な層が重なり合う、モダンUIデザイン</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-number">Article 01</div>
+            <h2 class="post-title">透明な未来</h2>
+            <div class="post-date">October 4, 2025</div>
+            <div class="post-content">
+                <p>
+                    ガラスモーフィズムは、物理世界とデジタル世界の境界を曖昧にします。半透明の層が重なり合い、深みと立体感を生み出します。まるですりガラスを通して景色を見るように、背景がぼんやりと透けて見える美学です。
+                </p>
+                <p>
+                    この design language は、2020年頃から macOS Big Sur と Windows 11 によって mainstream になりました。Fluent Design System と Apple の Human Interface Guidelines が、glassmorphism の原則を体系化しました。
+                </p>
+                <p>
+                    透明性は信頼を生みます。何も隠さず、すべてを見せる。しかし同時に、繊細なぼかし効果が優雅さを加えます。これが glassmorphism の魔法です。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Design</span>
+                <span class="tag">UI/UX</span>
+                <span class="tag">Modern</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 02</div>
+            <h2 class="post-title">ブラーの美学</h2>
+            <div class="post-date">October 3, 2025</div>
+            <div class="post-content">
+                <p>
+                    backdrop-filter: blur() という CSS プロパティが、glassmorphism を可能にしました。背景をぼかすことで、前景の要素が浮き上がります。光と影の繊細なバランスが、視覚的な階層を作り出します。
+                </p>
+                <p>
+                    ぼかしの強さは重要です。10-20px が最も効果的とされています。強すぎると背景が見えなくなり、弱すぎると効果が感じられません。iOS の Control Center は、この balance の完璧な例です。
+                </p>
+                <p>
+                    半透明とぼかしの組み合わせが、柔らかく洗練された雰囲気を醸成します。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">CSS</span>
+                <span class="tag">Effects</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 03</div>
+            <h2 class="post-title">レイヤーの重なり</h2>
+            <div class="post-date">October 2, 2025</div>
+            <div class="post-content">
+                <p>
+                    Glassmorphism は、視覚的なレイヤーの概念を強調します。カード、モーダル、ナビゲーションバー。これらすべてが、背景の上に浮かんでいるように見えます。奥行きの錯覚が、flat design の制約を超えます。
+                </p>
+                <p>
+                    複数のガラスレイヤーが重なると、更に interesting な効果が生まれます。それぞれのレイヤーが異なる透明度とぼかしを持ち、複雑な視覚的階層を形成します。
+                </p>
+                <p>
+                    光の屈折、反射、透過。物理的なガラスの特性を、デジタル界面で再現する試みです。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Depth</span>
+                <span class="tag">Layers</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 04</div>
+            <h2 class="post-title">境界線の繊細さ</h2>
+            <div class="post-date">October 1, 2025</div>
+            <div class="post-content">
+                <p>
+                    Glassmorphic な要素は、subtle な境界線を必要とします。1px の半透明な border が、形を定義しながらも押し付けがましくありません。rgba(255, 255, 255, 0.2) のような値が、よく使われます。
+                </p>
+                <p>
+                    この境界線は、光のハイライトをシミュレートします。まるで実際のガラス表面に光が当たっているかのような効果です。上部と左側が明るく、下部と右側が暗い。この asymmetry が立体感を強調します。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Border</span>
+                <span class="tag">Detail</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 05</div>
+            <h2 class="post-title">カラーとコントラスト</h2>
+            <div class="post-date">September 30, 2025</div>
+            <div class="post-content">
+                <p>
+                    Glassmorphism は、vibrant な背景と組み合わせると最も効果的です。グラデーション、画像、ビデオ。動的な背景が、ガラス効果の美しさを引き立てます。静的な単色背景では、効果が半減します。
+                </p>
+                <p>
+                    テキストの可読性は重要な考慮事項です。背景が透けて見えるため、十分なコントラストを確保する必要があります。白いテキストに subtle なドロップシャドウを加えることで、読みやすさが向上します。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Color</span>
+                <span class="tag">Contrast</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 06</div>
+            <h2 class="post-title">パフォーマンスの課題</h2>
+            <div class="post-date">September 29, 2025</div>
+            <div class="post-content">
+                <p>
+                    Backdrop-filter は、computationally expensive です。特にモバイルデバイスでは、パフォーマンスへの影響が顕著です。過度の使用は避け、重要な UI 要素にのみ適用すべきです。
+                </p>
+                <p>
+                    しかし、適切に使用すれば、モダンで洗練されたインターフェースを作成できます。Hardware acceleration を活用し、will-change プロパティを使用することで、パフォーマンスを最適化できます。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Performance</span>
+                <span class="tag">Optimization</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 07</div>
+            <h2 class="post-title">アクセシビリティ</h2>
+            <div class="post-date">September 28, 2025</div>
+            <div class="post-content">
+                <p>
+                    美しいデザインは、アクセシブルであるべきです。Glassmorphism を使用する際は、WCAG guidelines を遵守し、十分なコントラスト比を確保する必要があります。背景が透けて見えることで、テキストが読みにくくなってはいけません。
+                </p>
+                <p>
+                    reduced transparency の設定を尊重し、motion を reduce するオプションを提供することも重要です。すべてのユーザーが快適に使用できるインターフェースを目指すべきです。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">A11y</span>
+                <span class="tag">Inclusive</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">Article 08</div>
+            <h2 class="post-title">未来のインターフェース</h2>
+            <div class="post-date">September 27, 2025</div>
+            <div class="post-content">
+                <p>
+                    Glassmorphism は、spatial computing の時代に向けた準備です。AR/VR インターフェースでは、仮想要素が現実世界に重ねて表示されます。透明性とぼかしは、この融合を自然に見せるための鍵です。
+                </p>
+                <p>
+                    Apple Vision Pro のような devices が mainstream になるにつれ、glassmorphic な design language はより重要になるでしょう。物理世界とデジタル世界の seamless な統合。それが次の frontier です。
+                </p>
+            </div>
+            <div class="tag-container">
+                <span class="tag">Future</span>
+                <span class="tag">AR/VR</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

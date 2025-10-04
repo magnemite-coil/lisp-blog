@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple公式サイト風 - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            background: #f5f5f7;
+        }
+
+        .header {
+            background: #000;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 80px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -3px;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 32px;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .posts {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .post {
+            background: #fff;
+            margin-bottom: 80px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .post:hover {
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .post:nth-child(2) .post-image {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .post:nth-child(3) .post-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .post-content {
+            padding: 50px;
+        }
+
+        .post-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .post-description {
+            font-size: 24px;
+            color: #86868b;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .read-more {
+            color: #0071e3;
+            font-size: 19px;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #0077ed;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .tagline {
+                font-size: 21px;
+            }
+
+            .post-title {
+                font-size: 32px;
+            }
+
+            .post-description {
+                font-size: 19px;
+            }
+
+            .post-content {
+                padding: 30px;
+            }
+
+            .post-image {
+                height: 300px;
+                font-size: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Think Different</h1>
+        <div class="tagline">シンプルさの中に宿る美しさ</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-image">📱</div>
+            <div class="post-content">
+                <h2 class="post-title">ミニマリズムの美学</h2>
+                <p class="post-description">
+                    余白は単なる空白ではありません。それは意図であり、焦点であり、呼吸する空間です。Appleのデザイン哲学は「Less is More」を完璧に体現しています。不要なものを削ぎ落とし、本質だけを残す。その勇気が、真の美しさを生み出します。
+                </p>
+                <a href="#" class="read-more">続きを読む →</a>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-image">💻</div>
+            <div class="post-content">
+                <h2 class="post-title">機能美の追求</h2>
+                <p class="post-description">
+                    すべての要素には目的があります。無駄を削ぎ落とし、本質だけを残す。それがユーザー体験と美しさの両立を実現する鍵です。形は機能に従い、機能は美に昇華される。シンプルであることの難しさと、その先にある洗練された美しさ。
+                </p>
+                <a href="#" class="read-more">続きを読む →</a>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-image">🎨</div>
+            <div class="post-content">
+                <h2 class="post-title">デザインの力</h2>
+                <p class="post-description">
+                    デザインは見た目だけではありません。それは機能であり、体験であり、感情です。美しいデザインは、使う人の生活を豊かにし、毎日をより良いものにします。細部へのこだわりが、全体の印象を決定づけます。完璧を目指す姿勢が、優れた製品を生み出します。
+                </p>
+                <a href="#" class="read-more">続きを読む →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

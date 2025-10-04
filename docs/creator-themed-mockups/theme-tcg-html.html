@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トレーディングカードゲーム風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 56px;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 30px #FFD700, 0 0 60px #FFA500, 0 4px 0 #000;
+            letter-spacing: 6px;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .post {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+            border: 4px solid #FFD700;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4),
+                        inset 0 0 30px rgba(255, 215, 0, 0.1);
+            transition: all 0.4s;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .post:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.6);
+        }
+
+        .post:hover::before {
+            left: 100%;
+        }
+
+        .rarity {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #000;
+            font-size: 20px;
+            box-shadow: 0 0 20px #FFD700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .post-header {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #000;
+        }
+
+        .post-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 24px;
+            font-weight: 900;
+            color: #000;
+            letter-spacing: 2px;
+        }
+
+        .post-content {
+            padding: 25px;
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⭐ LEGENDARY BLOG ⭐</h1>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="rarity">★★★</div>
+            <div class="post-header">
+                <h2 class="post-title">LEGENDARY DESIGN</h2>
+            </div>
+            <div class="post-content">
+                トレーディングカードゲームのデザインは、コレクション性と視覚的な魅力を兼ね備えています。レアリティの概念が重要で、ホログラム加工やゴールドフレームが高レアリティを表現します。限定性と希少価値が、コレクターの心を掴みます。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">3500</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">3000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="rarity">★★</div>
+            <div class="post-header">
+                <h2 class="post-title">RARE TREASURE</h2>
+            </div>
+            <div class="post-content">
+                カードゲームのデザインは、限られたスペースで最大限の情報と魅力を伝える芸術です。イラスト、テキスト、ステータス、レアリティマーク。全ての要素が調和して、一枚のカードを完成させます。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">2800</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">2400</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="rarity">★★★</div>
+            <div class="post-header">
+                <h2 class="post-title">HOLOGRAPHIC SHINE</h2>
+            </div>
+            <div class="post-content">
+                キラキラと輝くホログラム加工は、トレーディングカードの華です。光の角度によって虹色に輝き、所有する喜びを高めます。触覚的な質感も重要で、エンボス加工やUVコーティングが高級感を演出します。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">3200</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">2800</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="rarity">★</div>
+            <div class="post-header">
+                <h2 class="post-title">COLLECTOR'S ITEM</h2>
+            </div>
+            <div class="post-content">
+                コレクション性を高めるため、カードデザインには様々な工夫が凝らされています。シリアルナンバー、限定版マーク、サイン入りカード。希少性が価値を生み、コレクターの情熱を掻き立てます。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">2200</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">2000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="rarity">★★</div>
+            <div class="post-header">
+                <h2 class="post-title">GAME BALANCE</h2>
+            </div>
+            <div class="post-content">
+                カードデザインは美しさだけではありません。ゲームバランスを考慮したステータス設定、明確なルールテキスト、直感的なアイコン。プレイアビリティとコレクタビリティの両立が求められます。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">2600</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">2200</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="rarity">★★★</div>
+            <div class="post-header">
+                <h2 class="post-title">ULTIMATE RARITY</h2>
+            </div>
+            <div class="post-content">
+                最高レアリティのカードは、単なるゲームピースを超えた存在です。芸術作品としての価値、投資対象としての価値、そしてプレイヤーの夢と憧れ。一枚のカードに込められた想いが、TCGの魅力を作り上げています。
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">ATK</div>
+                        <div class="stat-value">4000</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">DEF</div>
+                        <div class="stat-value">3500</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
