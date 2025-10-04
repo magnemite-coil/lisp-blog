@@ -4,12 +4,14 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'docs/mockups/**'
+      - 'docs/engineer-themed-mockups/**'
+      - 'docs/creator-themed-mockups/**'
       - 'docs/admin-mockups/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'docs/mockups/**'
+      - 'docs/engineer-themed-mockups/**'
+      - 'docs/creator-themed-mockups/**'
       - 'docs/admin-mockups/**'
   workflow_dispatch:
 
@@ -29,8 +31,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Copy admin mockups to main docs directory
+      - name: Create unified mockups directory
         run: |
+          mkdir -p docs/mockups
+          cp -r docs/engineer-themed-mockups/* docs/mockups/
+          cp -r docs/creator-themed-mockups docs/mockups/creator-themed-mockups
           cp -r docs/admin-mockups docs/mockups/admin-mockups
 
       - name: Create index page
@@ -367,7 +372,7 @@ jobs:
               <div class="container">
                   <h1>🎨 ブログシステム モックアップ</h1>
                   <p class="description">
-                      エンジニア向けブログの15種類のテーマ + 10種類の管理画面プレビュー<br>
+                      エンジニア向けブログの15種類のテーマ + クリエイター向けブログテーマ + 10種類の管理画面プレビュー<br>
                       各デザインをクリックしてUIをご確認ください
                   </p>
 
@@ -624,6 +629,21 @@ jobs:
                               <div class="theme-name">Moonlight</div>
                               <div class="theme-description">月明かりをイメージした神秘的な紫青系</div>
                               <a href="moonlight-blog.html" class="theme-link">プレビュー</a>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- クリエイターテーマセクション -->
+                  <div class="admin-section">
+                      <h2 class="section-title">🎨 クリエイター向けテーマ</h2>
+
+                      <div class="themes-grid">
+                          <div class="theme-card">
+                              <div class="theme-info">
+                                  <div class="theme-name">クリエイター向けテーマ</div>
+                                  <div class="theme-description">アーティスト、デザイナー、ライター向けの美しいテーマ集</div>
+                                  <a href="creator-themed-mockups/" class="theme-link">テーマ一覧を見る</a>
+                              </div>
                           </div>
                       </div>
                   </div>
