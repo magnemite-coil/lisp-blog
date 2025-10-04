@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フィルムストリップ - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            padding: 60px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 64px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 0 #000;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #999;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .posts {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #000;
+            border-left: 30px solid #333;
+            border-right: 30px solid #333;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .post::before,
+        .post::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 30px;
+            background: repeating-linear-gradient(
+                0deg,
+                #1a1a1a 0px,
+                #1a1a1a 15px,
+                #000 15px,
+                #000 20px
+            );
+        }
+
+        .post::before {
+            left: -30px;
+        }
+
+        .post::after {
+            right: -30px;
+        }
+
+        .frame-number {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 32px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .timecode {
+            font-size: 14px;
+            color: #ff6b00;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .post-content {
+            color: #ddd;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .post-content p {
+            margin-bottom: 15px;
+        }
+
+        .film-info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .sprocket-holes {
+            position: absolute;
+            width: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .sprocket-hole {
+            width: 10px;
+            height: 10px;
+            background: #1a1a1a;
+            border: 1px solid #000;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .post {
+                border-left-width: 20px;
+                border-right-width: 20px;
+                padding: 25px;
+            }
+
+            .post::before,
+            .post::after {
+                width: 20px;
+            }
+
+            .post::before {
+                left: -20px;
+            }
+
+            .post::after {
+                right: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>FILM FRAMES</h1>
+        <div class="subtitle">35mm Cinematic Stories</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="frame-number">Frame 001-024</div>
+            <h2 class="post-title">FRAMES OF LIFE</h2>
+            <div class="timecode">00:00:01:00</div>
+            <div class="post-content">
+                <p>
+                    フィルムストリップの一コマ一コマが、時間を切り取ります。24fps（フレーム毎秒）という standard。人間の目が連続した動きとして認識する threshold。Georges Méliès から Lumière brothers、そして現代のデジタルシネマまで。映画は光と時間の芸術です。
+                </p>
+                <p>
+                    35mmフィルムの規格は、Thomas Edison が1892年に確立しました。4つのパーフォレーション（スプロケット穴）、vertical な orientation。この standard が、100年以上にわたって映画産業を支えてきました。物理的な制約が、creative な expression を生み出したのです。
+                </p>
+                <p>
+                    スプロケット穴のディテールまで再現することで、アナログ映画の質感が蘇ります。Digital では失われがちな、mechanical な美しさ。Film grain、scratches、gate weave。これらの imperfections が、authenticity を生み出します。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>35mm • Color</span>
+                <span>Aspect Ratio: 1.85:1</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 025-048</div>
+            <h2 class="post-title">CINEMA NOSTALGIA</h2>
+            <div class="timecode">00:00:02:00</div>
+            <div class="post-content">
+                <p>
+                    35mmフィルムの質感、映写機のカタカタという音。映画館で観た名作の記憶が、デザインに宿ります。Celluloid の化学的プロセス、現像液の匂い、editing room での手作業。Digital revolution 以前の、analog filmmaking の世界です。
+                </p>
+                <p>
+                    Technicolor の3ストリップ process、Kodak Vision3 の latitude、Fujifilm の色再現性。Film stock それぞれに個性がありました。Cinematographers は stock selection を通じて、visual style を定義しました。『ゴッドファーザー』の warm tones、『ブレードランナー』の moody shadows。
+                </p>
+                <p>
+                    Christopher Nolan、Quentin Tarantino、Paul Thomas Anderson。現代でも film で撮影する directors がいます。IMAX 70mm の壮大さ、16mm の intimate さ。Format choice は artistic statement です。Resolution だけが quality ではありません。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>Kodak Vision3 500T</span>
+                <span>ASA: 500</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 049-072</div>
+            <h2 class="post-title">SPROCKET SYMPHONY</h2>
+            <div class="timecode">00:00:03:00</div>
+            <div class="post-content">
+                <p>
+                    パーフォレーションの規則的なパターン。これが film を projector に送り出します。Mechanical precision と artistic vision の融合。Engineer と artist の collaboration が、cinema を可能にしました。Bell & Howell、Mitchell、Arriflex。Camera の名前が、film history を語ります。
+                </p>
+                <p>
+                    Super 35、VistaVision、Techniscope。様々な format が開発されました。それぞれが unique な aesthetic を持ちます。Anamorphic lens による2.39:1の wide screen、Academy ratio の1.37:1の classic format。Aspect ratio は storytelling tool です。
+                </p>
+                <p>
+                    Film editing の physical nature も重要です。Steenbeck や Moviola での editing、razor blade での cutting、tape での splicing。Digital の non-linear editing とは全く異なる、tactile な process でした。Every cut は permanent decision でした。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>Super 35mm</span>
+                <span>Spherical Lens</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 073-096</div>
+            <h2 class="post-title">GRAIN & TEXTURE</h2>
+            <div class="timecode">00:00:04:00</div>
+            <div class="post-content">
+                <p>
+                    Film grain は、silver halide crystals の random distribution から生まれます。この organic な texture が、digital の clinical precision とは異なる warmth を生み出します。High ISO film の pronounced grain、fine-grain film の smooth rendering。Grain structure は aesthetic choice です。
+                </p>
+                <p>
+                    『セブン』の bleach bypass process、『プライベート・ライアン』の desaturated palette、『マトリックス』の green tint。Chemical processing を通じて、unique な looks が創造されました。Digital color grading では再現困難な、film-specific な qualities です。
+                </p>
+                <p>
+                    Preservation の観点からも、film は重要です。Properly stored film は centuries 持続します。Digital formats の obsolescence に対し、analog の longevity。Library of Congress は film での archival を推奨しています。Cultural heritage を守る medium として。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>Pushed +2 Stops</span>
+                <span>Cross-processed</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 097-120</div>
+            <h2 class="post-title">PROJECTION MAGIC</h2>
+            <div class="timecode">00:00:05:00</div>
+            <div class="post-content">
+                <p>
+                    Film projection の experience は unique です。24回/秒の intermittent movement、shutter による light control、carbon arc lamp の intense brightness。Projected image は screen に反射した光です。Digital projection の emitted light とは本質的に異なります。
+                </p>
+                <p>
+                    映写室（projection booth）の ritual。Film を reel に巻き、projector に threading し、focus と framing を調整する。Changeover cues での reel 交換。これらすべてが projectionist の skill を要しました。Automation では失われた、human touch です。
+                </p>
+                <p>
+                    IMAX film projection の壮大さは特筆すべきです。15/70 format、horizontal feed、massive screen。Technical achievement と sensory experience の頂点。Christopher Nolan が IMAX film に固執する理由がここにあります。Immersion の究極形態です。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>70mm Print</span>
+                <span>6-Track Magnetic Audio</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 121-144</div>
+            <h2 class="post-title">DIGITAL TRANSITION</h2>
+            <div class="timecode">00:00:06:00</div>
+            <div class="post-content">
+                <p>
+                    2000年代、digital cinema が mainstream になりました。RED、ARRI Alexa、Sony Venice。Resolution、dynamic range、post-production flexibility。Technical advantages は否定できません。しかし、何かが lost されたという feeling も widespread です。
+                </p>
+                <p>
+                    Film の制約が creativity を生んでいた面もあります。Limited takes（costly な film stock）、careful planning、discipline。Digital の unlimited takes は freedom ですが、時に indecision を生みます。Constraints が quality を高めることもあります。
+                </p>
+                <p>
+                    Hybrid approach も増えています。Film で撮影し、digital で post-production。Film の organic quality と digital の flexibility を combine。『ダンケルク』『TENET』『Oppenheimer』。Nolan の approach は、両者の best を追求しています。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>Hybrid Workflow</span>
+                <span>Film Acquisition • Digital Post</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 145-168</div>
+            <h2 class="post-title">AESTHETIC LEGACY</h2>
+            <div class="timecode">00:00:07:00</div>
+            <div class="post-content">
+                <p>
+                    Film aesthetic は、digital era においても alive です。Film emulation LUTs、grain overlays、vintage filters。Paradoxically、digital tools で analog look を recreate しています。Instagram の filters、video editing apps の presets。すべて film を reference しています。
+                </p>
+                <p>
+                    8mm、16mm、Super 8。Home movies の format も nostalgia の対象です。Wedding videos、vacation footage、family memories。Consumer film formats が personal histories を記録しました。その aesthetic が、現代の vloggers や filmmakers に influence を与えています。
+                </p>
+                <p>
+                    Film は終わっていません。Kodak、Fujifilm、Ilford。Film manufacturers は production を続けています。Niche market ですが、passionate な community が support しています。Photography でも、film revival が起きています。Analog renaissance の一部として。
+                </p>
+            </div>
+            <div class="film-info">
+                <span>Timeless Medium</span>
+                <span>Eternal Aesthetic</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="frame-number">Frame 169-192</div>
+            <h2 class="post-title">END CREDITS</h2>
+            <div class="timecode">00:00:08:00</div>
+            <div class="post-content">
+                <p>
+                    Film strip design は、cinema の essence を capture しています。Sequential frames、perforations、celluloid texture。これらの elements が、motion pictures の physical nature を remind します。Digital の abstraction に対する、tangible な counterpoint です。
+                </p>
+                <p>
+                    UI/UX design において、film strip motif は nostalgia 以上の meaning を持ちます。Sequence、progression、narrative flow。これらの concepts を visual に表現します。Timeline interfaces、story templates、sequential layouts。Film strip は metaphor として powerful です。
+                </p>
+                <p>
+                    Technology は進化し続けます。8K、12K、そしてそれ以上。Virtual production、AI-assisted editing、volumetric capture。Future of cinema は exciting です。しかし、film の legacy - その aesthetic、philosophy、craft - は永遠に残るでしょう。History を知ることで、future を創造できます。THE END.
+                </p>
+            </div>
+            <div class="film-info">
+                <span>© 2025 Cinema Heritage</span>
+                <span>All Rights Reserved</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y2K - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            letter-spacing: 3px;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 15px;
+            font-weight: 300;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 60px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.4);
+            transition: transform 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+        }
+
+        .post-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>∞ FUTURE BLOG ∞</h1>
+        <div class="tagline">デジタル時代の新しい表現</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <h2 class="post-title">メタリックな未来</h2>
+            <div class="post-content">
+                2000年代のデザインは、デジタル技術への期待と楽観主義に満ちていました。グラデーション、メタリック、透明感が特徴です。CD-ROMの光沢、ホログラムの虹色、未来への無限の可能性を感じさせるビジュアルが溢れていました。
+            </div>
+            <div class="post-meta">2025.10.04 • 5 min read</div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">バブル文字の魅力</h2>
+            <div class="post-content">
+                ぷっくりとした立体的な文字、虹色のグラデーション、CD-ROMのような光沢感。懐かしくも新しいY2K美学。ミレニアムバグの恐怖と新しい千年紀への期待が混在した、独特の時代精神を反映しています。
+            </div>
+            <div class="post-meta">2025.10.03 • 4 min read</div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">サイバー美学</h2>
+            <div class="post-content">
+                インターネットが一般家庭に普及し始めた時代。デジタル技術がもたらす未来への期待感が、デザインにも反映されました。レンズフレア、グロー効果、メタリックテクスチャ。全てが輝いていた時代の視覚言語です。
+            </div>
+            <div class="post-meta">2025.10.02 • 6 min read</div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">ミレニアムの夢</h2>
+            <div class="post-content">
+                2000年を迎えることへの興奮が、デザインにも表れています。バブル文字、クロムエフェクト、ネオンカラー。楽観的で明るい未来観が、Y2K美学の核心にあります。過去が想像した未来のビジョンです。
+            </div>
+            <div class="post-meta">2025.10.01 • 5 min read</div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">デジタルドリーム</h2>
+            <div class="post-content">
+                透明なプラスチック、光るロゴ、虹色の反射。Y2Kデザインは、物理世界とデジタル世界の融合を視覚化しました。iMac G3の半透明ケース、携帯電話のカラフルなデザイン。テクノロジーが楽しくポップだった時代です。
+            </div>
+            <div class="post-meta">2025.09.30 • 7 min read</div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">ノスタルジアの力</h2>
+            <div class="post-content">
+                20年以上が経過した今、Y2K美学は再び注目を集めています。過去の未来観を通して、現代を見つめ直す。懐かしさと新鮮さが共存する、独特の魅力があります。レトロでありながら、常に前を向いているデザインです。
+            </div>
+            <div class="post-meta">2025.09.29 • 5 min read</div>
+        </div>
+    </div>
+</body>
+</html>

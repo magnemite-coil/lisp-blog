@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ストリーミングサービス風 - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #141414;
+            color: #fff;
+        }
+
+        .header {
+            padding: 80px 20px 40px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #fff;
+            max-width: 1400px;
+            margin: 0 auto 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #999;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .posts {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 0 20px 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #141414;
+        }
+
+        .posts::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .posts::-webkit-scrollbar-track {
+            background: #141414;
+        }
+
+        .posts::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .post {
+            min-width: 300px;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #e74c3c, #8e44ad);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .post:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .post:nth-child(2) {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+
+        .post:nth-child(3) {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .post:nth-child(4) {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+        }
+
+        .post:nth-child(5) {
+            background: linear-gradient(135deg, #f39c12, #e74c3c);
+        }
+
+        .post:nth-child(6) {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .post-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+
+        .post-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e50914;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+
+        .icon {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            font-size: 60px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .post {
+                min-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ストリーミングメディア</h1>
+        <div class="subtitle">あなただけのコンテンツを発見</div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">トレンド中</div>
+        <div class="posts">
+            <div class="post">
+                <div class="badge">NEW</div>
+                <div class="icon">📺</div>
+                <div class="post-content">
+                    <h2 class="post-title">The Design Revolution</h2>
+                    <div class="post-meta">ストリーミング時代の新しいコンテンツ体験 • 2025</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">人気</div>
+                <div class="icon">🎬</div>
+                <div class="post-content">
+                    <h2 class="post-title">Binge-Worthy Interface</h2>
+                    <div class="post-meta">次々とコンテンツを消費させるUI設計の妙 • 2025</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🎯</div>
+                <div class="post-content">
+                    <h2 class="post-title">Personalization Engine</h2>
+                    <div class="post-meta">アルゴリズムが生み出すパーソナライズ体験 • 2025</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">話題</div>
+                <div class="icon">🌐</div>
+                <div class="post-content">
+                    <h2 class="post-title">Global Content Library</h2>
+                    <div class="post-meta">世界中のコンテンツがあなたのリビングルームに • 2025</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">⚡</div>
+                <div class="post-content">
+                    <h2 class="post-title">Instant Gratification</h2>
+                    <div class="post-meta">待ち時間ゼロのエンターテインメント革命 • 2025</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🎨</div>
+                <div class="post-content">
+                    <h2 class="post-title">Original Productions</h2>
+                    <div class="post-meta">オリジナルコンテンツが変える業界の未来 • 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">デザインとテクノロジー</div>
+        <div class="posts">
+            <div class="post">
+                <div class="icon">🔍</div>
+                <div class="post-content">
+                    <h2 class="post-title">Discovery Algorithms</h2>
+                    <div class="post-meta">機械学習が推奨する次の視聴コンテンツ • 技術解説</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">NEW</div>
+                <div class="icon">📱</div>
+                <div class="post-content">
+                    <h2 class="post-title">Multi-Device Experience</h2>
+                    <div class="post-meta">シームレスに続く視聴体験の設計 • UX特集</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🎭</div>
+                <div class="post-content">
+                    <h2 class="post-title">Content Metadata</h2>
+                    <div class="post-meta">タグ、ジャンル、ムード：発見を促進するデータ • 分析</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">💾</div>
+                <div class="post-content">
+                    <h2 class="post-title">CDN Infrastructure</h2>
+                    <div class="post-meta">世界中に高速配信する技術の裏側 • テクノロジー</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">人気</div>
+                <div class="icon">🎮</div>
+                <div class="post-content">
+                    <h2 class="post-title">Interactive Content</h2>
+                    <div class="post-meta">視聴者が物語を選ぶ新しい体験 • イノベーション</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">📊</div>
+                <div class="post-content">
+                    <h2 class="post-title">Watch Analytics</h2>
+                    <div class="post-meta">データドリブンなコンテンツ制作 • ビジネス分析</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">業界の変革</div>
+        <div class="posts">
+            <div class="post">
+                <div class="icon">🏆</div>
+                <div class="post-content">
+                    <h2 class="post-title">Streaming Wars</h2>
+                    <div class="post-meta">Netflix、Disney+、Amazon Prime：競争の時代 • 市場分析</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">💰</div>
+                <div class="post-content">
+                    <h2 class="post-title">Subscription Models</h2>
+                    <div class="post-meta">月額課金が変えたメディア消費 • ビジネスモデル</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">話題</div>
+                <div class="icon">🎪</div>
+                <div class="post-content">
+                    <h2 class="post-title">Theater Decline</h2>
+                    <div class="post-meta">映画館の未来とストリーミングの影響 • 業界動向</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🌍</div>
+                <div class="post-content">
+                    <h2 class="post-title">Global Expansion</h2>
+                    <div class="post-meta">世界200カ国への展開戦略 • グローバル化</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">📡</div>
+                <div class="post-content">
+                    <h2 class="post-title">Bandwidth Revolution</h2>
+                    <div class="post-meta">5Gが可能にする4K、8K streaming • インフラ</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🎞️</div>
+                <div class="post-content">
+                    <h2 class="post-title">Legacy Media Adapts</h2>
+                    <div class="post-meta">伝統的スタジオのストリーミング参入 • 変革</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">視聴者行動</div>
+        <div class="posts">
+            <div class="post">
+                <div class="badge">研究</div>
+                <div class="icon">⏰</div>
+                <div class="post-content">
+                    <h2 class="post-title">Binge Watching Culture</h2>
+                    <div class="post-meta">一気見文化が変えた物語の作り方 • 社会現象</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">👥</div>
+                <div class="post-content">
+                    <h2 class="post-title">Profile Sharing</h2>
+                    <div class="post-meta">家族・友人とのアカウント共有 • ユーザー行動</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">💬</div>
+                <div class="post-content">
+                    <h2 class="post-title">Social Viewing</h2>
+                    <div class="post-meta">SNSで繋がる視聴体験 • コミュニティ</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">NEW</div>
+                <div class="icon">📲</div>
+                <div class="post-content">
+                    <h2 class="post-title">Mobile First</h2>
+                    <div class="post-meta">スマートフォンで完結する視聴体験 • モバイル</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🔊</div>
+                <div class="post-content">
+                    <h2 class="post-title">Audio Quality Wars</h2>
+                    <div class="post-meta">Dolby Atmos、空間オーディオの競争 • 音響技術</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">⏯️</div>
+                <div class="post-content">
+                    <h2 class="post-title">Watch Anywhere</h2>
+                    <div class="post-meta">デバイス間でシームレスに続く物語 • 利便性</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">未来の展望</div>
+        <div class="posts">
+            <div class="post">
+                <div class="badge">未来</div>
+                <div class="icon">🥽</div>
+                <div class="post-content">
+                    <h2 class="post-title">VR Streaming</h2>
+                    <div class="post-meta">仮想現実での没入型コンテンツ体験 • 次世代技術</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🤖</div>
+                <div class="post-content">
+                    <h2 class="post-title">AI Curation</h2>
+                    <div class="post-meta">人工知能があなた専用の番組表を作成 • AI活用</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">🎬</div>
+                <div class="post-content">
+                    <h2 class="post-title">Dynamic Narratives</h2>
+                    <div class="post-meta">視聴者ごとに変わる物語の結末 • インタラクティブ</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="badge">話題</div>
+                <div class="icon">🌐</div>
+                <div class="post-content">
+                    <h2 class="post-title">Metaverse Cinema</h2>
+                    <div class="post-meta">仮想空間での共同視聴体験 • メタバース</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">♾️</div>
+                <div class="post-content">
+                    <h2 class="post-title">Infinite Content</h2>
+                    <div class="post-meta">AIが生成する無限のエンターテインメント • 可能性</div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="icon">✨</div>
+                <div class="post-content">
+                    <h2 class="post-title">Beyond Streaming</h2>
+                    <div class="post-meta">次のメディア革命は何か？ • ビジョン</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

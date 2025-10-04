@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPGメニュー風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background: 
+                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23222" width="50" height="50"/><rect fill="%23333" x="50" width="50" height="50"/><rect fill="%23333" y="50" width="50" height="50"/><rect fill="%23222" x="50" y="50" width="50" height="50"/></svg>');
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #e0e0e0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4a0e0e 0%, #2a0505 100%);
+            border: 4px solid #d4af37;
+            border-image: repeating-linear-gradient(45deg, #d4af37, #d4af37 10px, #8b7355 10px, #8b7355 20px) 4;
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto 40px;
+            box-shadow: 0 0 30px rgba(212,175,55,0.5);
+            position: relative;
+        }
+
+        .header::before,
+        .header::after {
+            content: '◆';
+            position: absolute;
+            font-size: 40px;
+            color: #d4af37;
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: 0 0 10px #d4af37;
+        }
+
+        .header::before {
+            left: 20px;
+        }
+
+        .header::after {
+            right: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #c9a961;
+            font-style: italic;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: linear-gradient(135deg, #2a1810 0%, #1a1010 100%);
+            border: 3px solid #d4af37;
+            padding: 30px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.3);
+            position: relative;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #d4af37, #8b7355);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #d4af37;
+        }
+
+        .post-level {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #000;
+            z-index: 1;
+        }
+
+        .post-category {
+            font-size: 12px;
+            color: #d4af37;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+
+        .post-content {
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .post-content p {
+            margin-bottom: 15px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #d4af37;
+        }
+
+        .stat {
+            flex: 1;
+        }
+
+        .stat-name {
+            font-size: 12px;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+
+        .stat-bar {
+            height: 10px;
+            background: #1a1010;
+            border: 1px solid #d4af37;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37, #8b7355);
+            transition: width 0.5s;
+        }
+
+        .stat-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8px;
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .quest-marker {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: #000;
+            font-weight: 700;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #d4af37;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>冒険者の記録</h1>
+        <div class="subtitle">～ Adventure Chronicles ～</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-level">Lv99</div>
+            <div class="post-category">【 クエスト 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>冒険の記録</h2>
+            <div class="post-content">
+                <p>
+                    RPGのメニュー画面には、冒険の全てが詰まっています。ステータス、アイテム、スキル、装備。情報を美しく整理するUIデザインの極致です。ドラゴンクエスト、ファイナルファンタジー、ペルソナ。それぞれが独自のメニューデザインを持ち、プレイヤーの記憶に刻まれています。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    ウィンドウUIは、限られた画面スペースで膨大な情報を表示する必要があります。階層構造、タブシステム、アイコン。すべてが直感的でなければなりません。戦闘中でも迅速にアクセスでき、探索中でも邪魔にならない。この balance が、優れたRPG UIの条件です。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    ファンタジーの世界観を表現するために、装飾的な要素も重要です。ゴールドの枠、ルーン文字、魔法陣。これらがメニュー画面を単なる情報表示から、世界への没入体験へと昇華させます。Yasumi Matsuno（松野泰己）のFFTやVagrant Story は、その最高峰と言えるでしょう。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">HP</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">9999/9999</div>
+                        <div class="stat-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">MP</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">999/999</div>
+                        <div class="stat-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">EXP</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">MAX</div>
+                        <div class="stat-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv95</div>
+            <div class="post-category">【 システム 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>ファンタジーの世界</h2>
+            <div class="post-content">
+                <p>
+                    ゴールドの装飾、ルーン文字、魔法陣。ファンタジーの世界観がインターフェースに息づきます。中世ヨーロッパの羊皮紙、Celtic の装飾文様、Gothic のステンドグラス。これらの visual motif が、プレイヤーを異世界へと誘います。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    Elder Scrolls シリーズの地図インターフェース、World of Warcraft のキャラクターシート、Dark Souls のシンプルながら荘厳なメニュー。それぞれが独自の美学を持ち、ゲームの雰囲気を強化しています。UI は単なる tool ではなく、世界構築の一部なのです。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">STR</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">999</div>
+                        <div class="stat-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">INT</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">850</div>
+                        <div class="stat-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">DEX</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">920</div>
+                        <div class="stat-fill" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv88</div>
+            <div class="post-category">【 装備 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>情報の階層化</h2>
+            <div class="post-content">
+                <p>
+                    RPGメニューの設計において、情報アーキテクチャは crucial です。プレイヤーが必要な情報に素早くアクセスできるよう、論理的な階層構造が必要です。メインメニュー → カテゴリ → 詳細。この flow が自然でなければなりません。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    Persona シリーズは、スタイリッシュなUIと機能性を両立させた傑作です。鮮やかな色彩、ダイナミックなアニメーション、そして直感的なナビゲーション。Shigenori Soejima（副島成記）のアートディレクションが、UIデザインの新しい地平を開きました。美しさと usability は対立しないという証明です。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">攻撃力</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">8888</div>
+                        <div class="stat-fill" style="width: 88%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">防御力</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">7777</div>
+                        <div class="stat-fill" style="width: 77%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv92</div>
+            <div class="post-category">【 スキル 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>タイポグラフィの魔法</h2>
+            <div class="post-content">
+                <p>
+                    RPGにおけるフォント選択は、世界観の構築に不可欠です。Medieval fantasy には Gothic や Blackletter、Japanese RPG には明朝体やゴシック体、Sci-fi RPG には futuristic な sans-serif。フォントが雰囲気を決定づけます。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    可読性も重要です。長時間プレイするゲームでは、目に優しいフォントサイズとコントラストが必須です。ドラゴンクエストの iconic なフォントは、レトロでありながら読みやすく、nostalgia を喚起します。Type design は感情を伝える powerful な tool です。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">魔力</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">9500</div>
+                        <div class="stat-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">精神</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">8800</div>
+                        <div class="stat-fill" style="width: 88%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv90</div>
+            <div class="post-category">【 アイテム 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>アイコンデザイン</h2>
+            <div class="post-content">
+                <p>
+                    RPGのインベントリは、アイコンデザインの showcase です。何百ものアイテムを視覚的に区別できる必要があります。剣、盾、薬、魔法書。それぞれが一目で識別可能でなければなりません。Pixel art の時代から、HD graphics の現代まで、この原則は変わりません。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    色、形、シルエット。これらすべてが information を伝えます。赤いポーション＝HP回復、青いポーション＝MP回復。この convention は、多くの RPG で共有されています。Consistent なデザイン言語が、learning curve を下げ、ユーザー体験を向上させます。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">所持数</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">99/99</div>
+                        <div class="stat-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">重量</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">450/500</div>
+                        <div class="stat-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv85</div>
+            <div class="post-category">【 マップ 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>サウンドデザイン</h2>
+            <div class="post-content">
+                <p>
+                    RPGメニューの UI は、視覚だけではありません。音も重要な要素です。カーソル移動の音、決定音、キャンセル音。これらの SE（効果音）が、操作の feedback を提供し、満足感を高めます。Final Fantasy のメニュー音は、世代を超えて愛されています。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    BGM（背景音楽）も忘れてはなりません。メニュー画面専用の落ち着いた曲が、プレイヤーにじっくりと戦略を練る時間を与えます。Nobuo Uematsu（植松伸夫）や Yasunori Mitsuda（光田康典）の作品は、メニュー画面でさえも musical experience を提供します。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">探索率</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">発見率</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">78%</div>
+                        <div class="stat-fill" style="width: 78%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv80</div>
+            <div class="post-category">【 ステータス 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>モバイルへの適応</h2>
+            <div class="post-content">
+                <p>
+                    現代の RPG は、mobile platform にも展開されています。タッチスクリーンでの操作に最適化されたメニューデザインが必要です。ボタンサイズ、タップ領域、スワイプジェスチャー。これらすべてが、console や PC とは異なる考慮を必要とします。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    しかし、本質は変わりません。情報を整理し、プレイヤーに力を与え、世界に没入させる。これが RPG UI の使命です。Platform が変わっても、この principle は不変です。技術は進化しますが、優れたデザインの core は timeless です。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">レベル</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">80/99</div>
+                        <div class="stat-fill" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-name">次まで</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">850</div>
+                        <div class="stat-fill" style="width: 15%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-level">Lv100</div>
+            <div class="post-category">【 伝説 】</div>
+            <h2 class="post-title"><span class="quest-marker">!</span>永遠の冒険</h2>
+            <div class="post-content">
+                <p>
+                    RPGのメニューデザインは、単なる UI ではなく、冒険の一部です。そこには何時間もの playtime が詰まっており、無数の decision が記録されています。装備の選択、スキルの振り分け、パーティの編成。すべてがプレイヤーの物語を形作ります。
+                </p>
+                <div class="divider"></div>
+                <p>
+                    優れた RPG UI は、プレイヤーを empowered させます。複雑なシステムを理解可能にし、戦略的な depth を提供し、創造的な play style を可能にします。これこそが、RPG というジャンルの essence であり、UI デザインが果たすべき役割なのです。冒険は続きます。
+                </p>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-name">称号</div>
+                    <div class="stat-bar">
+                        <div class="stat-value">伝説の英雄</div>
+                        <div class="stat-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

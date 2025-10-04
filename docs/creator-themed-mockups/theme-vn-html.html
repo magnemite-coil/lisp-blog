@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ビジュアルノベル風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background: 
+                linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .posts {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: rgba(0,0,0,0.85);
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .post-header {
+            background: linear-gradient(90deg, rgba(102,126,234,0.9), rgba(118,75,162,0.9));
+            padding: 20px 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .character-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .post-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .post-content {
+            padding: 30px;
+            color: #fff;
+            line-height: 2.2;
+            font-size: 17px;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        .narrator {
+            font-style: italic;
+            color: rgba(255,255,255,0.7);
+            padding-left: 20px;
+            border-left: 3px solid rgba(255,255,255,0.3);
+            margin: 20px 0;
+        }
+
+        .dialogue {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .dialogue::before {
+            content: '「';
+            position: absolute;
+            left: 0;
+            font-size: 24px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .choices {
+            display: flex;
+            gap: 15px;
+            padding: 20px 30px;
+            border-top: 2px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .choice {
+            flex: 1;
+            background: rgba(102,126,234,0.6);
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .choice:hover {
+            background: rgba(102,126,234,0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.5);
+        }
+
+        .scene-divider {
+            text-align: center;
+            padding: 30px 0;
+            color: rgba(255,255,255,0.5);
+            font-size: 24px;
+        }
+
+        .chapter-marker {
+            background: rgba(0,0,0,0.9);
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .chapter-number {
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .chapter-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .chapter-date {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .post-title {
+                font-size: 20px;
+            }
+
+            .choices {
+                flex-direction: column;
+            }
+
+            .chapter-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>物語の選択</h1>
+        <div class="tagline">～ Interactive Story Experience ～</div>
+    </div>
+
+    <div class="posts">
+        <div class="chapter-marker">
+            <div class="chapter-number">CHAPTER 01</div>
+            <h2 class="chapter-title">物語の始まり</h2>
+            <div class="chapter-date">2025.10.04</div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">📖</div>
+                <div class="post-meta">
+                    <h2 class="post-title">Visual Novel という芸術</h2>
+                    <div class="post-subtitle">Narrative • Interactive Fiction</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="narrator">
+                    ビジュアルノベルは、読むゲーム。文字と絵と音楽が織りなす、インタラクティブな物語体験です。
+                </div>
+                <div class="dialogue">
+                    テキストボックスのデザインが、物語への没入感を左右します。半透明の背景、読みやすいフォント、そして選択の重み。すべてが計算され尽くしています。
+                </div>
+                <p>
+                    日本で発展したこのジャンルは、1990年代に黄金期を迎えました。『YU-NO』『To Heart』『Kanon』。これらの作品が、ビジュアルノベルというメディアの可能性を切り開きました。Type-Moon の『月姫』『Fate/stay night』は、同人作品から商業的成功へと至る道を示しました。
+                </p>
+                <p>
+                    インターフェースはシンプルでなければなりません。物語の邪魔をせず、しかし必要な機能はすべて提供する。オートモード、スキップ、バックログ、セーブ/ロード。これらが直感的にアクセスできることが重要です。
+                </p>
+            </div>
+            <div class="choices">
+                <div class="choice">次へ進む ▶</div>
+                <div class="choice">選択肢を見る</div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">🎭</div>
+                <div class="post-meta">
+                    <h2 class="post-title">選択がもたらす物語</h2>
+                    <div class="post-subtitle">Branching Narrative • Player Agency</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="dialogue">
+                    プレイヤーの選択が物語を紡ぐ。UIは選択肢を提示し、結果を見守る。インタラクティブストーリーテリングの美学です。
+                </div>
+                <p>
+                    Branch（分岐）の数は、ゲームの complexity を決定します。Simple な一本道の物語から、無数の結末を持つ complex な narrative まで。『Ever17』や『シュタインズ・ゲート』は、タイムリープという概念を branching structure に組み込み、革新的な体験を提供しました。
+                </p>
+                <div class="narrator">
+                    選択は時に重く、時に軽い。しかし、すべての選択がプレイヤーの物語を作り上げていく。
+                </div>
+                <p>
+                    Choice presentation も重要です。明確に options を示すのか、natural な会話の中に組み込むのか。時限選択で緊張感を高めるのか、じっくり考える時間を与えるのか。これらすべてが、player experience を形作ります。
+                </p>
+            </div>
+            <div class="choices">
+                <div class="choice">深く掘り下げる</div>
+                <div class="choice">次の話題へ</div>
+            </div>
+        </div>
+
+        <div class="scene-divider">✦ ✦ ✦</div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">🎨</div>
+                <div class="post-meta">
+                    <h2 class="post-title">ビジュアルの力</h2>
+                    <div class="post-subtitle">Character Design • Background Art</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>
+                    ビジュアルノベルにおけるビジュアルは、単なる illustrations ではありません。Character の立ち絵、表情差分、背景美術。これらすべてが narrative を support します。
+                </p>
+                <div class="dialogue">
+                    キャラクターの表情一つで、セリフの意味が変わります。同じ言葉でも、笑顔と涙では伝わるものが違う。
+                </div>
+                <p>
+                    『うたわれるもの』の和風ファンタジー世界、『CLANNAD』の温かみのある日常描写、『Fate/stay night』の epic な戦闘シーン。Art style が world を define し、emotion を amplify します。UI もこの visual language の一部として機能すべきです。
+                </p>
+                <div class="narrator">
+                    色彩、構図、演出。すべてが計算され、物語を豊かにしていく。
+                </div>
+            </div>
+            <div class="choices">
+                <div class="choice">アートについて語る</div>
+                <div class="choice">次のトピックへ</div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">🎵</div>
+                <div class="post-meta">
+                    <h2 class="post-title">サウンドスケープ</h2>
+                    <div class="post-subtitle">Music • Sound Effects • Voice Acting</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>
+                    音楽は、ビジュアルノベルの魂です。BGM が scene の雰囲気を作り、効果音が臨場感を高め、voice acting がキャラクターに命を吹き込みます。
+                </p>
+                <div class="dialogue">
+                    『AIR』の "夏影"、『CLANNAD』の "渚"、『リトルバスターズ！』の "Alicemagic"。Key 作品の音楽は、多くのプレイヤーの心に残っています。
+                </div>
+                <p>
+                    Composer たちは、限られた data size の中で、emotional impact を最大化する必要がありました。MIDI から WAV、そして現代の high-quality audio へ。技術の進化とともに、表現の幅も広がりました。
+                </p>
+                <div class="narrator">
+                    テキスト送りの音、選択肢決定の音。小さな SE も、体験を形作る重要な要素。
+                </div>
+            </div>
+            <div class="choices">
+                <div class="choice">音楽を聴き続ける</div>
+                <div class="choice">静寂を選ぶ</div>
+            </div>
+        </div>
+
+        <div class="scene-divider">✦ ✦ ✦</div>
+
+        <div class="chapter-marker">
+            <div class="chapter-number">CHAPTER 02</div>
+            <h2 class="chapter-title">インタラクションの進化</h2>
+            <div class="chapter-date">2025.10.03</div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">⚙️</div>
+                <div class="post-meta">
+                    <h2 class="post-title">システムの革新</h2>
+                    <div class="post-subtitle">Gameplay Mechanics • Innovation</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>
+                    ビジュアルノベルは、常に進化してきました。Simple なテキスト + 画像から、complex なシステムを持つ作品まで。『428 ～封鎖された渋谷で～』の実写とザッピングシステム、『逆転裁判』の法廷バトル、『ダンガンロンパ』の推理アクション。
+                </p>
+                <div class="dialogue">
+                    ジャンルの boundaries を押し広げ、新しい体験を提供する。それがクリエイターの挑戦です。
+                </div>
+                <p>
+                    Mobile platform への移植も、新しい可能性を開きました。Touch interface に最適化された UI、いつでもどこでも楽しめる accessibility。Steam や Switch での展開により、worldwide audience にも届くようになりました。
+                </p>
+            </div>
+            <div class="choices">
+                <div class="choice">革新を続ける</div>
+                <div class="choice">伝統を守る</div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">🌍</div>
+                <div class="post-meta">
+                    <h2 class="post-title">グローバルな広がり</h2>
+                    <div class="post-subtitle">Localization • Cultural Impact</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>
+                    日本発のビジュアルノベルは、今や world genre となりました。英語、中国語、韓国語。多言語展開により、global market に到達しています。Localization は単なる翻訳ではなく、cultural adaptation です。
+                </p>
+                <div class="narrator">
+                    Western では "visual novel" として認知され、独自の進化を遂げています。
+                </div>
+                <p>
+                    『Doki Doki Literature Club』のような海外発の作品も登場し、逆輸入される時代になりました。Genre の definition も広がり、narrative game、interactive fiction、choice-based game など、様々な呼び方が生まれています。
+                </p>
+                <div class="dialogue">
+                    物語を愛する心は、国境を超える。ビジュアルノベルは、その証明です。
+                </div>
+            </div>
+            <div class="choices">
+                <div class="choice">世界へ羽ばたく</div>
+                <div class="choice">原点に立ち返る</div>
+            </div>
+        </div>
+
+        <div class="scene-divider">✦ ✦ ✦</div>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="character-icon">💫</div>
+                <div class="post-meta">
+                    <h2 class="post-title">永遠の物語</h2>
+                    <div class="post-subtitle">Legacy • Future</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>
+                    ビジュアルノベルは、時代を超えて愛され続けます。Technology は進化し、platform は変わりますが、物語の本質は不変です。人間の emotions、relationships、choices。これらは永遠のテーマです。
+                </p>
+                <div class="dialogue">
+                    新しい世代のクリエイターたちが、新しい物語を紡いでいく。UI も進化し続けるでしょう。
+                </div>
+                <p>
+                    VR での immersive experience、AI による dynamic な branching、procedural な narrative generation。未来の可能性は無限です。しかし、どれだけ技術が進歩しても、core は変わりません。
+                </p>
+                <div class="narrator">
+                    プレイヤーが主人公として、自分だけの物語を体験する。それがビジュアルノベルの魔法。
+                </div>
+                <p>
+                    UI デザインの役割は、この magic を support することです。邪魔をせず、助け、enhance する。そして何より、プレイヤーを物語の世界へと誘う gateway となることです。
+                </p>
+            </div>
+            <div class="choices">
+                <div class="choice">新たな物語を始める</div>
+                <div class="choice">この物語を終える</div>
+                <div class="choice">もう一度最初から</div>
+            </div>
+        </div>
+
+        <div class="chapter-marker">
+            <div class="chapter-number">TO BE CONTINUED...</div>
+            <h2 class="chapter-title">あなたの選択が、次の章を作る</h2>
+        </div>
+    </div>
+</body>
+</html>

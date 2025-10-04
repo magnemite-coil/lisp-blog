@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80年代ネオン - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #0a0a0a;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(255, 0, 255, .05) 25%, rgba(255, 0, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 255, .05) 75%, rgba(255, 0, 255, .05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 0, 255, .05) 25%, rgba(255, 0, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 255, .05) 75%, rgba(255, 0, 255, .05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255,0,255,0.2) 0%, rgba(0,255,255,0.2) 100%);
+            border-bottom: 3px solid #ff00ff;
+            box-shadow: 0 0 40px rgba(255,0,255,0.5);
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #ff00ff,
+                0 0 40px #ff00ff,
+                0 0 70px #ff00ff,
+                0 0 80px #ff00ff,
+                0 0 100px #ff00ff;
+            letter-spacing: 4px;
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 
+                    0 0 10px #fff,
+                    0 0 20px #fff,
+                    0 0 30px #ff00ff,
+                    0 0 40px #ff00ff,
+                    0 0 70px #ff00ff,
+                    0 0 80px #ff00ff,
+                    0 0 100px #ff00ff;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #00ffff;
+            margin-top: 20px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 0 20px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #00ffff;
+            padding: 30px;
+            box-shadow: 
+                0 0 20px rgba(0,255,255,0.5),
+                inset 0 0 20px rgba(0,255,255,0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .post:hover {
+            border-color: #ff00ff;
+            box-shadow: 
+                0 0 30px rgba(255,0,255,0.7),
+                inset 0 0 30px rgba(255,0,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .post:hover::before {
+            opacity: 0.3;
+        }
+
+        .post-number {
+            font-size: 14px;
+            color: #ff00ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        .post-title {
+            font-size: 28px;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .post-date {
+            font-size: 12px;
+            color: #ff00ff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        .post-content {
+            color: #fff;
+            line-height: 1.8;
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .post-tags {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,0,255,0.2);
+            border: 1px solid #ff00ff;
+            padding: 5px 12px;
+            font-size: 11px;
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NEON DREAMS</h1>
+        <div class="tagline">// Synthwave Aesthetic //</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-number">POST #001</div>
+            <h2 class="post-title">Neon Nights</h2>
+            <div class="post-date">2025.10.04 23:59</div>
+            <div class="post-content">
+                1980年代のサイバーパンク文化から生まれたネオン美学。グリッド、ネオン、レトロフューチャーが融合した独特の世界観です。ブレードランナーの雨に濡れた街角、マイアミバイスの夜景、テクノロジーへの憧憬と不安が入り混じった時代の視覚言語。
+                <br><br>
+                ネオンサインが照らす暗闇、シンセサイザーが奏でる電子音楽、そして終わりなき夜。80年代が想像した未来は、今見ても色褪せない魅力を放っています。マゼンタとシアンの光が交差する世界で、私たちは過去の未来を夢見ます。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#SYNTHWAVE</span>
+                <span class="tag">#RETROWAVE</span>
+                <span class="tag">#80s</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #002</div>
+            <h2 class="post-title">Cyberpunk Dreams</h2>
+            <div class="post-date">2025.10.03 22:30</div>
+            <div class="post-content">
+                サイバーパンクは単なるジャンルではなく、文化的現象でした。ウィリアム・ギブスンの「ニューロマンサー」が描いた電脳空間、リドリー・スコットの「ブレードランナー」が映像化した未来都市。これらの作品が生み出したビジュアル言語は、今なお私たちの想像力を刺激します。
+                <br><br>
+                ハイテクとローライフの対比、巨大企業の支配する社会、人工知能と人間性の境界。ネオンライトが照らすのは、希望か絶望か。暗闇の中で輝く色彩が、ディストピア的未来の美しさを表現しています。雨に濡れたアスファルトに反射するネオンサイン、それが80年代サイバーパンクの象徴です。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#CYBERPUNK</span>
+                <span class="tag">#NEON</span>
+                <span class="tag">#FUTURE</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #003</div>
+            <h2 class="post-title">Synthwave Renaissance</h2>
+            <div class="post-date">2025.10.02 21:15</div>
+            <div class="post-content">
+                シンセウェーブの復興は、2010年代に始まりました。しかし、その roots は確実に1980年代にあります。John Carpenter の映画音楽、Tangerine Dream の電子音楽、そして Vangelis の壮大なサウンドスケープ。これらが現代のシンセウェーブ・アーティストたちにインスピレーションを与えています。
+                <br><br>
+                音楽だけでなく、ビジュアルアートも重要な要素です。グリッド状のパースペクティブ、沈む太陽、パームツリーのシルエット。これらの視覚的モチーフが、80年代への郷愁と未来への憧れを同時に喚起します。過去を振り返りながら、私たちは新しい未来を想像するのです。Kavinsky、Perturbator、Carpenter Brut といったアーティストたちが、この美学を現代に蘇らせています。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#MUSIC</span>
+                <span class="tag">#VISUAL</span>
+                <span class="tag">#RETRO</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #004</div>
+            <h2 class="post-title">Grid Horizons</h2>
+            <div class="post-date">2025.10.01 20:00</div>
+            <div class="post-content">
+                グリッドは、80年代ネオン美学の基盤です。コンピューターグラフィックスの黎明期、3Dモデリングの初期段階で使われたワイヤーフレーム。これが象徴的なビジュアルモチーフとなりました。無限に続く地平線、パースペクティブグリッド、そしてその向こうに沈む太陽。
+                <br><br>
+                Tron（1982）が映画で初めて本格的にCGを使用したとき、観客は新しい視覚言語に出会いました。デジタル世界を表現するために使われたグリッドとネオンラインは、後のシンセウェーブ美学の核となります。幾何学的なシンプルさの中に、無限の可能性を感じさせる。それがグリッドの魔力です。現実と仮想の境界線上で、私たちは新しい美を発見します。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#GRID</span>
+                <span class="tag">#TRON</span>
+                <span class="tag">#DIGITAL</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #005</div>
+            <h2 class="post-title">Miami Vice Aesthetic</h2>
+            <div class="post-date">2025.09.30 19:45</div>
+            <div class="post-content">
+                「マイアミバイス」（1984-1990）は、80年代の視覚美学を定義したテレビシリーズです。パステルカラーのスーツ、フェラーリ・テスタロッサ、ヤシの木のシルエット、そしてネオンライトで彩られた夜の街。これらすべてが、80年代のクールさを象徴しています。
+                <br><br>
+                Jan Hammer のシンセサイザー・サウンドトラックは、視覚と聴覚の完璧な融合を実現しました。ターコイズブルーとピンクの組み合わせ、アールデコ建築、熱帯の雰囲気。マイアミバイスが作り上げた美学は、現代のヴェイパーウェーブやシンセウェーブに直接的な影響を与えています。スタイリッシュな犯罪ドラマは、時代を超えたビジュアルアイコンとなりました。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#MIAMI</span>
+                <span class="tag">#VICE</span>
+                <span class="tag">#STYLE</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #006</div>
+            <h2 class="post-title">Neon Genesis</h2>
+            <div class="post-date">2025.09.29 18:30</div>
+            <div class="post-content">
+                ネオンサインの歴史は1910年代に遡りますが、80年代にその文化的意義が頂点に達しました。東京の歌舞伎町、香港の九龍城、ニューヨークのタイムズスクエア。世界中の都市がネオンで彩られ、夜を昼のように明るく照らしました。
+                <br><br>
+                アルゴンガスとネオンガスが生み出す鮮やかな色彩。赤、青、緑、そして紫。これらの色が混ざり合い、都市の夜景を魔法のような空間に変えます。Ridley Scott が「ブレードランナー」で描いた2019年のロサンゼルスは、実際の80年代東京からインスピレーションを得ていました。ネオンは単なる照明ではなく、時代の精神そのものだったのです。商業主義と芸術性、東洋と西洋、過去と未来が交差する場所。それがネオンサインの下でした。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#NEON</span>
+                <span class="tag">#LIGHT</span>
+                <span class="tag">#CITY</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #007</div>
+            <h2 class="post-title">Digital Sunset</h2>
+            <div class="post-date">2025.09.28 17:00</div>
+            <div class="post-content">
+                シンセウェーブ美学における太陽は特別な意味を持ちます。地平線に沈む巨大な太陽、グリッドの向こうに広がる無限の空間。これは nostalgia だけでなく、未知への憧れを表現しています。アウトラン（OutRun、1986年のアーケードゲーム）が定義したこのビジュアルは、今や象徴的です。
+                <br><br>
+                マゼンタからオレンジへのグラデーション、パームツリーのシルエット、そしてクロムで覆われたスポーツカー。これらの要素が組み合わさり、永遠の夕暮れを作り出します。時間が止まったような瞬間、過去と未来が同居する場所。デジタルサンセットは、私たちに何を語りかけているのでしょうか。おそらくそれは、失われた楽観主義への郷愁、そして新しい可能性への希望です。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#SUNSET</span>
+                <span class="tag">#OUTRUN</span>
+                <span class="tag">#RETRO</span>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">POST #008</div>
+            <h2 class="post-title">Chrome Dreams</h2>
+            <div class="post-date">2025.09.27 16:15</div>
+            <div class="post-content">
+                クロムとメタリックな質感は、80年代未来主義の本質です。反射する表面、鏡のような輝き、テクノロジーの冷たい美しさ。ターミネーター（1984）のエンドスケルトン、ロボコップ（1987）のメタリックボディ。これらは機械と人間の融合を象徴していました。
+                <br><br>
+                Syd Mead のコンセプトアートは、この美学を完璧に表現しています。流線型のデザイン、クロムの輝き、そして未来的なフォルム。彼が描いた車、建物、ガジェットは、80年代が夢見た理想的な未来でした。現実はその通りにはなりませんでしたが、その美学は永遠に残ります。金属の冷たさの中に、人類の温かい夢を見ることができるのです。
+            </div>
+            <div class="post-tags">
+                <span class="tag">#CHROME</span>
+                <span class="tag">#METALLIC</span>
+                <span class="tag">#FUTURE</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

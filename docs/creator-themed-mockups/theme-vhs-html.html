@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VHS風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: #000;
+            position: relative;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.5;
+        }
+
+        .header {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+            position: relative;
+            border-bottom: 5px solid #000;
+            box-shadow: 0 0 20px rgba(255,0,110,0.5);
+        }
+
+        .header::after {
+            content: 'REC ●';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #ff0000;
+            font-size: 24px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        h1 {
+            font-size: 64px;
+            color: #fff;
+            text-shadow: 
+                3px 0 0 #ff0000,
+                -3px 0 0 #00ff00,
+                0 0 20px #fff;
+            letter-spacing: 4px;
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .timestamp {
+            font-size: 20px;
+            color: #ffff00;
+            margin-top: 15px;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .tracking-lines {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: tracking 0.1s infinite;
+            position: absolute;
+            width: 100%;
+        }
+
+        @keyframes tracking {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .posts {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #333;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .post::before {
+            content: '▶';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #ff0000;
+            font-size: 20px;
+        }
+
+        .vhs-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .tape-number {
+            font-size: 16px;
+            color: #ffff00;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .duration {
+            font-size: 14px;
+            color: #00ff00;
+        }
+
+        .post-title {
+            font-size: 36px;
+            color: #00ff00;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .post-date {
+            font-size: 18px;
+            color: #ffff00;
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            color: #fff;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        .static-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(0deg, transparent 0px, rgba(255,255,255,0.03) 1px, transparent 2px),
+                repeating-linear-gradient(90deg, transparent 0px, rgba(0,0,0,0.03) 1px, transparent 2px);
+            pointer-events: none;
+        }
+
+        .counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px 20px;
+            border: 2px solid #ffff00;
+            font-size: 24px;
+            color: #ffff00;
+            z-index: 100;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #666;
+            padding: 8px 15px;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .post-title {
+                font-size: 24px;
+            }
+
+            .post-content {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="tracking-lines"></div>
+
+    <div class="header">
+        <h1>VHS MEMORIES</h1>
+        <div class="timestamp">⏱ 00:12:34 | 2025.10.04</div>
+    </div>
+
+    <div class="counter">00:00:00</div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #001</div>
+                <div class="duration">SP MODE • 120min</div>
+            </div>
+            <h2 class="post-title">REWIND THE TIME</h2>
+            <div class="post-date">RECORDED: 1995.08.15</div>
+            <div class="post-content">
+                <p>
+                    VHSテープの画質の粗さ、トラッキングノイズ、色のにじみ。不完全さこそが、90年代ホームビデオの魅力です。REC点滅、タイムスタンプ、そしてノスタルジア。アナログメディアの温かみが、デジタル時代に甦ります。
+                </p>
+                <p>
+                    1976年、JVC が VHS (Video Home System) を発表しました。Beta との format war に勝利し、家庭用ビデオの標準となりました。録画、巻き戻し、一時停止。これらの概念が、一般家庭に浸透した革命的な moment でした。
+                </p>
+                <p>
+                    レンタルビデオ店の棚に並ぶカセット、rewinding の待ち時間、tracking adjustment のダイヤル。すべてが ritual であり、viewing experience の一部でした。Netflix の convenience とは対照的な、物理メディアの儀式性です。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">▶ PLAY</button>
+                <button class="control-btn">■ STOP</button>
+                <button class="control-btn">▶▶ FF</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #002</div>
+                <div class="duration">LP MODE • 240min</div>
+            </div>
+            <h2 class="post-title">VIDEO MEMORIES</h2>
+            <div class="post-date">RECORDED: 1998.12.24</div>
+            <div class="post-content">
+                <p>
+                    家族の記録、friend との思い出、TV 番組の録画。VHS tapes には、personal history が刻まれています。Digital data とは違う、tangible な記憶媒体。Degradation さえも、時の流れを物語る evidence です。
+                </p>
+                <p>
+                    Wedding videos、子供の成長記録、学校行事。Professional な quality ではなくとも、そこには authentic な emotion があります。Camcorder を肩に担ぎ、LCD screen を覗き込む。Dad の awkward な camera work も、今では precious な memory です。
+                </p>
+                <p>
+                    Generation loss という現象。Tape から tape へのダビングで、画質が劣化していく。しかし、その imperfection こそが、analog の証です。Perfect な digital copy では得られない、unique な character があります。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">▶ PLAY</button>
+                <button class="control-btn">■ STOP</button>
+                <button class="control-btn">● REC</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #003</div>
+                <div class="duration">EP MODE • 360min</div>
+            </div>
+            <h2 class="post-title">RENTAL STORE ERA</h2>
+            <div class="post-date">RECORDED: 1992.07.03</div>
+            <div class="post-content">
+                <p>
+                    Blockbuster、TSUTAYA、地元のレンタルショップ。金曜の夜、週末に観る映画を選ぶ楽しみ。新作コーナー、棚を埋める classic films、adult section のカーテン。Physical store での browsing experience は、streaming では再現できません。
+                </p>
+                <p>
+                    "Be Kind, Rewind"（巻き戻してから返却してね）。この simple な message は、community の spirit を表していました。次に借りる人への配慮。Digital の個人主義とは対照的な、shared experience の時代でした。
+                </p>
+                <p>
+                    延滞料金の anxiety、人気作の争奪戦、予約システム。不便さも含めて、それが culture でした。Instant access の現代から見れば inefficient ですが、その friction こそが value を生んでいたのかもしれません。Scarcity が desire を高めます。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">|| PAUSE</button>
+                <button class="control-btn">▶ PLAY</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #004</div>
+                <div class="duration">SP MODE • 120min</div>
+            </div>
+            <h2 class="post-title">TRACKING ADJUSTMENT</h2>
+            <div class="post-date">RECORDED: 1997.03.21</div>
+            <div class="post-content">
+                <p>
+                    画面の横線、color bleeding、audio distortion。VHS の technical limitations は、frustration であり charm でもありました。Tracking ダイヤルを調整し、最適な画質を探す。この interaction も、viewing ritual の一部でした。
+                </p>
+                <p>
+                    Hi-Fi stereo、S-VHS、digital tracking。Technology は進化しましたが、fundamental な format は同じでした。Magnetic tape に記録された analog signal。この simplicity が、long-term survival を可能にしました。2000年代まで、mainstream format として君臨しました。
+                </p>
+                <p>
+                    しかし、DVD の登場が転換点でした。Superior quality、chapter selection、bonus features。Convenience と quality の前に、VHS は過去のものとなりました。2016年、最後の VCR が生産終了。一つの時代が終わりました。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">EJECT</button>
+                <button class="control-btn">TRACKING +</button>
+                <button class="control-btn">TRACKING -</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #005</div>
+                <div class="duration">LP MODE • 240min</div>
+            </div>
+            <h2 class="post-title">AESTHETIC REVIVAL</h2>
+            <div class="post-date">RECORDED: 2025.10.04</div>
+            <div class="post-content">
+                <p>
+                    Vaporwave、synthwave、retrowave。2010年代、VHS aesthetic が revival しました。Intentional glitches、nostalgic filters、lo-fi quality。Digital natives が、経験したことのない過去に憧れる。Nostalgia for a time they never lived through です。
+                </p>
+                <p>
+                    Music videos、indie films、video games。VHS style は、authentic さの symbol となりました。Instagram filters、video editing apps。Technology で analog を simulate する irony。しかし、その desire は genuine です。Imperfection への憧憬。
+                </p>
+                <p>
+                    Physical VHS tapes も、collector's items として復活しています。Limited edition releases、cult classics、out-of-print titles。Vinyl records と同様、tangible media への回帰。Streaming の ephemeral nature への反動かもしれません。所有する喜び、shelf に並べる満足感。これらは digital では得られません。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">▶ PLAY</button>
+                <button class="control-btn">● REC</button>
+                <button class="control-btn">EJECT</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #006</div>
+                <div class="duration">SP MODE • 120min</div>
+            </div>
+            <h2 class="post-title">ANALOG WARMTH</h2>
+            <div class="post-date">RECORDED: 1999.11.11</div>
+            <div class="post-content">
+                <p>
+                    デジタルの cold precision に対する、analog の warm imperfection。VHS は後者を体現しています。Soft focus、muted colors、slight distortion。これらすべてが、emotional quality を生み出します。Perfect reproduction ではなく、interpretive recreation です。
+                </p>
+                <p>
+                    Photography における film vs digital の議論と similar です。Technical superiority だけが value ではありません。Character、atmosphere、soul。これらは measurements では capture できません。VHS の lo-fi quality は、limitation ではなく feature です。
+                </p>
+                <p>
+                    Future は常に progress を約束します。Higher resolution、faster streaming、unlimited storage。しかし、progress は必ずしも improvement ではありません。時には、backward を見ることで、lost values を再発見できます。VHS aesthetic の revival は、その manifestation かもしれません。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">|| PAUSE</button>
+                <button class="control-btn">▶▶ FF</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="static-effect"></div>
+            <div class="vhs-label">
+                <div class="tape-number">TAPE #007</div>
+                <div class="duration">EP MODE • 360min</div>
+            </div>
+            <h2 class="post-title">END OF TAPE</h2>
+            <div class="post-date">RECORDED: 2025.10.04</div>
+            <div class="post-content">
+                <p>
+                    すべての tape には終わりがあります。Blue screen、white noise、そして silence。しかし、memory は続きます。VHS という format は obsolete になりましたが、その cultural impact は永続的です。
+                </p>
+                <p>
+                    Technology は進化し、media formats は変わります。VHS から DVD、Blu-ray、そして streaming。しかし、core experience - story を楽しむこと - は不変です。Medium は message に影響しますが、define はしません。
+                </p>
+                <p>
+                    VHS aesthetic を embracing することは、past を glorifying することではありません。むしろ、imperfection の beauty を認識し、progress の代償を理解し、balance を見つけることです。Digital と analog、new と old、convenience と character。両方に価値があります。Press EJECT。Next tape をセットしましょう。Story は続きます。
+                </p>
+            </div>
+            <div class="video-controls">
+                <button class="control-btn">◀◀ REW</button>
+                <button class="control-btn">■ STOP</button>
+                <button class="control-btn">EJECT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Counter animation
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            const counter = document.querySelector('.counter');
+            counter.textContent = 
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(secs).padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>

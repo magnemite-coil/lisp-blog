@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ヴィンテージ新聞 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: #f9f6f0;
+            color: #2a2a2a;
+        }
+
+        .header {
+            background: #000;
+            padding: 40px 20px;
+            border-top: 5px solid #8b0000;
+            border-bottom: 5px solid #8b0000;
+            text-align: center;
+        }
+
+        .masthead {
+            border-bottom: 2px solid #8b0000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 72px;
+            font-weight: 900;
+            color: #fff;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .date-header {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 10px;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            color: #ccc;
+            font-size: 16px;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .posts {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            column-count: 3;
+            column-gap: 40px;
+        }
+
+        .post {
+            break-inside: avoid;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #333;
+        }
+
+        .post-category {
+            font-size: 11px;
+            font-weight: 700;
+            color: #8b0000;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #000;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .post-content {
+            color: #333;
+            text-align: justify;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .post-content::first-letter {
+            font-size: 72px;
+            line-height: 60px;
+            float: left;
+            margin: 5px 10px 0 0;
+            font-weight: 900;
+            color: #8b0000;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 15px 0;
+            color: #8b0000;
+            font-size: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .posts {
+                column-count: 2;
+            }
+            
+            h1 {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .posts {
+                column-count: 1;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            .post-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="masthead">
+            <div class="date-header">SATURDAY, OCTOBER 4, 2025 • VOLUME CLXXV, NO. 60,542</div>
+            <h1>The Design Chronicle</h1>
+            <div class="subtitle">"All the News That's Fit to Design"</div>
+        </div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-category">TYPOGRAPHY</div>
+            <h2 class="post-title">The Art of Typographic Excellence</h2>
+            <div class="post-meta">By Editorial Staff • Design Section, Page A1</div>
+            <div class="post-content">
+                活版印刷の時代から受け継がれてきた新聞デザインの伝統は、今なお私たちに多くの教訓を与えています。セリフ体の優雅さと段組みレイアウトの機能美が融合し、読者に最適な読書体験を提供してきました。
+                <br><br>
+                ヨハネス・グーテンベルクが1440年代に発明した活版印刷技術は、情報伝達の革命をもたらしました。鉛の活字を一つ一つ並べ、インクを塗り、紙に押し付ける。この労働集約的なプロセスが、何世紀にもわたって人類の知識を伝えてきたのです。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">DESIGN HISTORY</div>
+            <h2 class="post-title">Columns of Historical Significance</h2>
+            <div class="post-meta">Special Feature • History of Design, Page B3</div>
+            <div class="post-content">
+                複数の段組みは、限られた紙面に最大限の情報を詰め込むための工夫でした。現代のウェブデザインにも通じる、情報設計の智慧がここにあります。読者の視線の動きを考慮し、効率的に情報を配置する技術は、デジタル時代にも応用されています。
+                <br><br>
+                19世紀後半から20世紀初頭にかけて、新聞は黄金時代を迎えました。ペニー新聞の登場により、大衆が手軽にニュースを入手できるようになりました。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">PRINTING PRESS</div>
+            <h2 class="post-title">Print Legacy Lives On</h2>
+            <div class="post-meta">Culture Section • Page C5</div>
+            <div class="post-content">
+                活版印刷の文字には、デジタルにはない温かみと重みがあります。一文字一文字に込められた職人の技術と情熱が、時代を超えて語りかけてきます。金属活字の重量感、インクの匂い、プレス機の音。これらすべてが、印刷物に魂を吹き込んでいました。
+                <br><br>
+                現代では失われつつある活版印刷の技術ですが、その美学は永遠です。レタープレス印刷として芸術作品や高級印刷物に使用され、手作りの温もりを求める人々に愛されています。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">EDITORIAL</div>
+            <h2 class="post-title">The Power of the Press</h2>
+            <div class="post-meta">Opinion • Page A12</div>
+            <div class="post-content">
+                新聞は民主主義の守護者として、常に真実を追求してきました。権力を監視し、不正を暴き、市民に情報を提供する。この使命は、媒体が紙からデジタルに変わっても変わりません。
+                <br><br>
+                ウォーターゲート事件を報じたワシントン・ポスト紙、ベトナム戦争の真実を伝えたニューヨーク・タイムズ紙。ジャーナリズムの力は、社会を変える力を持っています。デザインもまた、その一部です。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">CRAFTSMANSHIP</div>
+            <h2 class="post-title">Ink and Paper</h2>
+            <div class="post-meta">Special Report • Arts & Culture, Page D1</div>
+            <div class="post-content">
+                インクの香りと紙の手触り。これらは新聞読者にとって、朝のコーヒーと同じくらい重要な儀式でした。指先にインクが付く感覚、ページをめくる音。デジタルスクリーンでは決して再現できない、物理的な読書体験があります。
+                <br><br>
+                新聞紙の質感、重さ、そして経年変化。時間とともに黄ばんでいく紙は、歴史の証人です。図書館のアーカイブに保管された古い新聞は、過去の出来事を生々しく伝えます。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">TYPOGRAPHY</div>
+            <h2 class="post-title">Serif Revolution</h2>
+            <div class="post-meta">Design Analysis • Page E8</div>
+            <div class="post-content">
+                セリフ体は、可読性のために進化してきました。Times New Roman、Garamond、Baskerville。これらの書体は、何世紀にもわたって洗練され、読みやすさと美しさの完璧なバランスを実現しています。
+                <br><br>
+                セリフ（ひげ飾り）は、単なる装飾ではありません。文字を区別しやすくし、行を追いやすくする機能的な要素です。長文を読む際の疲労を軽減し、読書体験を向上させます。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">ARCHIVES</div>
+            <h2 class="post-title">Historical Headlines</h2>
+            <div class="post-meta">From the Archives • Page F12</div>
+            <div class="post-content">
+                過去の新聞を読むことは、タイムトラベルに似ています。100年前の広告、当時の物価、社会の関心事。すべてが時代の空気を伝えています。「タイタニック号沈没」「人類月面着陸」「ベルリンの壁崩壊」。歴史的瞬間を伝えた新聞の一面は、今も私たちの記憶に残っています。
+                <br><br>
+                新聞のアーカイブは、人類の記憶装置です。毎日の出来事を記録し続けることで、私たちは過去から学び、未来を考えることができます。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">MODERN ERA</div>
+            <h2 class="post-title">Digital Transition</h2>
+            <div class="post-meta">Technology Report • Page G4</div>
+            <div class="post-content">
+                新聞は今、大きな転換期を迎えています。紙媒体からデジタルへの移行は、避けられない流れです。しかし、優れたジャーナリズムとデザインの原則は不変です。
+                <br><br>
+                オンライン版でも、読みやすいタイポグラフィ、明確な情報階層、美しいレイアウトは重要です。媒体が変わっても、読者に価値ある情報を届けるという使命は変わりません。ヴィンテージ新聞のデザイン原則は、デジタル時代にも生き続けています。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-category">CULTURAL IMPACT</div>
+            <h2 class="post-title">Fourth Estate</h2>
+            <div class="post-meta">Society & Politics • Page H6</div>
+            <div class="post-content">
+                新聞は「第四の権力」と呼ばれます。立法、行政、司法に次ぐ、社会を動かす力。フリープレスは民主主義の基盤であり、表現の自由の象徴です。
+                <br><br>
+                調査報道によって明らかになった真実は、政治を変え、企業を改革し、社会正義を実現してきました。新聞記者たちの勇気と献身が、より良い社会を作ってきたのです。そのデザインもまた、真実を伝えるための重要な要素でした。
+            </div>
+        </div>
+    </div>
+</body>
+</html>

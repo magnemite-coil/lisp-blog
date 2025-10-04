@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メンフィスデザイン - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(45deg, #FFD93D 25%, transparent 25%, transparent 75%, #FFD93D 75%),
+                        linear-gradient(45deg, #FFD93D 25%, transparent 25%, transparent 75%, #FFD93D 75%);
+            background-color: #F6F6F6;
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #FF6B9D;
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 8px solid #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: #00D9FF;
+            border-radius: 50%;
+            top: -100px;
+            right: 50px;
+            border: 5px solid #000;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: #FFD93D;
+            transform: rotate(45deg);
+            bottom: -75px;
+            left: 100px;
+            border: 5px solid #000;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 72px;
+            font-weight: 900;
+            color: #000;
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 60px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #fff;
+            border: 6px solid #000;
+            padding: 30px;
+            transform: rotate(-2deg);
+            transition: all 0.3s;
+            box-shadow: 10px 10px 0 #000;
+        }
+
+        .post:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .post:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 15px 15px 0 #000;
+        }
+
+        .post-meta {
+            background: #FFD93D;
+            display: inline-block;
+            padding: 8px 20px;
+            border: 4px solid #000;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .post-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 32px;
+            font-weight: 900;
+            color: #FF6B9D;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .post-content {
+            color: #000;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .post-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CREATIVE BLOG</h1>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-meta">2025.10.04</div>
+            <h2 class="post-title">DESIGN REVOLUTION</h2>
+            <div class="post-content">
+                メンフィスグループは1981年にエットレ・ソットサスによって創設されました。大胆な色使いと予測不可能な形状で、モダニズムの規範を打ち破りました。幾何学的パターンと原色の組み合わせが、革新的なデザイン言語を生み出しています。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-meta">2025.10.03</div>
+            <h2 class="post-title">COLOR EXPLOSION</h2>
+            <div class="post-content">
+                ネオンカラー、パステル、原色を自由に組み合わせ、従来のデザイン理論を無視した革新的なアプローチが特徴です。ポストモダニズムの影響を受け、機能性よりも装飾性を重視した大胆なスタイルが人気を博しました。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-meta">2025.10.02</div>
+            <h2 class="post-title">GEOMETRIC PATTERNS</h2>
+            <div class="post-content">
+                幾何学的な形状、ストライプ、ドット、ジグザグ模様が無秩序に配置され、視覚的な興奮を生み出します。1980年代のイタリアンデザインの象徴として、今なお多くのクリエイターにインスピレーションを与え続けています。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-meta">2025.10.01</div>
+            <h2 class="post-title">PLAYFUL AESTHETICS</h2>
+            <div class="post-content">
+                メンフィスデザインは、遊び心とユーモアを大切にします。真面目なデザインへの反抗として生まれ、楽しさと驚きを視覚言語に取り入れました。その大胆さは、現代のグラフィックデザインにも影響を与えています。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-meta">2025.09.30</div>
+            <h2 class="post-title">POP CULTURE</h2>
+            <div class="post-content">
+                ポップカルチャーとの融合により、メンフィスデザインは大衆性を獲得しました。MTV、ファッション、インテリアデザインなど、あらゆる分野に影響を与え、80年代を象徴するビジュアルスタイルとなりました。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-meta">2025.09.29</div>
+            <h2 class="post-title">TIMELESS IMPACT</h2>
+            <div class="post-content">
+                40年以上経った今でも、メンフィスデザインの影響力は衰えていません。レトロでありながら新鮮、混沌としながらも秩序がある。この矛盾した魅力が、時代を超えて愛され続ける理由です。デジタル時代においても、その大胆な美学は輝きを放っています。
+            </div>
+        </div>
+    </div>
+</body>
+</html>

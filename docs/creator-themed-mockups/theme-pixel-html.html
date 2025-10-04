@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ドット絵 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: #000;
+            image-rendering: pixelated;
+            color: #fff;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #4a90e2 0%, #2c5aa0 100%);
+            padding: 50px 20px;
+            text-align: center;
+            border: 6px solid #fff;
+            border-style: solid;
+            box-shadow: inset 0 0 0 4px #000;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #fff;
+            text-shadow: 4px 4px 0 #000;
+            letter-spacing: 2px;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #1a1a1a;
+            border: 6px solid #fff;
+            padding: 25px;
+            position: relative;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 3px solid #000;
+            pointer-events: none;
+        }
+
+        .post-title {
+            font-size: 16px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #000;
+            line-height: 1.6;
+        }
+
+        .post-content {
+            color: #fff;
+            line-height: 2;
+            font-size: 12px;
+        }
+
+        .hp-bar {
+            height: 24px;
+            background: #333;
+            border: 3px solid #fff;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background: #00ff00;
+            box-shadow: inset -3px -3px 0 rgba(0,0,0,0.4);
+            transition: width 0.5s;
+        }
+
+        .hp-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 18px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 14px;
+            }
+
+            .post-content {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>◆ PIXEL BLOG ◆</h1>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <h2 class="post-title">&gt; RETRO GAME_</h2>
+            <div class="post-content">
+                8BIT 16BIT JIDAI NO GAME GRAPHICS WO SAIGEN. PIXEL ART NO ATATAKMI TO NOSTALGIA WO KANJIRU DESIGN DESU. SEIYAKU GA SOUZOUSEI WO UMIDASU.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 100/100</div>
+                <div class="hp-fill" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">&gt; DOT PICTURE_</h2>
+            <div class="post-content">
+                GENKAI ARARERU KAIZOUDONO NAKADE HYOUGEN SURU GEIJUTSU. HITOTSUHITOTSU NO PIXEL NI IMI GA ARI, SEIYAKU GA SOUZOUSEI WO UMIDASHIMASU.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 85/100</div>
+                <div class="hp-fill" style="width: 85%"></div>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">&gt; 8BIT MUSIC_</h2>
+            <div class="post-content">
+                CHIP TUNE NO SENRITSU GA KIKOERU YOUNA VISUAL. FAMICOM SUPER FAMICOM NO JIDAI WO OMOIDASASERU PIXEL ART NO SEKAI DESU.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 92/100</div>
+                <div class="hp-fill" style="width: 92%"></div>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">&gt; GAME OVER_</h2>
+            <div class="post-content">
+                CONTINUE? 10 9 8... NOSTALGIA WO KANJIRU PIXEL DESIGN. RETRO GAME NO OMOIDETO TOMO NI, ATARASHII HYOUGEN WO MEZASHIMASU.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 78/100</div>
+                <div class="hp-fill" style="width: 78%"></div>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">&gt; LEVEL UP!_</h2>
+            <div class="post-content">
+                KEIKEN CHI WO KASANETE LEVEL UP. PIXEL ART NO GIJUTSU MO, TSUKURIKOMU GOTONI SEICHOU SHIMASU. SUKUNAI PIXEL DE OOKU WO KATARU WAZA.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 95/100</div>
+                <div class="hp-fill" style="width: 95%"></div>
+            </div>
+        </div>
+
+        <div class="post">
+            <h2 class="post-title">&gt; HIGH SCORE_</h2>
+            <div class="post-content">
+                ARCADE GAME NO HIGH SCORE HYOUJI NO YOUNA DESIGN. RANKING NAME WO NYUURYOKU SURU TOKIMEKI. PIXEL PERFECT NA HYOUGEN WO MEZASU.
+            </div>
+            <div class="hp-bar">
+                <div class="hp-label">HP: 100/100</div>
+                <div class="hp-fill" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

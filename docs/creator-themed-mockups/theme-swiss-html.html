@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スイスデザイン - ブログテーマ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #000;
+        }
+
+        .header {
+            padding: 100px 20px;
+            border-bottom: 1px solid #000;
+        }
+
+        h1 {
+            font-size: 96px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: -4px;
+            line-height: 0.9;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .posts {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .post {
+            padding: 40px 0;
+            border-top: 1px solid #000;
+        }
+
+        .post:nth-child(1) {
+            grid-column: span 12;
+        }
+
+        .post:nth-child(2),
+        .post:nth-child(3),
+        .post:nth-child(4) {
+            grid-column: span 4;
+        }
+
+        .post:nth-child(5),
+        .post:nth-child(6) {
+            grid-column: span 6;
+        }
+
+        .post:nth-child(7),
+        .post:nth-child(8),
+        .post:nth-child(9) {
+            grid-column: span 4;
+        }
+
+        .post-number {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .post:nth-child(1) .post-title {
+            font-size: 56px;
+            letter-spacing: -2px;
+        }
+
+        .post-content {
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .posts {
+                display: block;
+            }
+
+            .post {
+                margin-bottom: 40px;
+            }
+
+            .post-title {
+                font-size: 24px;
+            }
+
+            .post:nth-child(1) .post-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Swiss Design<br>Principles</h1>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-number">001 / INTRODUCTION</div>
+            <h2 class="post-title">The Grid System as Foundation</h2>
+            <div class="post-content">
+                スイスデザイン、または国際タイポグラフィ様式は、1950年代のスイスで発展しました。グリッドシステムの厳格な使用、サンセリフ書体の採用、そして客観性への徹底的な追求。これらの原則が、現代デザインの基礎を築きました。
+                <br><br>
+                Josef Müller-Brockmann、Armin Hofmann、Emil Ruderといった先駆者たちは、デザインを芸術的な自己表現から解放し、コミュニケーションの純粋な形へと昇華させました。感情や装飾を排除し、情報を最も効率的に伝達する方法を追求したのです。
+                <br><br>
+                グリッドは単なるレイアウトツールではありません。それは秩序の表現であり、理性の具現化です。数学的な正確さと美的調和が完璧にバランスした時、真のデザインが生まれます。スイスデザインは、この理想を最も純粋な形で実現しました。
+            </div>
+            <div class="post-meta">Design Philosophy • October 4, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">002 / TYPOGRAPHY</div>
+            <h2 class="post-title">Helvetica: The Universal Typeface</h2>
+            <div class="post-content">
+                1957年、Max Miedinger と Eduard Hoffmann によって設計された Helvetica は、スイスデザインの象徴となりました。中立的で、客観的で、普遍的。このサンセリフ書体は、あらゆる文脈で機能する完璧なタイポグラフィツールです。
+                <br><br>
+                Helvetica の成功は、その透明性にあります。書体自体が主張せず、メッセージを純粋に伝えます。ニューヨークの地下鉄標識から、国際的ブランドのロゴまで、Helvetica は世界中で使用されています。
+            </div>
+            <div class="post-meta">Typography • October 3, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">003 / METHODOLOGY</div>
+            <h2 class="post-title">Objectivity in Design</h2>
+            <div class="post-content">
+                スイスデザインの核心は客観性です。デザイナーの個人的な好みや感情を排除し、純粋に機能的なソリューションを追求します。この姿勢は、科学的アプローチとも言えます。
+                <br><br>
+                装飾は不要です。必要なのは、明確さ、読みやすさ、そして効率性。Form follows function（形態は機能に従う）という原則の最も厳格な解釈が、スイスデザインです。
+            </div>
+            <div class="post-meta">Methodology • October 2, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">004 / COMPOSITION</div>
+            <h2 class="post-title">Mathematical Precision</h2>
+            <div class="post-content">
+                グリッドシステムは、スイスデザインの骨格です。ページを数学的に分割し、すべての要素を正確に配置します。この厳密さが、視覚的調和を生み出します。
+                <br><br>
+                Josef Müller-Brockmann の著書「Grid Systems in Graphic Design」は、グリッドの使用方法を体系化しました。ランダムに見える配置も、実は綿密に計算されています。自由は制約の中にこそ存在するのです。
+            </div>
+            <div class="post-meta">Composition • October 1, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">005 / COLOR</div>
+            <h2 class="post-title">The Power of Restraint</h2>
+            <div class="post-content">
+                スイスデザインにおける色彩は、極めて抑制的です。多くの場合、黒、白、そして一つのアクセントカラーのみが使用されます。この制限が、かえって力強い視覚的インパクトを生み出します。
+                <br><br>
+                赤い円、青い四角、黄色い線。シンプルな幾何学形状と限られた色彩が、記憶に残るビジュアルを作ります。過剰な装飾よりも、洗練された最小限の要素が、より強いメッセージを伝えるのです。
+            </div>
+            <div class="post-meta">Color Theory • September 30, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">006 / INFLUENCE</div>
+            <h2 class="post-title">Global Impact</h2>
+            <div class="post-content">
+                スイスデザインの影響は、グラフィックデザインを超えて広がりました。ウェブデザイン、ユーザーインターフェース、そして建築にまで。明確な情報階層、読みやすいタイポグラフィ、そして機能的なレイアウト。これらの原則は、今日のデジタルデザインの基礎となっています。
+                <br><br>
+                Apple の iOS、Google の Material Design、そして数え切れないほどのミニマリストデザイン。すべてにスイスデザインの DNA が流れています。
+            </div>
+            <div class="post-meta">Design History • September 29, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">007 / LEGACY</div>
+            <h2 class="post-title">Modernist Vision</h2>
+            <div class="post-content">
+                スイスデザインは、モダニズム運動の集大成です。バウハウスの機能主義、デ・ステイルの幾何学的抽象、そしてロシア構成主義の合理性。これらすべての要素が融合し、国際的に通用するデザイン言語が誕生しました。
+            </div>
+            <div class="post-meta">Legacy • September 28, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">008 / EDUCATION</div>
+            <h2 class="post-title">Design as Discipline</h2>
+            <div class="post-content">
+                スイスのデザイン教育は、厳格な訓練を重視します。バーゼル、チューリッヒ、そしてローザンヌのデザインスクールは、世界中からデザイナーを集めました。Emil Ruder の教育理念は、デザインを芸術ではなく、科学的な discipline として捉えることでした。
+            </div>
+            <div class="post-meta">Education • September 27, 2025</div>
+        </div>
+
+        <div class="post">
+            <div class="post-number">009 / FUTURE</div>
+            <h2 class="post-title">Timeless Principles</h2>
+            <div class="post-content">
+                70年以上が経過した今も、スイスデザインの原則は有効です。テクノロジーが変わっても、優れたデザインの基本は変わりません。明確さ、秩序、そして機能性。これらは永遠の価値です。デジタル時代において、スイスデザインの教えはより重要になっています。
+            </div>
+            <div class="post-meta">Future • September 26, 2025</div>
+        </div>
+    </div>
+</body>
+</html>

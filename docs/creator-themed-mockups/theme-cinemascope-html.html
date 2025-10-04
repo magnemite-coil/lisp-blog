@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シネマスコープ - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bebas Neue', cursive;
+            background: #000;
+            overflow-x: hidden;
+        }
+
+        .cinematic-bars {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: #000;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .cinematic-bars.top {
+            top: 0;
+        }
+
+        .cinematic-bars.bottom {
+            bottom: 0;
+        }
+
+        .header {
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+            position: relative;
+        }
+
+        .aspect-ratio {
+            font-size: 14px;
+            color: #ffd700;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 72px;
+            color: #ffd700;
+            letter-spacing: 10px;
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #fff;
+            letter-spacing: 4px;
+        }
+
+        .posts {
+            padding: 40px 20px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #1a1a1a;
+            padding: 50px;
+            margin-bottom: 40px;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255,215,0,0.1) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(255,215,0,0.1) 100%);
+            pointer-events: none;
+        }
+
+        .scene-number {
+            font-size: 12px;
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .post-title {
+            font-size: 48px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .post-content {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #fff;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        .technical-specs {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            font-size: 12px;
+        }
+
+        .spec-item {
+            color: #888;
+        }
+
+        .spec-value {
+            color: #ffd700;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .post {
+                padding: 30px;
+            }
+
+            .post-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cinematic-bars top"></div>
+    <div class="cinematic-bars bottom"></div>
+
+    <div class="header">
+        <div class="aspect-ratio">2.39:1 WIDESCREEN</div>
+        <h1>CINEMASCOPE</h1>
+        <div class="tagline">Filmed in Glorious CinemaScope</div>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="scene-number">SCENE 01 • ESTABLISHING SHOT</div>
+            <h2 class="post-title">WIDESCREEN DREAMS</h2>
+            <div class="post-content">
+                <p>
+                    シネマスコープの2.35:1（後に2.39:1）という横長比率は、壮大なビジョンの象徴です。1953年、20th Century Foxが導入したこの革新的なformat。Television との競争において、映画館でしか体験できない spectacle を提供しました。
+                </p>
+                <p>
+                    Anamorphic lensの魔法。水平方向に圧縮して撮影し、projection時に伸張する。この技術的trickが、wide画面を可能にしました。Henri Chrétienの発明を基に、Foxが商業化。『聖衣』(The Robe, 1953)が最初のCinemaScope作品となりました。
+                </p>
+                <p>
+                    上下の黒帯（letterbox）は、制約ではなく選択です。Widescreen比率を保持するため、4:3や16:9のディスプレイでは必然的に生じます。しかし、この黒帯こそが映画的体験の一部となりました。映画館にいるという illusion を強化します。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Aspect Ratio<br>
+                    <span class="spec-value">2.39:1</span>
+                </div>
+                <div class="spec-item">
+                    Format<br>
+                    <span class="spec-value">Anamorphic</span>
+                </div>
+                <div class="spec-item">
+                    Film Gauge<br>
+                    <span class="spec-value">35mm</span>
+                </div>
+                <div class="spec-item">
+                    Audio<br>
+                    <span class="spec-value">4-Track Stereo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 02 • WIDE ANGLE</div>
+            <h2 class="post-title">EPIC STORYTELLING</h2>
+            <div class="post-content">
+                <p>
+                    Widescreen formatは、特定のジャンルと親和性が高い。Western、historical epics、science fiction。広大な風景、大規模な戦闘シーン、spectacular action。『アラビアのロレンス』『ベン・ハー』『2001年宇宙の旅』。これらの masterpieces は、wide format なしには考えられません。
+                </p>
+                <p>
+                    Compositionの美学も変わりました。Horizontal lines、multiple focal points、peripheral action。従来の centered composition から、より dynamic な layouts へ。Directors は新しい visual language を学ばなければなりませんでした。David Lean、Akira Kurosawa、Sergio Leone。Widescreen の masters です。
+                </p>
+                <p>
+                    しかし、challenges もありました。Close-ups が difficult になり、vertical movements が制限されます。Some directors は widescreen を嫌いました。しかし、制約を embrace した者たちが、iconic な images を創造しました。Leone の extreme wide shots、Kubrick の symmetrical compositions。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Genre<br>
+                    <span class="spec-value">Epic Drama</span>
+                </div>
+                <div class="spec-item">
+                    Director<br>
+                    <span class="spec-value">Visionary</span>
+                </div>
+                <div class="spec-item">
+                    Cinematographer<br>
+                    <span class="spec-value">Master of Light</span>
+                </div>
+                <div class="spec-item">
+                    Runtime<br>
+                    <span class="spec-value">3h 45m</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 03 • GOLDEN AGE</div>
+            <h2 class="post-title">GOLDEN ERA HOLLYWOOD</h2>
+            <div class="post-content">
+                <p>
+                    1950-60年代は、widescreen formats の黄金時代でした。CinemaScope以外にも、VistaVision、Todd-AO、Ultra Panavision 70。各 studio が独自の format を推進。Technical innovation と commercial competition の時代です。
+                </p>
+                <p>
+                    『十戒』(1956、VistaVision)、『サウンド・オブ・ミュージック』(1965、Todd-AO)、『ベン・ハー』(1959、Camera 65)。これらの blockbusters は、widescreen の power を demonstrate しました。Box office success が format の普及を accelerate しました。
+                </p>
+                <p>
+                    しかし、standardization の欠如は問題でした。Multiple formats は exhibition を複雑にしました。Eventually、anamorphic 2.39:1 と spherical 1.85:1 が主要な standards として確立されました。Simplicity が industry の需要に応えました。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Era<br>
+                    <span class="spec-value">1950s-1960s</span>
+                </div>
+                <div class="spec-item">
+                    Innovation<br>
+                    <span class="spec-value">Revolutionary</span>
+                </div>
+                <div class="spec-item">
+                    Impact<br>
+                    <span class="spec-value">Industry-Changing</span>
+                </div>
+                <div class="spec-item">
+                    Legacy<br>
+                    <span class="spec-value">Eternal</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 04 • MODERN REVIVAL</div>
+            <h2 class="post-title">CONTEMPORARY MASTERS</h2>
+            <div class="post-content">
+                <p>
+                    現代でも、多くの filmmakers が anamorphic widescreen を選択します。Christopher Nolan、Denis Villeneuve、Quentin Tarantino、Paul Thomas Anderson。彼らは cinematic tradition を継承しています。Digital でも、anamorphic aesthetic は alive です。
+                </p>
+                <p>
+                    Anamorphic artifacts - horizontal lens flares、oval bokeh、edge distortion - は、今や desirable な characteristics です。これらの "imperfections" が、cinematic quality を signify します。Digital anamorphic adapters、software emulations。Technology で classic look を recreate しています。
+                </p>
+                <p>
+                    『DUNE』『ブレードランナー 2049』『ダンケルク』。Modern masterpieces が widescreen format の relevance を証明しています。IMAX との combination も人気です。Different aspect ratios を scene によって切り替える。Visual storytelling の新しい dimension です。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Modern Format<br>
+                    <span class="spec-value">Digital 2.39:1</span>
+                </div>
+                <div class="spec-item">
+                    Camera<br>
+                    <span class="spec-value">ARRI Alexa 65</span>
+                </div>
+                <div class="spec-item">
+                    Lens<br>
+                    <span class="spec-value">Panavision Anamorphic</span>
+                </div>
+                <div class="spec-item">
+                    Quality<br>
+                    <span class="spec-value">8K Master</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 05 • HOME VIEWING</div>
+            <h2 class="post-title">LETTERBOX DEBATE</h2>
+            <div class="post-content">
+                <p>
+                    Home video の時代、letterbox vs pan-and-scan の debate がありました。Pan-and-scan は widescreen を 4:3 TV に fit させるため、画面を crop しました。Director の original composition が損なわれます。Letterbox は黒帯を受け入れ、aspect ratio を preserve します。
+                </p>
+                <p>
+                    Initially、consumers は黒帯を嫌いました。"画面の一部を使っていない" という誤解。しかし、film enthusiasts と educators が、original aspect ratio の重要性を advocate しました。Criterion Collection などが letterbox を standard としました。
+                </p>
+                <p>
+                    16:9 widescreen TVs の普及が状況を改善しました。しかし、2.39:1 content は依然として黒帯を持ちます。現代では、これが acceptance されています。Black bars は quality の indicator となりました。Cinematic experience の一部として。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    TV Standard<br>
+                    <span class="spec-value">16:9 Widescreen</span>
+                </div>
+                <div class="spec-item">
+                    Preservation<br>
+                    <span class="spec-value">Original Aspect Ratio</span>
+                </div>
+                <div class="spec-item">
+                    Quality<br>
+                    <span class="spec-value">4K UHD HDR</span>
+                </div>
+                <div class="spec-item">
+                    Audio<br>
+                    <span class="spec-value">Dolby Atmos</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 06 • MOBILE PARADOX</div>
+            <h2 class="post-title">VERTICAL VIDEO AGE</h2>
+            <div class="post-content">
+                <p>
+                    Smartphone 時代の paradox。Vertical video（9:16）が dominant になりました。TikTok、Instagram Reels、YouTube Shorts。これは cinema の exact opposite です。しかし、これも medium に応じた adaptation です。
+                </p>
+                <p>
+                    Filmmakers は challenge しています。Some は vertical format を embrace し、new storytelling methods を探求しています。Others は、mobile viewing でも widescreen を maintain します。Letterboxing は extreme になりますが、cinematic integrity を保ちます。
+                </p>
+                <p>
+                    Future は multi-format かもしれません。Different aspect ratios for different platforms。しかし、theatrical experience において、widescreen は irreplaceable です。IMAX screens、Dolby Cinema、premium large formats。これらが cinema の future を represent しています。
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Platform<br>
+                    <span class="spec-value">Multi-Format</span>
+                </div>
+                <div class="spec-item">
+                    Delivery<br>
+                    <span class="spec-value">Adaptive Streaming</span>
+                </div>
+                <div class="spec-item">
+                    Experience<br>
+                    <span class="spec-value">Device-Optimized</span>
+                </div>
+                <div class="spec-item">
+                    Future<br>
+                    <span class="spec-value">Ever-Evolving</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="scene-number">SCENE 07 • FINAL FRAME</div>
+            <h2 class="post-title">TIMELESS FORMAT</h2>
+            <div class="post-content">
+                <p>
+                    CinemaScope と widescreen formats は、70年以上の history を持ちます。Technology は進化しましたが、fundamental appeal は変わりません。Human vision は horizontal に wide です。Widescreen は natural な viewing experience を provide します。
+                </p>
+                <p>
+                    Aspect ratio は単なる technical specification ではありません。それは aesthetic choice であり、storytelling tool です。2.39:1 は epic を、1.85:1 は versatility を、4:3 は intimacy を suggest します。Directors は ratio を carefully select します。
+                </p>
+                <p>
+                    Cinema の未来において、widescreen は essential であり続けるでしょう。VR、AR、holographic displays。Technology がどう進化しても、wide field of view は human experience の core です。Letterbox bars は消えないかもしれません。そして、それで良いのです。それが cinema の signature だからです。FADE TO BLACK.
+                </p>
+            </div>
+            <div class="technical-specs">
+                <div class="spec-item">
+                    Legacy<br>
+                    <span class="spec-value">70+ Years</span>
+                </div>
+                <div class="spec-item">
+                    Relevance<br>
+                    <span class="spec-value">Timeless</span>
+                </div>
+                <div class="spec-item">
+                    Future<br>
+                    <span class="spec-value">Bright</span>
+                </div>
+                <div class="spec-item">
+                    Status<br>
+                    <span class="spec-value">THE END</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

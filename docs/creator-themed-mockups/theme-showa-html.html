@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>昭和レトロ風 - ブログテーマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: #f4e8d0;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #d62828 0%, #b01e1e 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 10px solid #f77f00;
+            position: relative;
+            box-shadow: inset 0 -10px 0 rgba(0,0,0,0.2);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(0,0,0,0.1) 3px,
+                rgba(0,0,0,0.1) 6px
+            );
+        }
+
+        h1 {
+            font-size: 56px;
+            color: #fff;
+            font-weight: 900;
+            text-shadow: 5px 5px 0 #000, 7px 7px 0 #f77f00;
+            letter-spacing: 10px;
+            position: relative;
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 60px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background: #fff9e6;
+            border: 8px double #d62828;
+            padding: 30px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.3);
+        }
+
+        .post-date {
+            background: #f77f00;
+            color: #fff;
+            padding: 8px 20px;
+            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transform: rotate(-2deg);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+
+        .post-title {
+            font-size: 28px;
+            color: #d62828;
+            font-weight: 900;
+            margin-bottom: 15px;
+            border-bottom: 4px solid #f77f00;
+            padding-bottom: 12px;
+        }
+
+        .post-content {
+            color: #333;
+            line-height: 2;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+                letter-spacing: 5px;
+            }
+
+            .posts {
+                grid-template-columns: 1fr;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>懐かし横丁ブログ</h1>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <div class="post-date">昭和60年10月4日</div>
+            <h2 class="post-title">あの頃の思い出</h2>
+            <div class="post-content">
+                昭和レトロデザインは、1960年代から80年代の日本の雰囲気を再現。暖色系の配色、丸ゴシック体、看板風のレイアウトが特徴です。高度経済成長期の活気、喫茶店の香り、商店街の賑わいを視覚化したデザインです。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-date">昭和60年10月3日</div>
+            <h2 class="post-title">喫茶店の記憶</h2>
+            <div class="post-content">
+                純喫茶のマッチ箱、銭湯のタイル、商店街の看板。懐かしさと温かみを感じるビジュアルデザインが人気を集めています。コーヒーの香り、ナポリタンの味、そしてジュークボックスから流れる歌謡曲。昭和の日常が蘇ります。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-date">昭和60年10月2日</div>
+            <h2 class="post-title">商店街の賑わい</h2>
+            <div class="post-content">
+                八百屋さんの威勢の良い声、魚屋さんの店先、お肉屋さんのコロッケ。アーケード商店街の活気が今も心に残っています。手書きの値札、のぼり旗、店主の笑顔。人情味あふれる昭和の商店街の記憶です。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-date">昭和60年10月1日</div>
+            <h2 class="post-title">銭湯の風景</h2>
+            <div class="post-content">
+                富士山のペンキ絵、番台のおばちゃん、脱衣所の扇風機。銭湯は地域のコミュニティの中心でした。熱い湯船に浸かりながら、近所の人と世間話。湯上がりのコーヒー牛乳が最高の贅沢でした。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-date">昭和60年9月30日</div>
+            <h2 class="post-title">駄菓子屋さん</h2>
+            <div class="post-content">
+                10円で買えるお菓子、くじ引き、メンコにビー玉。放課後の駄菓子屋さんは子供たちの楽園でした。店のおばあちゃんの優しい笑顔、友達と分け合ったお菓子。少ないお小遣いで最大限の幸せを見つけた時代です。
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-date">昭和60年9月29日</div>
+            <h2 class="post-title">レトロな看板</h2>
+            <div class="post-content">
+                手書きの文字、鮮やかな色彩、独特のフォルム。昭和の看板には、職人の技と店主の想いが込められていました。赤提灯、ネオンサイン、琺瑯看板。街を彩る看板たちが、昭和の風景を作り上げていたのです。
+            </div>
+        </div>
+    </div>
+</body>
+</html>
