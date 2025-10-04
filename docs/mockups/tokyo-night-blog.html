@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo Night - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Tokyo Night カラーパレット */
+            --bg-primary: #1a1b26;
+            --bg-secondary: #24283b;
+            --bg-tertiary: #414868;
+            --text-primary: #c0caf5;
+            --text-secondary: #a9b1d6;
+            --text-muted: #565f89;
+            --accent-blue: #7aa2f7;
+            --accent-cyan: #7dcfff;
+            --accent-green: #9ece6a;
+            --accent-yellow: #e0af68;
+            --accent-orange: #ff9e64;
+            --accent-red: #f7768e;
+            --accent-purple: #bb9af7;
+            --border-color: #292e42;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--accent-purple);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* コードブロックスタイル */
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        /* インラインコード */
+        p code, li code {
+            background: var(--bg-secondary);
+            color: var(--accent-cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト */
+        .keyword { color: var(--accent-purple); }
+        .function { color: var(--accent-blue); }
+        .string { color: var(--accent-green); }
+        .number { color: var(--accent-orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .constant { color: var(--accent-orange); }
+        .property { color: var(--accent-cyan); }
+        .operator { color: var(--accent-red); }
+        .tag { color: var(--accent-red); }
+        .attr-name { color: var(--accent-yellow); }
+        .attr-value { color: var(--accent-green); }
+
+        /* コードブロックヘッダー */
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--accent-cyan);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* リストスタイル */
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-secondary);
+        }
+
+        /* リンク */
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        /* タグ */
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* フッター */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* テーブル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌃 Tokyo Night Dev Blog</h1>
+            <p class="subtitle">モダンなエンジニアのための技術ブログ</p>
+        </header>
+
+        <article>
+            <h2>React HooksでカスタムフックをTypeScriptで実装する</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 yamada_taro</span>
+                <span>⏱️ 5分で読める</span>
+            </div>
+
+            <p>
+                React Hooksを使った開発が主流になってきましたが、カスタムフックを適切にTypeScriptで型付けすることで、
+                より安全で保守性の高いコードを書くことができます。今回は実践的なカスタムフックの実装例を紹介します。
+            </p>
+
+            <h3>基本的なカスタムフックの実装</h3>
+
+            <p>
+                まずは、ローカルストレージと同期する<code>useLocalStorage</code>フックを実装してみましょう。
+                このフックは状態管理とストレージへの永続化を同時に行います。
+            </p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">TypeScript</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> { useState, useEffect } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">function</span> <span class="function">useLocalStorage</span>&lt;T&gt;(
+  <span class="property">key</span>: <span class="keyword">string</span>,
+  <span class="property">initialValue</span>: T
+): [T, (value: T) <span class="keyword">=&gt;</span> <span class="keyword">void</span>] {
+  <span class="comment">// 初期値を取得（ローカルストレージまたはデフォルト値）</span>
+  <span class="keyword">const</span> [storedValue, setStoredValue] <span class="operator">=</span> <span class="function">useState</span>&lt;T&gt;(() <span class="keyword">=&gt;</span> {
+    <span class="keyword">try</span> {
+      <span class="keyword">const</span> item <span class="operator">=</span> <span class="property">window</span>.<span class="property">localStorage</span>.<span class="function">getItem</span>(key);
+      <span class="keyword">return</span> item ? <span class="constant">JSON</span>.<span class="function">parse</span>(item) : initialValue;
+    } <span class="keyword">catch</span> (error) {
+      <span class="property">console</span>.<span class="function">error</span>(error);
+      <span class="keyword">return</span> initialValue;
+    }
+  });
+
+  <span class="comment">// 値を設定する関数</span>
+  <span class="keyword">const</span> <span class="function">setValue</span> <span class="operator">=</span> (value: T) <span class="keyword">=&gt;</span> {
+    <span class="keyword">try</span> {
+      <span class="function">setStoredValue</span>(value);
+      <span class="property">window</span>.<span class="property">localStorage</span>.<span class="function">setItem</span>(key, <span class="constant">JSON</span>.<span class="function">stringify</span>(value));
+    } <span class="keyword">catch</span> (error) {
+      <span class="property">console</span>.<span class="function">error</span>(error);
+    }
+  };
+
+  <span class="keyword">return</span> [storedValue, setValue];
+}</code></pre>
+            </div>
+
+            <h3>実際の使用例</h3>
+
+            <p>
+                上記のカスタムフックは以下のように使用できます。型推論も完璧に機能します。
+            </p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">TypeScript (React)</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">interface</span> <span class="function">UserPreferences</span> {
+  <span class="property">theme</span>: <span class="string">'light'</span> <span class="operator">|</span> <span class="string">'dark'</span>;
+  <span class="property">language</span>: <span class="keyword">string</span>;
+  <span class="property">notifications</span>: <span class="keyword">boolean</span>;
+}
+
+<span class="keyword">function</span> <span class="function">SettingsComponent</span>() {
+  <span class="keyword">const</span> [preferences, setPreferences] <span class="operator">=</span> <span class="function">useLocalStorage</span>&lt;UserPreferences&gt;(
+    <span class="string">'userPreferences'</span>,
+    { 
+      <span class="property">theme</span>: <span class="string">'dark'</span>, 
+      <span class="property">language</span>: <span class="string">'ja'</span>, 
+      <span class="property">notifications</span>: <span class="constant">true</span> 
+    }
+  );
+
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr-name">onClick</span><span class="operator">=</span>{() <span class="keyword">=&gt;</span> 
+        <span class="function">setPreferences</span>({ ...preferences, <span class="property">theme</span>: <span class="string">'light'</span> })
+      }<span class="tag">&gt;</span>
+        ライトテーマに変更
+      <span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}</code></pre>
+            </div>
+
+            <h3>ポイント</h3>
+
+            <ul>
+                <li>ジェネリクスを使用することで、任意の型に対応できる柔軟なフックになります</li>
+                <li>初期化時にtry-catchでエラーハンドリングを行うことで、堅牢性が向上します</li>
+                <li>TypeScriptの型推論により、使用側で型注釈を省略できる場合もあります</li>
+                <li>戻り値をタプル型で定義することで、<code>useState</code>と同じインターフェースを提供できます</li>
+            </ul>
+
+            <blockquote>
+                💡 カスタムフックを作成する際は、必ず<code>use</code>プレフィックスをつけることで、
+                React開発者ツールやlintルールが正しく機能します。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#React</span>
+                <span class="tag">#TypeScript</span>
+                <span class="tag">#Hooks</span>
+                <span class="tag">#カスタムフック</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Tokyo Night Dev Blog. Powered by modern web technologies.</p>
+        </footer>
+    </div>
+</body>
+</html>

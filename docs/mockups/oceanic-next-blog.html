@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanic Next - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Oceanic Next カラーパレット */
+            --bg-primary: #1b2b34;
+            --bg-secondary: #343d46;
+            --bg-tertiary: #4f5b66;
+            --text-primary: #c0c5ce;
+            --text-secondary: #a7adba;
+            --text-muted: #65737e;
+            --red: #ec5f67;
+            --orange: #f99157;
+            --yellow: #fac863;
+            --green: #99c794;
+            --cyan: #5fb3b3;
+            --blue: #6699cc;
+            --purple: #c594c5;
+            --brown: #ab7967;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--cyan);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--purple);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--text-primary);
+        }
+
+        p code, li code {
+            background: var(--bg-secondary);
+            color: var(--cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Oceanic Next */
+        .keyword { color: var(--purple); }
+        .function { color: var(--blue); }
+        .string { color: var(--green); }
+        .number { color: var(--orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .constant { color: var(--orange); }
+        .property { color: var(--cyan); }
+        .operator { color: var(--purple); }
+        .tag { color: var(--red); }
+        .attr-name { color: var(--yellow); }
+        .attr-value { color: var(--green); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--text-muted);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--cyan);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--cyan);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--text-muted);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--bg-tertiary);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--cyan);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--text-primary);
+            font-style: italic;
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 Oceanic Next Dev Blog</h1>
+            <p class="subtitle">海をイメージした青緑系の爽やかなテーマ</p>
+        </header>
+
+        <article>
+            <h2>Haskellで純粋関数型プログラミング</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 haskell_pure</span>
+                <span>⏱️ 16分で読める</span>
+            </div>
+
+            <p>
+                Haskellは純粋関数型言語の代表格で、遅延評価と強力な型システムが特徴です。
+                モナドと型クラスを理解することで、抽象的で美しいコードを書けるようになります。
+            </p>
+
+            <h3>基本的な型と関数</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Haskell</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="comment">-- 型シグネチャと関数定義</span>
+<span class="function">factorial</span> :: <span class="constant">Integer</span> <span class="operator">-&gt;</span> <span class="constant">Integer</span>
+<span class="function">factorial</span> <span class="number">0</span> <span class="operator">=</span> <span class="number">1</span>
+<span class="function">factorial</span> n <span class="operator">=</span> n <span class="operator">*</span> <span class="function">factorial</span> (n <span class="operator">-</span> <span class="number">1</span>)
+
+<span class="comment">-- リスト操作</span>
+<span class="function">quicksort</span> :: <span class="constant">Ord</span> a <span class="operator">=&gt;</span> [a] <span class="operator">-&gt;</span> [a]
+<span class="function">quicksort</span> [] <span class="operator">=</span> []
+<span class="function">quicksort</span> (x:xs) <span class="operator">=</span>
+  <span class="keyword">let</span> <span class="property">smaller</span> <span class="operator">=</span> <span class="function">quicksort</span> [a <span class="operator">|</span> a <span class="operator">&lt;-</span> xs, a <span class="operator">&lt;=</span> x]
+      <span class="property">bigger</span>  <span class="operator">=</span> <span class="function">quicksort</span> [a <span class="operator">|</span> a <span class="operator">&lt;-</span> xs, a <span class="operator">&gt;</span> x]
+  <span class="keyword">in</span>  smaller <span class="operator">++</span> [x] <span class="operator">++</span> bigger
+
+<span class="comment">-- 高階関数</span>
+<span class="function">applyTwice</span> :: (a <span class="operator">-&gt;</span> a) <span class="operator">-&gt;</span> a <span class="operator">-&gt;</span> a
+<span class="function">applyTwice</span> f x <span class="operator">=</span> <span class="function">f</span> (<span class="function">f</span> x)
+
+<span class="comment">-- カリー化された関数</span>
+<span class="function">zipWith'</span> :: (a <span class="operator">-&gt;</span> b <span class="operator">-&gt;</span> c) <span class="operator">-&gt;</span> [a] <span class="operator">-&gt;</span> [b] <span class="operator">-&gt;</span> [c]
+<span class="function">zipWith'</span> _ [] _ <span class="operator">=</span> []
+<span class="function">zipWith'</span> _ _ [] <span class="operator">=</span> []
+<span class="function">zipWith'</span> f (x:xs) (y:ys) <span class="operator">=</span> <span class="function">f</span> x y : <span class="function">zipWith'</span> f xs ys</code></pre>
+            </div>
+
+            <h3>モナドとdo記法</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Haskell</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="comment">-- Maybe モナド</span>
+<span class="function">safeDivide</span> :: <span class="constant">Double</span> <span class="operator">-&gt;</span> <span class="constant">Double</span> <span class="operator">-&gt;</span> <span class="constant">Maybe</span> <span class="constant">Double</span>
+<span class="function">safeDivide</span> _ <span class="number">0</span> <span class="operator">=</span> <span class="constant">Nothing</span>
+<span class="function">safeDivide</span> x y <span class="operator">=</span> <span class="constant">Just</span> (x <span class="operator">/</span> y)
+
+<span class="function">calculateAverage</span> :: [<span class="constant">Double</span>] <span class="operator">-&gt;</span> <span class="constant">Maybe</span> <span class="constant">Double</span>
+<span class="function">calculateAverage</span> [] <span class="operator">=</span> <span class="constant">Nothing</span>
+<span class="function">calculateAverage</span> xs <span class="operator">=</span> <span class="constant">Just</span> (<span class="function">sum</span> xs <span class="operator">/</span> <span class="function">fromIntegral</span> (<span class="function">length</span> xs))
+
+<span class="comment">-- IO モナドとdo記法</span>
+<span class="function">main</span> :: <span class="constant">IO</span> ()
+<span class="function">main</span> <span class="operator">=</span> <span class="keyword">do</span>
+  <span class="function">putStrLn</span> <span class="string">"名前を入力してください:"</span>
+  <span class="property">name</span> <span class="operator">&lt;-</span> <span class="function">getLine</span>
+  <span class="function">putStrLn</span> (<span class="string">"こんにちは、"</span> <span class="operator">++</span> name <span class="operator">++</span> <span class="string">"さん!"</span>)
+
+<span class="comment">-- Either モナド</span>
+<span class="keyword">data</span> <span class="function">AppError</span> <span class="operator">=</span> <span class="function">NetworkError</span> <span class="constant">String</span>
+              <span class="operator">|</span> <span class="function">ParseError</span> <span class="constant">String</span>
+              <span class="keyword">deriving</span> <span class="constant">Show</span>
+
+<span class="function">processData</span> :: <span class="constant">String</span> <span class="operator">-&gt;</span> <span class="constant">Either</span> <span class="function">AppError</span> <span class="constant">Int</span>
+<span class="function">processData</span> input <span class="operator">=</span> <span class="keyword">do</span>
+  <span class="property">trimmed</span> <span class="operator">&lt;-</span> <span class="function">validateInput</span> input
+  <span class="property">parsed</span> <span class="operator">&lt;-</span> <span class="function">parseNumber</span> trimmed
+  <span class="keyword">return</span> (parsed <span class="operator">*</span> <span class="number">2</span>)</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Oceanic Nextは、海の深さと広がりを感じさせる
+                青緑系の配色で、集中力を高めるテーマです。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Haskell</span>
+                <span class="tag">#純粋関数型</span>
+                <span class="tag">#モナド</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Oceanic Next Dev Blog. Ocean depths.</p>
+        </footer>
+    </div>
+</body>
+</html>

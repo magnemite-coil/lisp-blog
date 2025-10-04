@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nord - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Nord カラーパレット */
+            --nord0: #2e3440;
+            --nord1: #3b4252;
+            --nord2: #434c5e;
+            --nord3: #4c566a;
+            --nord4: #d8dee9;
+            --nord5: #e5e9f0;
+            --nord6: #eceff4;
+            --nord7: #8fbcbb;
+            --nord8: #88c0d0;
+            --nord9: #81a1c1;
+            --nord10: #5e81ac;
+            --nord11: #bf616a;
+            --nord12: #d08770;
+            --nord13: #ebcb8b;
+            --nord14: #a3be8c;
+            --nord15: #b48ead;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--nord0);
+            color: var(--nord4);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--nord1);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--nord8);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--nord4);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--nord3);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--nord7);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--nord15);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--nord4);
+        }
+
+        pre {
+            background: var(--nord1);
+            border: 1px solid var(--nord2);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--nord4);
+        }
+
+        p code, li code {
+            background: var(--nord1);
+            color: var(--nord8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Nord */
+        .keyword { color: var(--nord9); }
+        .function { color: var(--nord8); }
+        .string { color: var(--nord14); }
+        .number { color: var(--nord15); }
+        .comment { color: var(--nord3); font-style: italic; }
+        .constant { color: var(--nord13); }
+        .property { color: var(--nord7); }
+        .operator { color: var(--nord9); }
+        .tag { color: var(--nord9); }
+        .attr-name { color: var(--nord7); }
+        .attr-value { color: var(--nord14); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nord2);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--nord3);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--nord8);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--nord3);
+            color: var(--nord4);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--nord1);
+            border-color: var(--nord8);
+            color: var(--nord8);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--nord4);
+        }
+
+        a {
+            color: var(--nord8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--nord7);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--nord2);
+            color: var(--nord7);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--nord3);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--nord1);
+            text-align: center;
+            color: var(--nord3);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--nord10);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--nord4);
+            font-style: italic;
+            background: var(--nord1);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--nord3);
+        }
+
+        th {
+            background: var(--nord1);
+            color: var(--nord8);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--nord4);
+        }
+
+        tr:hover {
+            background: var(--nord1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>❄️ Nord Dev Blog</h1>
+            <p class="subtitle">北欧の寒色系パレット、落ち着いた美しさ</p>
+        </header>
+
+        <article>
+            <h2>Rustで高速なCLIツールを作る</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 rust_lover</span>
+                <span>⏱️ 12分で読める</span>
+            </div>
+
+            <p>
+                Rustは安全性とパフォーマンスを両立した言語として注目されています。
+                今回はclapクレートを使って、本格的なコマンドラインツールを作成します。
+            </p>
+
+            <h3>プロジェクトのセットアップ</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Rust</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">use</span> clap::{Parser, Subcommand};
+<span class="keyword">use</span> std::path::PathBuf;
+
+<span class="comment">/// シンプルなファイル管理ツール</span>
+<span class="keyword">#[derive(Parser)]</span>
+<span class="keyword">#[command(author, version, about, long_about = None)]</span>
+<span class="keyword">struct</span> <span class="function">Cli</span> {
+    <span class="comment">/// 操作対象のファイルパス</span>
+    <span class="keyword">#[arg(short, long, value_name = "FILE")]</span>
+    <span class="property">file</span>: <span class="constant">Option</span>&lt;PathBuf&gt;,
+
+    <span class="comment">/// 詳細出力を有効化</span>
+    <span class="keyword">#[arg(short, long)]</span>
+    <span class="property">verbose</span>: <span class="keyword">bool</span>,
+
+    <span class="keyword">#[command(subcommand)]</span>
+    <span class="property">command</span>: <span class="constant">Option</span>&lt;Commands&gt;,
+}
+
+<span class="keyword">#[derive(Subcommand)]</span>
+<span class="keyword">enum</span> <span class="function">Commands</span> {
+    <span class="comment">/// ファイルを圧縮</span>
+    <span class="function">Compress</span> {
+        <span class="keyword">#[arg(short, long)]</span>
+        <span class="property">output</span>: PathBuf,
+    },
+    <span class="comment">/// ファイルを解凍</span>
+    <span class="function">Decompress</span> {
+        <span class="keyword">#[arg(short, long)]</span>
+        <span class="property">output</span>: PathBuf,
+    },
+}</code></pre>
+            </div>
+
+            <h3>メイン処理の実装</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Rust</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">fn</span> <span class="function">main</span>() <span class="operator">-&gt;</span> <span class="constant">Result</span>&lt;(), <span class="constant">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; {
+    <span class="keyword">let</span> cli <span class="operator">=</span> Cli::<span class="function">parse</span>();
+
+    <span class="keyword">if</span> cli.verbose {
+        <span class="function">println!</span>(<span class="string">"詳細モードが有効です"</span>);
+    }
+
+    <span class="keyword">match</span> <span class="operator">&amp;</span>cli.command {
+        <span class="constant">Some</span>(Commands::Compress { output }) <span class="operator">=&gt;</span> {
+            <span class="function">println!</span>(<span class="string">"圧縮中: {:?} -&gt; {:?}"</span>, cli.file, output);
+            <span class="comment">// 圧縮処理を実装</span>
+        }
+        <span class="constant">Some</span>(Commands::Decompress { output }) <span class="operator">=&gt;</span> {
+            <span class="function">println!</span>(<span class="string">"解凍中: {:?} -&gt; {:?}"</span>, cli.file, output);
+            <span class="comment">// 解凍処理を実装</span>
+        }
+        <span class="constant">None</span> <span class="operator">=&gt;</span> {
+            <span class="function">println!</span>(<span class="string">"コマンドが指定されていません"</span>);
+        }
+    }
+
+    <span class="constant">Ok</span>(())
+}</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Nordテーマは、北欧の自然からインスピレーションを得た
+                穏やかで調和の取れた配色が特徴です。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Rust</span>
+                <span class="tag">#CLI</span>
+                <span class="tag">#システムプログラミング</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Nord Dev Blog. Arctic elegance.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solarized Dark - エンジニアブログ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Solarized Dark カラーパレット */
+            --base03: #002b36;
+            --base02: #073642;
+            --base01: #586e75;
+            --base00: #657b83;
+            --base0: #839496;
+            --base1: #93a1a1;
+            --base2: #eee8d5;
+            --base3: #fdf6e3;
+            --yellow: #b58900;
+            --orange: #cb4b16;
+            --red: #dc322f;
+            --magenta: #d33682;
+            --violet: #6c71c4;
+            --blue: #268bd2;
+            --cyan: #2aa198;
+            --green: #859900;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--base03);
+            color: var(--base0);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--base02);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--blue);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--base1);
+            font-size: 1.1rem;
+        }
+
+        article {
+            margin-bottom: 60px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--base01);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--violet);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--base0);
+        }
+
+        pre {
+            background: var(--base02);
+            border: 1px solid var(--base01);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            display: block;
+            color: var(--base0);
+        }
+
+        p code, li code {
+            background: var(--base02);
+            color: var(--cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* シンタックスハイライト - Solarized */
+        .keyword { color: var(--green); }
+        .function { color: var(--blue); }
+        .string { color: var(--cyan); }
+        .number { color: var(--magenta); }
+        .comment { color: var(--base01); font-style: italic; }
+        .constant { color: var(--orange); }
+        .property { color: var(--yellow); }
+        .operator { color: var(--green); }
+        .tag { color: var(--blue); }
+        .attr-name { color: var(--cyan); }
+        .attr-value { color: var(--green); }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--base02);
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -1px;
+            border: 1px solid var(--base01);
+            border-bottom: none;
+        }
+
+        .code-language {
+            color: var(--blue);
+            font-family: Menlo, Monaco, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 1px solid var(--base01);
+            color: var(--base0);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .code-btn:hover {
+            background: var(--base03);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .code-wrapper {
+            margin: 25px 0;
+        }
+
+        .code-wrapper pre {
+            margin: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--base0);
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--cyan);
+            text-decoration: underline;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: var(--base02);
+            color: var(--cyan);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--base01);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--base02);
+            text-align: center;
+            color: var(--base01);
+            font-size: 0.9rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--blue);
+            padding-left: 20px;
+            margin: 25px 0;
+            color: var(--base1);
+            font-style: italic;
+            background: var(--base02);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--base01);
+        }
+
+        th {
+            background: var(--base02);
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--base0);
+        }
+
+        tr:hover {
+            background: var(--base02);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☀️ Solarized Dark Dev Blog</h1>
+            <p class="subtitle">科学的に設計された精密な色彩バランス</p>
+        </header>
+
+        <article>
+            <h2>Pythonで機械学習モデルを構築する</h2>
+            
+            <div class="article-meta">
+                <span>📅 2025年10月4日</span>
+                <span>👤 tanaka_ai</span>
+                <span>⏱️ 8分で読める</span>
+            </div>
+
+            <p>
+                機械学習モデルの構築は、適切なライブラリとデータの前処理が重要です。
+                今回はscikit-learnを使った基本的な分類モデルの実装を解説します。
+            </p>
+
+            <h3>データの準備と前処理</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+
+<span class="comment"># データセットの読み込み</span>
+<span class="function">df</span> <span class="operator">=</span> pd.<span class="function">read_csv</span>(<span class="string">'dataset.csv'</span>)
+
+<span class="comment"># 特徴量とターゲットの分割</span>
+<span class="function">X</span> <span class="operator">=</span> df.<span class="function">drop</span>(<span class="string">'target'</span>, <span class="property">axis</span><span class="operator">=</span><span class="number">1</span>)
+<span class="function">y</span> <span class="operator">=</span> df[<span class="string">'target'</span>]
+
+<span class="comment"># トレーニングセットとテストセットに分割</span>
+<span class="function">X_train</span>, X_test, y_train, y_test <span class="operator">=</span> <span class="function">train_test_split</span>(
+    X, y, <span class="property">test_size</span><span class="operator">=</span><span class="number">0.2</span>, <span class="property">random_state</span><span class="operator">=</span><span class="number">42</span>
+)
+
+<span class="comment"># 標準化</span>
+<span class="function">scaler</span> <span class="operator">=</span> <span class="function">StandardScaler</span>()
+<span class="function">X_train_scaled</span> <span class="operator">=</span> scaler.<span class="function">fit_transform</span>(X_train)
+<span class="function">X_test_scaled</span> <span class="operator">=</span> scaler.<span class="function">transform</span>(X_test)</code></pre>
+            </div>
+
+            <h3>モデルのトレーニング</h3>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <div class="code-actions">
+                        <button class="code-btn">コピー</button>
+                    </div>
+                </div>
+                <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score, classification_report
+
+<span class="comment"># モデルの初期化とトレーニング</span>
+<span class="function">model</span> <span class="operator">=</span> <span class="function">RandomForestClassifier</span>(
+    <span class="property">n_estimators</span><span class="operator">=</span><span class="number">100</span>,
+    <span class="property">max_depth</span><span class="operator">=</span><span class="number">10</span>,
+    <span class="property">random_state</span><span class="operator">=</span><span class="number">42</span>
+)
+
+model.<span class="function">fit</span>(X_train_scaled, y_train)
+
+<span class="comment"># 予測と評価</span>
+<span class="function">y_pred</span> <span class="operator">=</span> model.<span class="function">predict</span>(X_test_scaled)
+<span class="function">accuracy</span> <span class="operator">=</span> <span class="function">accuracy_score</span>(y_test, y_pred)
+
+<span class="function">print</span>(<span class="string">f"精度: </span>{accuracy<span class="operator">:</span><span class="number">.4</span>f}<span class="string">"</span>)
+<span class="function">print</span>(<span class="function">classification_report</span>(y_test, y_pred))</code></pre>
+            </div>
+
+            <blockquote>
+                💡 Solarized Dark は Ethan Schoonover によって設計され、
+                長時間のコーディングでも目が疲れにくい色彩設計が特徴です。
+            </blockquote>
+
+            <div class="tags">
+                <span class="tag">#Python</span>
+                <span class="tag">#機械学習</span>
+                <span class="tag">#scikit-learn</span>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2025 Solarized Dark Dev Blog. Designed for precision.</p>
+        </footer>
+    </div>
+</body>
+</html>
