@@ -1,0 +1,242 @@
+name: Deploy Mockups to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/mockups/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/mockups/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create index page
+        run: |
+          cat > docs/mockups/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="ja">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>ブログテーマ モックアップ - プレビュー</title>
+              <style>
+                  * { margin: 0; padding: 0; box-sizing: border-box; }
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                      background: #0d1117;
+                      color: #c9d1d9;
+                      line-height: 1.6;
+                      padding: 40px 20px;
+                  }
+                  .container {
+                      max-width: 1200px;
+                      margin: 0 auto;
+                  }
+                  h1 {
+                      font-size: 2.5rem;
+                      margin-bottom: 20px;
+                      text-align: center;
+                      background: linear-gradient(45deg, #58a6ff, #f85149);
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                  }
+                  .description {
+                      text-align: center;
+                      margin-bottom: 40px;
+                      color: #8b949e;
+                  }
+                  .themes-grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                      gap: 20px;
+                      margin-top: 40px;
+                  }
+                  .theme-card {
+                      background: #161b22;
+                      border: 1px solid #30363d;
+                      border-radius: 12px;
+                      padding: 20px;
+                      transition: all 0.3s ease;
+                  }
+                  .theme-card:hover {
+                      border-color: #58a6ff;
+                      transform: translateY(-2px);
+                      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+                  }
+                  .theme-name {
+                      font-size: 1.3rem;
+                      font-weight: 600;
+                      margin-bottom: 8px;
+                      color: #f0f6fc;
+                  }
+                  .theme-description {
+                      color: #8b949e;
+                      margin-bottom: 15px;
+                      font-size: 0.9rem;
+                  }
+                  .theme-link {
+                      display: inline-block;
+                      background: #238636;
+                      color: white;
+                      padding: 8px 16px;
+                      border-radius: 6px;
+                      text-decoration: none;
+                      font-size: 0.9rem;
+                      transition: background 0.2s;
+                  }
+                  .theme-link:hover {
+                      background: #2ea043;
+                  }
+                  .footer {
+                      text-align: center;
+                      margin-top: 60px;
+                      padding-top: 40px;
+                      border-top: 1px solid #30363d;
+                      color: #8b949e;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>🎨 ブログテーマ モックアップ</h1>
+                  <p class="description">
+                      エンジニア向けブログの15種類のダークテーマプレビュー<br>
+                      各テーマをクリックしてデザインをご確認ください
+                  </p>
+
+                  <div class="themes-grid">
+                      <div class="theme-card">
+                          <div class="theme-name">Solarized Dark</div>
+                          <div class="theme-description">科学的に設計された精密な色彩バランス</div>
+                          <a href="solarized-dark-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Tokyo Night</div>
+                          <div class="theme-description">東京の夜景をイメージした深い青基調</div>
+                          <a href="tokyo-night-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Dracula</div>
+                          <div class="theme-description">紫をアクセントにした人気の高いダークテーマ</div>
+                          <a href="dracula-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Nord</div>
+                          <div class="theme-description">北欧の寒色系パレット、落ち着いた青とグレーの調和</div>
+                          <a href="nord-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">One Dark</div>
+                          <div class="theme-description">Atom由来の定番、バランスの取れた暗色系</div>
+                          <a href="one-dark-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Gruvbox Dark</div>
+                          <div class="theme-description">レトロで温かみのある茶色とオレンジ</div>
+                          <a href="gruvbox-dark-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Material Palenight</div>
+                          <div class="theme-description">マテリアルデザインの紫基調バリエーション</div>
+                          <a href="material-palenight-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Night Owl</div>
+                          <div class="theme-description">夜型エンジニア向けの柔らかいコントラスト</div>
+                          <a href="night-owl-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Ayu Dark</div>
+                          <div class="theme-description">ミニマルで目に優しい、控えめなコントラスト</div>
+                          <a href="ayu-dark-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Monokai Pro</div>
+                          <div class="theme-description">鮮やかながら目に優しいコントラスト</div>
+                          <a href="monokai-pro-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Synthwave '84</div>
+                          <div class="theme-description">レトロフューチャーなネオンカラーテーマ</div>
+                          <a href="synthwave-84-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Cobalt2</div>
+                          <div class="theme-description">深い青を基調としたクールなテーマ</div>
+                          <a href="cobalt2-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Oceanic Next</div>
+                          <div class="theme-description">海をイメージした青緑系の爽やかなテーマ</div>
+                          <a href="oceanic-next-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Spacegray</div>
+                          <div class="theme-description">グレー基調のミニマルで洗練されたテーマ</div>
+                          <a href="spacegray-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+
+                      <div class="theme-card">
+                          <div class="theme-name">Moonlight</div>
+                          <div class="theme-description">月明かりをイメージした神秘的な紫青系</div>
+                          <a href="moonlight-blog.html" class="theme-link">プレビュー</a>
+                      </div>
+                  </div>
+
+                  <div class="footer">
+                      <p>🤖 Generated with <a href="https://claude.ai/code" style="color: #58a6ff;">Claude Code</a></p>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/mockups
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
