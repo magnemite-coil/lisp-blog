@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Editor - Kanban Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1c1c28;
+            --bg-secondary: #25253a;
+            --bg-tertiary: #2f2f47;
+            --bg-hover: #3a3a54;
+            --text-primary: #e8e8f0;
+            --text-secondary: #b8b8cc;
+            --text-muted: #7a7a8f;
+            --border-color: #3a3a54;
+            --accent-blue: #4a9eff;
+            --accent-green: #52d869;
+            --accent-orange: #ff9f4a;
+            --accent-purple: #b57dff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .board-selector {
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .lang-switcher {
+            display: flex;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(82, 216, 105, 0.3);
+        }
+
+        /* Kanban Board */
+        .kanban-container {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .kanban-column {
+            flex: 0 0 400px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 120px);
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .column-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-count {
+            background: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .card.editing {
+            background: var(--bg-primary);
+            border-color: var(--accent-blue);
+            border-width: 2px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .card-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-draft { background: rgba(122, 122, 143, 0.3); color: var(--text-muted); }
+        .status-review { background: rgba(74, 158, 255, 0.3); color: var(--accent-blue); }
+        .status-scheduled { background: rgba(255, 159, 74, 0.3); color: var(--accent-orange); }
+
+        .card-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Editor Modal */
+        .editor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .editor-title {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .toolbar-btn {
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .editor-content {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: none;
+            min-height: 400px;
+            line-height: 1.7;
+        }
+
+        .settings-sidebar {
+            width: 300px;
+            background: var(--bg-primary);
+            border-left: 1px solid var(--border-color);
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .setting-input:focus {
+            border-color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">📋 PostBoard</div>
+            <select class="board-selector">
+                <option>All Articles</option>
+                <option>Tech Blog</option>
+                <option>Design Notes</option>
+            </select>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active">EN</button>
+                <button class="lang-btn">日本語</button>
+            </div>
+            <button class="btn btn-primary">+ New Article</button>
+        </div>
+    </header>
+
+    <!-- Kanban Board -->
+    <div class="kanban-container">
+        <!-- Draft Column -->
+        <div class="kanban-column">
+            <div class="column-header">
+                <div class="column-title">
+                    <span>📝</span>
+                    <span>Draft</span>
+                </div>
+                <span class="column-count">3</span>
+            </div>
+            <div class="column-content">
+                <div class="card editing">
+                    <div class="card-header">
+                        <div class="card-title">Building TypeScript API Client</div>
+                        <span class="card-status status-draft">Draft</span>
+                    </div>
+                    <div class="card-preview">
+TypeScriptの型システムを活用して、型安全なAPIクライアントを実装する方法を解説します。
+
+Learn how to build type-safe API clients using TypeScript's powerful type system...</div>
+                    <div class="card-meta">
+                        <span>📅 Oct 4, 2025</span>
+                        <span>✏️ 1,234 words</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">React Server Components Guide</div>
+                        <span class="card-status status-draft">Draft</span>
+                    </div>
+                    <div class="card-preview">A comprehensive guide to React Server Components and their benefits...</div>
+                    <div class="card-meta">
+                        <span>📅 Oct 3, 2025</span>
+                        <span>✏️ 890 words</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- In Review Column -->
+        <div class="kanban-column">
+            <div class="column-header">
+                <div class="column-title">
+                    <span>👀</span>
+                    <span>In Review</span>
+                </div>
+                <span class="column-count">2</span>
+            </div>
+            <div class="column-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Vue 3 Composition API深掘り</div>
+                        <span class="card-status status-review">Review</span>
+                    </div>
+                    <div class="card-preview">Vue 3のComposition APIを使いこなすための実践的なテクニック集...</div>
+                    <div class="card-meta">
+                        <span>📅 Oct 2, 2025</span>
+                        <span>✏️ 2,100 words</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scheduled Column -->
+        <div class="kanban-column">
+            <div class="column-header">
+                <div class="column-title">
+                    <span>⏰</span>
+                    <span>Scheduled</span>
+                </div>
+                <span class="column-count">1</span>
+            </div>
+            <div class="column-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Modern CSS Grid Layouts</div>
+                        <span class="card-status status-scheduled">Scheduled</span>
+                    </div>
+                    <div class="card-preview">Creating responsive layouts with CSS Grid has never been easier...</div>
+                    <div class="card-meta">
+                        <span>📅 Oct 5, 2025 10:00</span>
+                        <span>✏️ 1,567 words</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Published Column -->
+        <div class="kanban-column">
+            <div class="column-header">
+                <div class="column-title">
+                    <span>✅</span>
+                    <span>Published</span>
+                </div>
+                <span class="column-count">5</span>
+            </div>
+            <div class="column-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">WebAssemblyで高速化</div>
+                        <span class="card-status status-published">Live</span>
+                    </div>
+                    <div class="card-preview">WebAssemblyを使ってブラウザアプリケーションを劇的に高速化する方法...</div>
+                    <div class="card-meta">
+                        <span>📅 Oct 1, 2025</span>
+                        <span>👁️ 3.2k views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor Modal (shown when editing) -->
+    <div class="editor-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Edit Article</div>
+                <button class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="editor-area">
+                    <input type="text" class="editor-title" value="Building TypeScript API Client" placeholder="Article Title">
+                    
+                    <div class="editor-toolbar">
+                        <button class="toolbar-btn"><strong>B</strong></button>
+                        <button class="toolbar-btn"><em>I</em></button>
+                        <button class="toolbar-btn">H2</button>
+                        <button class="toolbar-btn">🔗 Link</button>
+                        <button class="toolbar-btn">🖼️ Image</button>
+                        <button class="toolbar-btn">&lt;/&gt; Code</button>
+                    </div>
+
+                    <textarea class="editor-content">## Overview / 概要
+
+TypeScriptの型システムを活用して、型安全なAPIクライアントを実装する方法を解説します。
+
+Learn how to build type-safe API clients using TypeScript's powerful type system.
+
+## Implementation / 実装
+
+```typescript
+type ApiResponse<T> = {
+  data: T;
+  status: number;
+  message?: string;
+};
+
+async function fetchData<T>(url: string): Promise<ApiResponse<T>> {
+  const response = await fetch(url);
+  const data = await response.json();
+  return {
+    data,
+    status: response.status
+  };
+}
+```
+
+> "Type safety is not just about catching bugs; it's about designing better APIs."
+> 「型安全性は単にバグを見つけるだけでなく、より良いAPIを設計することです。」
+
+This approach ensures that responses are properly typed throughout your application.</textarea>
+                </div>
+                
+                <aside class="settings-sidebar">
+                    <div class="setting-group">
+                        <label class="setting-label">Status</label>
+                        <select class="setting-input">
+                            <option>Draft</option>
+                            <option>In Review</option>
+                            <option>Scheduled</option>
+                            <option>Published</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Publish Date</label>
+                        <input type="datetime-local" class="setting-input" value="2025-10-04T15:00">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Category</label>
+                        <select class="setting-input">
+                            <option>Technology</option>
+                            <option>Design</option>
+                            <option>Business</option>
+                        </select>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

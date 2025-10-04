@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規記事 - Blog CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border-color: #30363d;
+            --accent-primary: #58a6ff;
+            --accent-hover: #4d94ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 30px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: #0d1117;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .title-group {
+            margin-bottom: 30px;
+        }
+
+        .title-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 3rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .title-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .subtitle-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            outline: none;
+        }
+
+        .subtitle-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Toolbar */
+        .editor-toolbar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 5px;
+            padding: 0 10px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar-btn {
+            padding: 6px 10px;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Editor */
+        .editor-container {
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background: var(--bg-secondary);
+        }
+
+        .editor-textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 20px;
+            min-height: 500px;
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 30px 25px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .status-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .status-option {
+            padding: 12px 15px;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-option:hover {
+            border-color: var(--border-color);
+        }
+
+        .status-option.selected {
+            border-color: var(--accent-primary);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-text h4 {
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .status-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .media-preview {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .media-preview:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .media-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .tag-remove:hover {
+            color: var(--danger);
+        }
+
+        .tag-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">📝 CMS</div>
+            <nav class="nav-tabs">
+                <div class="nav-tab">記事一覧</div>
+                <div class="nav-tab active">新規作成</div>
+                <div class="nav-tab">メディア</div>
+                <div class="nav-tab">設定</div>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline">プレビュー</button>
+            <button class="btn btn-primary">公開する</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="content-wrapper">
+                <!-- Title Section -->
+                <div class="title-group">
+                    <input type="text" class="title-input" placeholder="記事のタイトル">
+                    <input type="text" class="subtitle-input" placeholder="サブタイトル（任意）">
+                </div>
+
+                <!-- Toolbar -->
+                <div class="editor-toolbar">
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="太字"><strong>B</strong></button>
+                        <button class="toolbar-btn" title="イタリック"><em>I</em></button>
+                        <button class="toolbar-btn" title="取り消し線"><s>S</s></button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn">H1</button>
+                        <button class="toolbar-btn">H2</button>
+                        <button class="toolbar-btn">H3</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn">🔗</button>
+                        <button class="toolbar-btn">🖼️</button>
+                        <button class="toolbar-btn">🎬</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn">&lt;/&gt;</button>
+                        <button class="toolbar-btn">💬</button>
+                        <button class="toolbar-btn">•</button>
+                        <button class="toolbar-btn">1.</button>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div class="editor-container">
+                    <textarea class="editor-textarea" placeholder="Markdownで本文を書く...
+
+# 見出し
+
+段落テキスト...
+
+```javascript
+const code = 'example';
+```
+
+- リスト項目"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="section-title">公開設定</h3>
+                <div class="status-selector">
+                    <div class="status-option selected">
+                        <span class="status-icon">📝</span>
+                        <div class="status-text">
+                            <h4>下書き</h4>
+                            <p>非公開で保存</p>
+                        </div>
+                    </div>
+                    <div class="status-option">
+                        <span class="status-icon">✅</span>
+                        <div class="status-text">
+                            <h4>すぐに公開</h4>
+                            <p>保存と同時に公開</p>
+                        </div>
+                    </div>
+                    <div class="status-option">
+                        <span class="status-icon">⏰</span>
+                        <div class="status-text">
+                            <h4>予約投稿</h4>
+                            <p>指定日時に公開</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" style="margin-top: 15px;">
+                    <label class="form-label">公開日時</label>
+                    <input type="datetime-local" class="form-input" value="2025-10-04T15:00">
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">カテゴリー</h3>
+                <div class="form-field">
+                    <select class="form-select">
+                        <option>カテゴリーを選択</option>
+                        <option>テクノロジー</option>
+                        <option>デザイン</option>
+                        <option>ビジネス</option>
+                        <option>ライフスタイル</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">タグ</h3>
+                <div class="tag-list">
+                    <span class="tag-item">JavaScript <span class="tag-remove">×</span></span>
+                    <span class="tag-item">Vue.js <span class="tag-remove">×</span></span>
+                </div>
+                <input type="text" class="tag-input" placeholder="タグを追加 (Enterで確定)">
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">アイキャッチ画像</h3>
+                <div class="media-preview">
+                    <div class="media-icon">🖼️</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">画像をアップロード</div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">推奨: 1200×630px</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

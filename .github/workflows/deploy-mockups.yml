@@ -5,10 +5,12 @@ on:
     branches: [ main ]
     paths:
       - 'docs/mockups/**'
+      - 'docs/admin-mockups/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'docs/mockups/**'
+      - 'docs/admin-mockups/**'
   workflow_dispatch:
 
 permissions:
@@ -27,6 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Copy admin mockups to main docs directory
+        run: |
+          cp -r docs/admin-mockups docs/mockups/admin-mockups
+
       - name: Create index page
         run: |
           cat > docs/mockups/index.html << 'EOF'
@@ -35,7 +41,7 @@ jobs:
           <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>ブログテーマ モックアップ - プレビュー</title>
+              <title>ブログシステム モックアップ - プレビュー</title>
               <style>
                   * { margin: 0; padding: 0; box-sizing: border-box; }
                   body {
@@ -284,6 +290,72 @@ jobs:
                   .moonlight .code { background: #2d3748; color: #c8d3f5; padding: 8px; border-radius: 4px; font-family: monospace; }
                   .moonlight .accent { color: #65bcff; }
 
+                  /* 管理画面テーマスタイル */
+                  .admin-section {
+                      margin-top: 60px;
+                      padding-top: 40px;
+                      border-top: 2px solid #30363d;
+                  }
+
+                  .section-title {
+                      font-size: 2rem;
+                      text-align: center;
+                      margin-bottom: 30px;
+                      background: linear-gradient(45deg, #f85149, #58a6ff);
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                  }
+
+                  .admin-kanban {
+                      background: #1c1c28;
+                      color: #d0d0d0;
+                      padding: 20px;
+                  }
+                  .admin-kanban .header { color: #4a9eff; border-bottom: 1px solid #2c2c3a; padding-bottom: 10px; margin-bottom: 15px; }
+                  .admin-kanban .title { color: #7dd3fc; font-size: 24px; margin-bottom: 8px; }
+                  .admin-kanban .code { background: #2c2c3a; color: #d0d0d0; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .admin-kanban .accent { color: #60a5fa; }
+
+                  .admin-zen {
+                      background: #09090b;
+                      color: #fafafa;
+                      padding: 20px;
+                  }
+                  .admin-zen .header { color: #a855f7; border-bottom: 1px solid #18181b; padding-bottom: 10px; margin-bottom: 15px; }
+                  .admin-zen .title { color: #c084fc; font-size: 24px; margin-bottom: 8px; }
+                  .admin-zen .code { background: #18181b; color: #fafafa; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .admin-zen .accent { color: #e879f9; }
+
+                  .admin-multi {
+                      background: #111827;
+                      color: #f3f4f6;
+                      padding: 20px;
+                  }
+                  .admin-multi .header { color: #3b82f6; border-bottom: 1px solid #1f2937; padding-bottom: 10px; margin-bottom: 15px; }
+                  .admin-multi .title { color: #60a5fa; font-size: 24px; margin-bottom: 8px; }
+                  .admin-multi .code { background: #1f2937; color: #f3f4f6; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .admin-multi .accent { color: #93c5fd; }
+
+                  .admin-mobile {
+                      background: #0f172a;
+                      color: #f1f5f9;
+                      padding: 20px;
+                  }
+                  .admin-mobile .header { color: #06b6d4; border-bottom: 1px solid #1e293b; padding-bottom: 10px; margin-bottom: 15px; }
+                  .admin-mobile .title { color: #67e8f9; font-size: 24px; margin-bottom: 8px; }
+                  .admin-mobile .code { background: #1e293b; color: #f1f5f9; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .admin-mobile .accent { color: #22d3ee; }
+
+                  .admin-timeline {
+                      background: #18181b;
+                      color: #fafafa;
+                      padding: 20px;
+                  }
+                  .admin-timeline .header { color: #14b8a6; border-bottom: 1px solid #27272a; padding-bottom: 10px; margin-bottom: 15px; }
+                  .admin-timeline .title { color: #5eead4; font-size: 24px; margin-bottom: 8px; }
+                  .admin-timeline .code { background: #27272a; color: #fafafa; padding: 8px; border-radius: 4px; font-family: monospace; }
+                  .admin-timeline .accent { color: #2dd4bf; }
+
                   @media (max-width: 768px) {
                       .themes-grid {
                           grid-template-columns: 1fr;
@@ -293,10 +365,10 @@ jobs:
           </head>
           <body>
               <div class="container">
-                  <h1>🎨 ブログテーマ モックアップ</h1>
+                  <h1>🎨 ブログシステム モックアップ</h1>
                   <p class="description">
-                      エンジニア向けブログの15種類のダークテーマプレビュー<br>
-                      各テーマをクリックしてデザインをご確認ください
+                      エンジニア向けブログの15種類のテーマ + 10種類の管理画面プレビュー<br>
+                      各デザインをクリックしてUIをご確認ください
                   </p>
 
                   <div class="themes-grid">
@@ -552,6 +624,183 @@ jobs:
                               <div class="theme-name">Moonlight</div>
                               <div class="theme-description">月明かりをイメージした神秘的な紫青系</div>
                               <a href="moonlight-blog.html" class="theme-link">プレビュー</a>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 管理画面セクション -->
+                  <div class="admin-section">
+                      <h2 class="section-title">⚙️ 管理画面デザイン</h2>
+
+                      <div class="themes-grid">
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-kanban">
+                                      <div class="header">📋 Kanban Admin</div>
+                                      <div class="title">記事管理ボード</div>
+                                      <p>Trelloライクなカンバンボードで記事の進捗を管理...</p>
+                                      <div class="code">Draft → Review → Published</div>
+                                      <p class="accent">ワークフロー重視の管理</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Kanban Board Style</div>
+                                  <div class="theme-description">カンバンボードでワークフロー管理</div>
+                                  <a href="admin-mockups/admin-kanban-board.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-zen">
+                                      <div class="header">🧘 Zen Editor</div>
+                                      <div class="title">集中執筆モード</div>
+                                      <p>究極のミニマルデザインで執筆に完全集中...</p>
+                                      <div class="code">Distraction-free writing</div>
+                                      <p class="accent">没入感のある執筆体験</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Zen Mode</div>
+                                  <div class="theme-description">究極のミニマルデザイン</div>
+                                  <a href="admin-mockups/admin-zen-mode.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-multi">
+                                      <div class="header">📊 Multi-Column</div>
+                                      <div class="title">高密度ダッシュボード</div>
+                                      <p>3カラムレイアウトで情報密度を最大化...</p>
+                                      <div class="code">Navigation | Editor | Properties</div>
+                                      <p class="accent">パワーユーザー向け</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Multi-Column Dashboard</div>
+                                  <div class="theme-description">情報密度の高い3カラムレイアウト</div>
+                                  <a href="admin-mockups/admin-multi-column.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-mobile">
+                                      <div class="header">📱 Mobile Writer</div>
+                                      <div class="title">モバイル最適化</div>
+                                      <p>スマートフォンでの執筆を完全サポート...</p>
+                                      <div class="code">Touch-optimized interface</div>
+                                      <p class="accent">外出先での更新に最適</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Mobile-First Design</div>
+                                  <div class="theme-description">スマホ最適化レイアウト</div>
+                                  <a href="admin-mockups/admin-mobile-first.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-timeline">
+                                      <div class="header">📝 Timeline Editor</div>
+                                      <div class="title">ストーリー編集</div>
+                                      <p>ブロック単位でストーリーを構築...</p>
+                                      <div class="code">Block-based storytelling</div>
+                                      <p class="accent">長編記事に最適</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Timeline Editor</div>
+                                  <div class="theme-description">ブロック単位のストーリーエディタ</div>
+                                  <a href="admin-mockups/admin-timeline-editor.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-kanban">
+                                      <div class="header">📄 Classic Sidebar</div>
+                                      <div class="title">伝統的レイアウト</div>
+                                      <p>サイドバーナビゲーション型の定番...</p>
+                                      <div class="code">Sidebar | Content | Settings</div>
+                                      <p class="accent">安定感のある構成</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Classic Sidebar</div>
+                                  <div class="theme-description">サイドバーナビゲーション型の定番</div>
+                                  <a href="admin-mockups/admin-classic-sidebar.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-multi">
+                                      <div class="header">🔝 Top Bar</div>
+                                      <div class="title">トップバー型</div>
+                                      <p>GitHubライクなタブ切り替え...</p>
+                                      <div class="code">Tab-based navigation</div>
+                                      <p class="accent">モダンなUI</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Top Bar Navigation</div>
+                                  <div class="theme-description">トップバーでタブ切り替え</div>
+                                  <a href="admin-mockups/admin-topbar.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-zen">
+                                      <div class="header">🎯 Focus Mode</div>
+                                      <div class="title">集中モード</div>
+                                      <p>執筆に集中できるミニマルデザイン...</p>
+                                      <div class="code">Minimal distractions</div>
+                                      <p class="accent">長文作成に最適</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Focus Mode</div>
+                                  <div class="theme-description">執筆に集中できるミニマルデザイン</div>
+                                  <a href="admin-mockups/admin-focus-mode.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-mobile">
+                                      <div class="header">🔄 Split View</div>
+                                      <div class="title">分割ビュー</div>
+                                      <p>エディタとプレビューを同時表示...</p>
+                                      <div class="code">Editor | Live Preview</div>
+                                      <p class="accent">リアルタイム確認</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Split View</div>
+                                  <div class="theme-description">エディタとプレビューを同時表示</div>
+                                  <a href="admin-mockups/admin-split-view.html" class="theme-link">プレビュー</a>
+                              </div>
+                          </div>
+
+                          <div class="theme-card">
+                              <div class="theme-thumbnail">
+                                  <div class="mini-blog admin-timeline">
+                                      <div class="header">🎨 Card Layout</div>
+                                      <div class="title">カード型UI</div>
+                                      <p>カード型の視覚的なレイアウト...</p>
+                                      <div class="code">Modular card design</div>
+                                      <p class="accent">直感的で分かりやすい</p>
+                                  </div>
+                              </div>
+                              <div class="theme-info">
+                                  <div class="theme-name">Card Layout</div>
+                                  <div class="theme-description">カード型の視覚的なレイアウト</div>
+                                  <a href="admin-mockups/admin-card-layout.html" class="theme-link">プレビュー</a>
+                              </div>
                           </div>
                       </div>
                   </div>
