@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer - Zen Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #09090b;
+            --text: #fafafa;
+            --text-dim: #71717a;
+            --accent: #a855f7;
+            --accent-dim: #7c3aed;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Minimalist Menu Bar */
+        .menu-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(9, 9, 11, 0.95), transparent);
+            z-index: 100;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .menu-bar:hover {
+            opacity: 1;
+        }
+
+        .menu-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .word-count {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .lang-option {
+            padding: 4px 10px;
+            background: none;
+            border: 1px solid var(--text-dim);
+            color: var(--text-dim);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .lang-option.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .save-status {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* Main Editor */
+        .editor-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px 40px;
+        }
+
+        .editor-wrapper {
+            max-width: 720px;
+            width: 100%;
+        }
+
+        .title-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: var(--text);
+            outline: none;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .title-input::placeholder {
+            color: var(--text-dim);
+            opacity: 0.3;
+        }
+
+        .content-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--text);
+            outline: none;
+            resize: none;
+            line-height: 1.9;
+            min-height: 500px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .content-input::placeholder {
+            color: var(--text-dim);
+            opacity: 0.3;
+        }
+
+        /* Bottom Toolbar */
+        .bottom-toolbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: linear-gradient(to top, rgba(9, 9, 11, 0.95), transparent);
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .bottom-toolbar:hover {
+            opacity: 1;
+        }
+
+        .toolbar-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        /* Side Panel (slides in) */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: rgba(9, 9, 11, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            overflow-y: auto;
+            transition: right 0.3s;
+            z-index: 200;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .side-panel.open {
+            right: 0;
+        }
+
+        .panel-section {
+            margin-bottom: 30px;
+        }
+
+        .panel-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+        }
+
+        .panel-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .panel-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .status-card {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .status-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+        }
+
+        .status-card.active {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--accent);
+        }
+
+        .status-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .publish-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .publish-btn:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Bar -->
+    <div class="menu-bar">
+        <div class="menu-left">
+            <button class="icon-btn" title="Back">←</button>
+            <button class="icon-btn" title="Settings">⚙</button>
+            <span class="word-count">1,234 words</span>
+        </div>
+        <div class="lang-toggle">
+            <button class="lang-option active">EN</button>
+            <button class="lang-option">日本語</button>
+        </div>
+        <div class="save-status">All changes saved</div>
+    </div>
+
+    <!-- Editor -->
+    <div class="editor-container">
+        <div class="editor-wrapper">
+            <input 
+                type="text" 
+                class="title-input" 
+                placeholder="Untitled"
+                value="The Art of Minimalist Design"
+            >
+            <textarea class="content-input" placeholder="Begin writing...">## Philosophy / 哲学
+
+Minimalism in design is not about having less. It's about making room for more—more clarity, more focus, more meaning.
+
+ミニマリズムデザインとは、少なく持つことではありません。より多くのもの、すなわちより明確さ、より集中力、より意味を生み出す空間を作ることです。
+
+```css
+/* Pure simplicity */
+.minimal {
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+```
+
+> "Simplicity is the ultimate sophistication."
+> — Leonardo da Vinci
+
+> 「シンプルさこそ究極の洗練である。」
+> — レオナルド・ダ・ヴィンチ
+
+## Practice / 実践
+
+Start by removing everything unnecessary. Then add back only what serves a purpose.
+
+不要なものをすべて取り除くことから始めましょう。そして、目的を果たすものだけを戻します。</textarea>
+        </div>
+    </div>
+
+    <!-- Bottom Toolbar -->
+    <div class="bottom-toolbar">
+        <button class="toolbar-btn">Markdown</button>
+        <button class="toolbar-btn">Preview</button>
+        <button class="toolbar-btn">Settings</button>
+        <button class="toolbar-btn">Publish</button>
+    </div>
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+        <div class="panel-section">
+            <div class="panel-title">Status</div>
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-icon">📝</div>
+                    <div class="status-label">Draft</div>
+                </div>
+                <div class="status-card active">
+                    <div class="status-icon">✅</div>
+                    <div class="status-label">Publish</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon">⏰</div>
+                    <div class="status-label">Schedule</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon">🔒</div>
+                    <div class="status-label">Private</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-section">
+            <div class="panel-title">Publish Date</div>
+            <input type="datetime-local" class="panel-input" value="2025-10-04T16:00">
+        </div>
+
+        <div class="panel-section">
+            <div class="panel-title">Category</div>
+            <select class="panel-input">
+                <option>Design</option>
+                <option>Technology</option>
+                <option>Philosophy</option>
+                <option>Writing</option>
+            </select>
+        </div>
+
+        <div class="panel-section">
+            <div class="panel-title">URL Slug</div>
+            <input type="text" class="panel-input" value="art-of-minimalist-design" placeholder="url-slug">
+        </div>
+
+        <div class="panel-section">
+            <button class="publish-btn">Publish Article</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle settings panel
+        document.querySelectorAll('.icon-btn')[1].addEventListener('click', function() {
+            document.querySelector('.side-panel').classList.toggle('open');
+        });
+
+        document.querySelector('.toolbar-btn:nth-child(3)').addEventListener('click', function() {
+            document.querySelector('.side-panel').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

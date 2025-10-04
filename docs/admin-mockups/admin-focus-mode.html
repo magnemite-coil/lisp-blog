@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事作成 - Focus Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --bg-hover: #353535;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #6a6a6a;
+            --accent-primary: #7c3aed;
+            --accent-hover: #6d28d9;
+            --border-color: #2a2a2a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Floating Header */
+        .floating-header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .header-icon:hover {
+            background: var(--bg-hover);
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border-color);
+        }
+
+        .word-count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Editor Container */
+        .editor-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 50px;
+        }
+
+        .editor-wrapper {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .title-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 3.5rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            outline: none;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .title-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .content-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            outline: none;
+            min-height: 400px;
+            resize: none;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+        }
+
+        .content-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Floating Toolbar */
+        .floating-toolbar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            gap: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .floating-toolbar.visible {
+            opacity: 1;
+        }
+
+        .toolbar-btn {
+            padding: 10px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* Settings Panel (slides in from right) */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            padding: 30px;
+            overflow-y: auto;
+            transition: right 0.3s;
+            z-index: 50;
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-group:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .setting-input, .setting-select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .setting-input:focus, .setting-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            padding: 12px 15px;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-option:hover {
+            border-color: var(--border-color);
+        }
+
+        .radio-option.active {
+            border-color: var(--accent-primary);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .radio-circle {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .radio-option.active .radio-circle {
+            border-color: var(--accent-primary);
+        }
+
+        .radio-option.active .radio-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-height: 50px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .tag-close {
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Header -->
+    <div class="floating-header">
+        <span class="header-icon" title="戻る">←</span>
+        <span class="header-icon" title="設定">⚙️</span>
+        <div class="header-divider"></div>
+        <span class="word-count">1,234文字</span>
+        <div class="header-divider"></div>
+        <button class="btn-sm btn-primary">下書き保存</button>
+        <button class="btn-sm btn-primary">公開</button>
+    </div>
+
+    <!-- Editor Container -->
+    <div class="editor-container">
+        <div class="editor-wrapper">
+            <input 
+                type="text" 
+                class="title-input" 
+                placeholder="無題の記事"
+                onkeyup="document.querySelector('.floating-toolbar').classList.add('visible')"
+            >
+            <textarea 
+                class="content-input" 
+                placeholder="今日は何を書きますか？"
+                onkeyup="document.querySelector('.floating-toolbar').classList.add('visible')"
+            ></textarea>
+        </div>
+    </div>
+
+    <!-- Floating Toolbar -->
+    <div class="floating-toolbar">
+        <button class="toolbar-btn"><strong>B</strong></button>
+        <button class="toolbar-btn"><em>I</em></button>
+        <button class="toolbar-btn">H1</button>
+        <button class="toolbar-btn">H2</button>
+        <button class="toolbar-btn">🔗</button>
+        <button class="toolbar-btn">🖼️</button>
+        <button class="toolbar-btn">&lt;/&gt;</button>
+        <button class="toolbar-btn">💬</button>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2 class="panel-title">記事設定</h2>
+            <button class="close-btn" onclick="document.getElementById('settingsPanel').classList.remove('open')">×</button>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">公開ステータス</label>
+            <div class="radio-group">
+                <div class="radio-option active">
+                    <div class="radio-circle"></div>
+                    <span>下書き</span>
+                </div>
+                <div class="radio-option">
+                    <div class="radio-circle"></div>
+                    <span>公開</span>
+                </div>
+                <div class="radio-option">
+                    <div class="radio-circle"></div>
+                    <span>予約投稿</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">公開日時</label>
+            <input type="datetime-local" class="setting-input" value="2025-10-04T16:00">
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">カテゴリー</label>
+            <select class="setting-select">
+                <option>選択してください</option>
+                <option>テクノロジー</option>
+                <option>デザイン</option>
+                <option>ライフスタイル</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">タグ</label>
+            <div class="tag-container">
+                <span class="tag">React <span class="tag-close">×</span></span>
+                <span class="tag">TypeScript <span class="tag-close">×</span></span>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">アイキャッチ画像</label>
+            <div class="upload-zone">
+                <div class="upload-icon">📸</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                    画像をドラッグ&ドロップ
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">URL スラッグ</label>
+            <input type="text" class="setting-input" placeholder="my-awesome-post">
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">メタディスクリプション</label>
+            <textarea class="setting-input" rows="3" placeholder="SEO用の説明文（160文字以内推奨）"></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Settings panel toggle (for demo)
+        document.querySelectorAll('.header-icon')[1].addEventListener('click', function() {
+            document.getElementById('settingsPanel').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

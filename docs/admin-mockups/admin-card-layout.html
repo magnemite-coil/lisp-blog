@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事作成 - Modern Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #131318;
+            --bg-card: #1a1a24;
+            --bg-hover: #252530;
+            --text-primary: #f0f0f5;
+            --text-secondary: #b0b0c0;
+            --text-muted: #70707a;
+            --border-color: #2a2a35;
+            --accent-primary: #ff6b6b;
+            --accent-secondary: #4ecdc4;
+            --accent-tertiary: #ffe66d;
+            --success: #51cf66;
+            --gradient-1: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            --gradient-2: linear-gradient(135deg, #4ecdc4 0%, #44a3f7 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb-item {
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-primary);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-hover);
+        }
+
+        .btn-gradient {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Editor Section */
+        .editor-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .title-card .title-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            outline: none;
+            line-height: 1.2;
+        }
+
+        .title-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .subtitle-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            outline: none;
+            margin-top: 10px;
+        }
+
+        /* Formatting Toolbar */
+        .toolbar-card {
+            background: var(--bg-card);
+        }
+
+        .toolbar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .toolbar-item {
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .toolbar-item:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .toolbar-icon {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        /* Content Editor */
+        .content-card {
+            min-height: 500px;
+        }
+
+        .content-textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            min-height: 450px;
+            line-height: 1.8;
+        }
+
+        .content-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Status Card */
+        .status-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .status-btn {
+            padding: 15px;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .status-btn:hover {
+            border-color: var(--border-color);
+        }
+
+        .status-btn.active {
+            border-color: var(--accent-primary);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .status-btn-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .status-emoji {
+            font-size: 1.3rem;
+        }
+
+        .status-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .status-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: 35px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        /* Media Upload */
+        .media-upload {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-upload:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .upload-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .upload-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Tag Input */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            min-height: 48px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--gradient-2);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tag-close {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .tag-close:hover {
+            opacity: 1;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-item {
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="breadcrumb">
+            <span class="breadcrumb-item">📝 記事</span>
+            <span>›</span>
+            <span class="breadcrumb-item active">新規作成</span>
+        </div>
+        <div class="top-actions">
+            <button class="btn btn-outline">プレビュー</button>
+            <button class="btn btn-gradient">公開する</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="grid">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <!-- Title Card -->
+                <div class="card title-card">
+                    <input type="text" class="title-input" placeholder="魅力的なタイトルを入力...">
+                    <input type="text" class="subtitle-input" placeholder="サブタイトル（任意）">
+                </div>
+
+                <!-- Toolbar Card -->
+                <div class="card toolbar-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🎨</div>
+                            <span>フォーマット</span>
+                        </div>
+                    </div>
+                    <div class="toolbar-grid">
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon"><strong>B</strong></div>
+                            <div>太字</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon"><em>I</em></div>
+                            <div>斜体</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">H1</div>
+                            <div>見出し</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">🔗</div>
+                            <div>リンク</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">🖼️</div>
+                            <div>画像</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">🎬</div>
+                            <div>動画</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">&lt;/&gt;</div>
+                            <div>コード</div>
+                        </div>
+                        <div class="toolbar-item">
+                            <div class="toolbar-icon">💬</div>
+                            <div>引用</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Card -->
+                <div class="card content-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">✏️</div>
+                            <span>本文</span>
+                        </div>
+                    </div>
+                    <textarea class="content-textarea" placeholder="ここから書き始めましょう...
+
+Markdownで自由に執筆できます。
+
+# 見出し
+## サブ見出し
+
+**太字** や *斜体* も使えます。
+
+```javascript
+// コードブロックも簡単に
+const hello = 'world';
+```
+
+素晴らしい記事を書いてください！"></textarea>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Status Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📊</div>
+                            <span>公開設定</span>
+                        </div>
+                    </div>
+                    <div class="status-options">
+                        <div class="status-btn active">
+                            <div class="status-btn-header">
+                                <span class="status-emoji">📝</span>
+                                <span class="status-name">下書き</span>
+                            </div>
+                            <div class="status-desc">非公開で保存</div>
+                        </div>
+                        <div class="status-btn">
+                            <div class="status-btn-header">
+                                <span class="status-emoji">🚀</span>
+                                <span class="status-name">公開</span>
+                            </div>
+                            <div class="status-desc">すぐに公開する</div>
+                        </div>
+                        <div class="status-btn">
+                            <div class="status-btn-header">
+                                <span class="status-emoji">⏰</span>
+                                <span class="status-name">予約投稿</span>
+                            </div>
+                            <div class="status-desc">指定日時に公開</div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="form-label">公開日時</label>
+                        <input type="datetime-local" class="form-control" value="2025-10-04T18:00">
+                    </div>
+                </div>
+
+                <!-- Category & Tags Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🏷️</div>
+                            <span>分類</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">カテゴリー</label>
+                        <select class="form-control">
+                            <option>選択してください</option>
+                            <option>テクノロジー</option>
+                            <option>デザイン</option>
+                            <option>ビジネス</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">タグ</label>
+                        <div class="tag-container">
+                            <span class="tag">React <span class="tag-close">×</span></span>
+                            <span class="tag">TypeScript <span class="tag-close">×</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🖼️</div>
+                            <span>アイキャッチ</span>
+                        </div>
+                    </div>
+                    <div class="media-upload">
+                        <div class="upload-content">
+                            <div class="upload-icon">📸</div>
+                            <div class="upload-text">画像をアップロード</div>
+                            <div class="upload-hint">ドラッグ&ドロップまたはクリック</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📈</div>
+                            <span>統計</span>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-label">文字数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">分で読める</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</body>
+</html>

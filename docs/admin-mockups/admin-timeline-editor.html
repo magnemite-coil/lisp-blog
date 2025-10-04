@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Timeline Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #18181b;
+            --bg-secondary: #27272a;
+            --bg-tertiary: #3f3f46;
+            --text-primary: #fafafa;
+            --text-secondary: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --accent: #14b8a6;
+            --accent-purple: #a78bfa;
+            --accent-orange: #fb923c;
+            --border: #3f3f46;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .timeline-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .story-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .header-center {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-switcher {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            padding: 8px 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Timeline Sidebar */
+        .timeline-sidebar {
+            width: 350px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-header-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .add-block-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-block-btn:hover {
+            background: #0d9488;
+        }
+
+        .timeline-blocks {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .timeline-block {
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .timeline-block:hover {
+            border-color: var(--border);
+        }
+
+        .timeline-block.active {
+            border-color: var(--accent);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .block-icon {
+            font-size: 1.2rem;
+        }
+
+        .block-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .block-preview {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .block-number {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Editor Area */
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-btn {
+            padding: 8px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .editor-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .block-editor {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .block-type-selector {
+            margin-bottom: 20px;
+        }
+
+        .type-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .type-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .type-option {
+            padding: 10px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .type-option:hover {
+            border-color: var(--border);
+        }
+
+        .type-option.active {
+            border-color: var(--accent);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .content-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: none;
+            min-height: 300px;
+            line-height: 1.8;
+            font-family: Menlo, Monaco, 'Courier New', monospace;
+        }
+
+        .title-input-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* Properties Panel */
+        .properties-panel {
+            width: 320px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 25px 20px;
+            overflow-y: auto;
+        }
+
+        .property-section {
+            margin-bottom: 25px;
+        }
+
+        .property-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .property-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .property-input:focus {
+            border-color: var(--accent);
+        }
+
+        .media-upload {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .media-upload:hover {
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="timeline-header">
+        <div class="header-left">
+            <button class="back-btn">←</button>
+            <div class="story-title">A Journey Through Modern Web Development</div>
+        </div>
+        <div class="header-center">
+            <div class="lang-switcher">
+                <button class="lang-btn active">EN</button>
+                <button class="lang-btn">日本語</button>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-outline">Save Draft</button>
+            <button class="btn btn-primary">Publish Story</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Timeline Sidebar -->
+        <aside class="timeline-sidebar">
+            <div class="timeline-header-section">
+                <button class="add-block-btn">+ Add New Block</button>
+            </div>
+            <div class="timeline-blocks">
+                <div class="timeline-block active">
+                    <span class="block-number">1</span>
+                    <div class="block-header">
+                        <span class="block-icon">📝</span>
+                        <span class="block-type">Title</span>
+                    </div>
+                    <div class="block-preview">A Journey Through Modern Web Development</div>
+                </div>
+
+                <div class="timeline-block">
+                    <span class="block-number">2</span>
+                    <div class="block-header">
+                        <span class="block-icon">📄</span>
+                        <span class="block-type">Text</span>
+                    </div>
+                    <div class="block-preview">The web has evolved dramatically over the past decade...</div>
+                </div>
+
+                <div class="timeline-block">
+                    <span class="block-number">3</span>
+                    <div class="block-header">
+                        <span class="block-icon">&lt;/&gt;</span>
+                        <span class="block-type">Code</span>
+                    </div>
+                    <div class="block-preview">async function fetchData() {...</div>
+                </div>
+
+                <div class="timeline-block">
+                    <span class="block-number">4</span>
+                    <div class="block-header">
+                        <span class="block-icon">💬</span>
+                        <span class="block-type">Quote</span>
+                    </div>
+                    <div class="block-preview">"The best way to predict the future is to invent it."</div>
+                </div>
+
+                <div class="timeline-block">
+                    <span class="block-number">5</span>
+                    <div class="block-header">
+                        <span class="block-icon">🖼️</span>
+                        <span class="block-type">Image</span>
+                    </div>
+                    <div class="block-preview">architecture-diagram.png</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Editor Area -->
+        <main class="editor-area">
+            <div class="editor-toolbar">
+                <button class="toolbar-btn"><strong>B</strong></button>
+                <button class="toolbar-btn"><em>I</em></button>
+                <button class="toolbar-btn">H2</button>
+                <button class="toolbar-btn">🔗 Link</button>
+                <button class="toolbar-btn">🖼️ Image</button>
+                <button class="toolbar-btn">&lt;/&gt; Code</button>
+            </div>
+            <div class="editor-content">
+                <div class="block-editor">
+                    <div class="block-type-selector">
+                        <div class="type-label">Block Type</div>
+                        <div class="type-options">
+                            <div class="type-option">📄 Text</div>
+                            <div class="type-option active">&lt;/&gt; Code</div>
+                            <div class="type-option">💬 Quote</div>
+                            <div class="type-option">🖼️ Image</div>
+                        </div>
+                    </div>
+
+                    <textarea class="content-input">## Modern Async Patterns / モダンな非同期パターン
+
+JavaScript's async/await syntax has revolutionized how we handle asynchronous operations.
+
+JavaScriptのasync/await構文は、非同期操作の扱い方を革新しました。
+
+```javascript
+// Parallel execution / 並列実行
+async function fetchAllData() {
+  const [users, posts, comments] = await Promise.all([
+    fetchUsers(),
+    fetchPosts(),
+    fetchComments()
+  ]);
+  
+  return { users, posts, comments };
+}
+
+// Sequential with error handling / エラーハンドリング付き逐次実行
+async function processData() {
+  try {
+    const data = await fetchData();
+    const processed = await processStep1(data);
+    const result = await processStep2(processed);
+    return result;
+  } catch (error) {
+    console.error('Processing failed:', error);
+    throw error;
+  }
+}
+```
+
+> "Async/await makes asynchronous code look and behave like synchronous code."
+> 「Async/awaitは非同期コードを同期コードのように見せ、振る舞わせます。」
+
+### Key Benefits / 主な利点
+
+1. **Readability** / **可読性**: Code flows naturally
+2. **Error Handling** / **エラー処理**: Try/catch works as expected
+3. **Debugging** / **デバッグ**: Stack traces are meaningful</textarea>
+                </div>
+            </div>
+        </main>
+
+        <!-- Properties Panel -->
+        <aside class="properties-panel">
+            <div class="property-section">
+                <div class="property-title">Block Settings</div>
+                <select class="property-input">
+                    <option>JavaScript</option>
+                    <option>TypeScript</option>
+                    <option>Python</option>
+                    <option>Go</option>
+                </select>
+                <select class="property-input">
+                    <option>Default Theme</option>
+                    <option>Monokai</option>
+                    <option>Dracula</option>
+                    <option>Nord</option>
+                </select>
+            </div>
+
+            <div class="property-section">
+                <div class="property-title">Media</div>
+                <div class="media-upload">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">📸</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Add image or video</div>
+                </div>
+            </div>
+
+            <div class="property-section">
+                <div class="property-title">Metadata</div>
+                <input type="text" class="property-input" placeholder="Alt text">
+                <input type="text" class="property-input" placeholder="Caption">
+                <input type="text" class="property-input" placeholder="Credit / Source">
+            </div>
+
+            <div class="property-section">
+                <div class="property-title">Publication</div>
+                <input type="datetime-local" class="property-input" value="2025-10-04T19:00">
+                <select class="property-input">
+                    <option>Draft</option>
+                    <option>Published</option>
+                    <option>Scheduled</option>
+                </select>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>
