@@ -91,6 +91,16 @@
                              post-id user-id title content)))
       (> affected 0))))
 
+(defun get-post-by-id (post-id)
+  "IDで投稿を取得（存在確認用）"
+  (with-db
+    (let ((result (query "SELECT id, user_id, title FROM posts WHERE id = $1"
+                         post-id :row)))
+      (when result
+        (list :id (nth 0 result)
+              :user-id (nth 1 result)
+              :title (nth 2 result))))))
+
 (defun delete-post (post-id user-id)
   "投稿を削除（作成者のみ）"
   (with-db
