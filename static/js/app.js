@@ -11,18 +11,6 @@ const app = createApp({
         content: '',
         status: 'draft'
       },
-      loginForm: {
-        username: '',
-        password: ''
-      },
-      signupForm: {
-        username: '',
-        email: '',
-        password: '',
-        display_name: ''
-      },
-      showLoginModal: false,
-      showSignupModal: false
     }
   },
   
@@ -42,70 +30,7 @@ const app = createApp({
         console.error('認証チェックエラー:', error);
       }
     },
-    
-    async login() {
-      try {
-        const formData = new URLSearchParams();
-        formData.append('username', this.loginForm.username);
-        formData.append('password', this.loginForm.password);
-        
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok) {
-          alert('ログイン成功！');
-          this.showLoginModal = false;
-          this.loginForm = { username: '', password: '' };
-          await this.checkAuth();
-          await this.fetchPosts();
-        } else {
-          alert(result.message || 'ログインに失敗しました');
-        }
-      } catch (error) {
-        console.error('ログインエラー:', error);
-        alert('ログインに失敗しました');
-      }
-    },
-    
-    async signup() {
-      try {
-        const formData = new URLSearchParams();
-        formData.append('username', this.signupForm.username);
-        formData.append('email', this.signupForm.email);
-        formData.append('password', this.signupForm.password);
-        formData.append('display-name', this.signupForm.display_name || this.signupForm.username);
-        
-        const response = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok) {
-          alert('アカウント作成成功！ログインしてください。');
-          this.showSignupModal = false;
-          this.signupForm = { username: '', email: '', password: '', display_name: '' };
-          this.showLoginModal = true;
-        } else {
-          alert(result.message || 'アカウント作成に失敗しました');
-        }
-      } catch (error) {
-        console.error('サインアップエラー:', error);
-        alert('アカウント作成に失敗しました');
-      }
-    },
-    
+
     async logout() {
       try {
         await fetch('/api/auth/logout', { method: 'POST' });

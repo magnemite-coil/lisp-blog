@@ -1,0 +1,267 @@
+/* Login/Signup Page CSS - Based on /docs/login-mockups/blog_login_mock.html */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.login-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.8);
+    z-index: -1;
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: #667eea;
+}
+
+.logo-text {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.signup-btn {
+    background: #00d084;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.signup-btn:hover {
+    background: #00b872;
+}
+
+.login-btn-header {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.login-btn-header:hover {
+    background: white;
+    color: #667eea;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 12px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.brand-name {
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.brand-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #667eea;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: #00d084;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.login-btn:hover {
+    background: #00b872;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.forgot-password a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.divider::before {
+    margin-right: 15px;
+}
+
+.divider::after {
+    margin-left: 15px;
+}
+
+.switch-link {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.switch-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.switch-link a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    background: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.success-message {
+    background: #efe;
+    color: #3c3;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-header {
+        padding: 15px 20px;
+    }
+
+    .login-card {
+        padding: 40px 30px;
+    }
+
+    .brand-name {
+        font-size: 36px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+}
