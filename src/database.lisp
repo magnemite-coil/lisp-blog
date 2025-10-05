@@ -66,3 +66,29 @@
     (execute "DROP TABLE IF EXISTS sessions CASCADE")
     (execute "DROP TABLE IF EXISTS users CASCADE")
     (format t "All tables dropped.~%")))
+
+(defun add-draft-status-column ()
+  "postsテーブルにstatusカラムを追加（下書き機能用）"
+  (with-db
+    (handler-case
+        (progn
+          ;; statusカラムを追加（デフォルト値'published'で既存データ保護）
+          (execute "ALTER TABLE posts ADD COLUMN status VARCHAR(20) DEFAULT 'published'")
+          ;; 既存レコードに明示的にpublished値を設定
+          (execute "UPDATE posts SET status = 'published' WHERE status IS NULL")
+          ;; CHECK制約を追加してstatus値を制限
+          (execute "ALTER TABLE posts ADD CONSTRAINT posts_status_check
+                    CHECK (status IN ('draft', 'published'))")
+          (format t "Successfully added status column to posts table.~%")
+          (format t "Existing posts marked as 'published'.~%"))
+      ;; カラムが既に存在する場合のエラーハンドリング
+      (cl-postgres:database-error (e)
+        (if (search "already exists" (princ-to-string e))
+            (format t "Status column already exists, skipping migration.~%")
+            (error e))))))
+
+(defun migrate-database ()
+  "データベースマイグレーションを実行"
+  (format t "Starting database migration...~%")
+  (add-draft-status-column)
+  (format t "Database migration completed.~%"))
