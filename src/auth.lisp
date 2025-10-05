@@ -12,21 +12,22 @@
 
 (defun create-user (username email password &optional display-name bio)
   "新しいユーザーを作成"
-  (unless (valid-username-p username)
-    (error "Invalid username. Must be 3-50 characters, alphanumeric, - or _"))
-  (unless (valid-email-p email)
-    (error "Invalid email address"))
-  (unless (valid-password-p password)
-    (error "Password must be at least 8 characters"))
-  
+  ;; バリデーション（新しいシステムを使用）
+  (validate-input :username username #'valid-username-p
+                  "ユーザー名は3-50文字の英数字、アンダースコア、ハイフンである必要があります")
+  (validate-input :email email #'valid-email-p
+                  "有効なメールアドレス形式ではありません")
+  (validate-input :password password #'valid-password-p
+                  "パスワードは8-100文字である必要があります")
+
   (with-db
     ;; ユーザー名の重複チェック
     (when (query "SELECT id FROM users WHERE username = $1" username :single)
-      (error "Username already exists"))
-    
+      (error 'validation-error :field :username :message "このユーザー名は既に使用されています"))
+
     ;; メールアドレスの重複チェック
     (when (query "SELECT id FROM users WHERE email = $1" email :single)
-      (error "Email already exists"))
+      (error 'validation-error :field :email :message "このメールアドレスは既に使用されています"))
     
     ;; ユーザーを作成
     (let ((password-hash (hash-password password)))

@@ -46,16 +46,20 @@
 
 ;;; 認証API
 
-(define-easy-handler (api-signup :uri "/api/auth/signup") 
+(define-easy-handler (api-signup :uri "/api/auth/signup")
                      (username email password display-name)
                      "ユーザー登録"
-                     (handler-case
-                       (progn
-                         (create-user username email password display-name nil)
-                         (json-response "success" "User created successfully"))
-                       (error (e)
-                              (setf (return-code*) hunchentoot:+http-bad-request+)
-                              (json-error (format nil "~A" e)))))
+                     (with-validation-handler
+                       ;; 入力をサニタイズ
+                       (let ((clean-username (sanitize-input username))
+                             (clean-email (sanitize-input email))
+                             (clean-display-name (when display-name (sanitize-input display-name))))
+                         ;; バリデーション実行
+                         (validate-user-input clean-username clean-email password clean-display-name)
+                         ;; ユーザー作成
+                         (create-user clean-username clean-email password clean-display-name nil)
+                         ;; 成功レスポンス
+                         (respond-json (make-success-response nil "アカウントが正常に作成されました")))))
 
 (define-easy-handler (api-login :uri "/api/auth/login")
                      (username password)
@@ -129,39 +133,57 @@
                                                  (format-timestamp (post-created-at post))))
                                        posts))))
 
-(define-easy-handler (api-create-post :uri "/api/posts/create") 
+(define-easy-handler (api-create-post :uri "/api/posts/create")
                      (title content)
                      "新しい投稿を作成（要ログイン）"
-                     (let ((user (get-current-user)))
-                       (if user
-                         (if (and title content)
-                           (progn
-                             (create-post (user-id user) title content)
-                             (json-response "success"))
-                           (progn
-                             (setf (return-code*) hunchentoot:+http-bad-request+)
-                             (json-error "Missing required fields")))
-                         (progn
-                           (setf (return-code*) hunchentoot:+http-authorization-required+)
-                           (json-error "Login required")))))
+                     (with-validation-handler
+                       (let ((user (get-current-user)))
+                         (unless user
+                           (setf (return-code*) +http-authorization-required+)
+                           (respond-json (make-error-response "ログインが必要です"))
+                           (return-from api-create-post))
+                         ;; 入力をサニタイズ
+                         (let ((clean-title (sanitize-input title))
+                               (clean-content (sanitize-input content)))
+                           ;; バリデーション実行
+                           (validate-post-input clean-title clean-content)
+                           ;; 投稿作成
+                           (create-post (user-id user) clean-title clean-content)
+                           ;; 成功レスポンス
+                           (respond-json (make-success-response nil "投稿が正常に作成されました"))))))
 
-(define-easy-handler (api-update-post :uri "/api/posts/update") 
+(define-easy-handler (api-update-post :uri "/api/posts/update")
                      (id title content)
                      "投稿を更新（作成者のみ）"
-                     (let ((user (get-current-user)))
-                       (if user
-                         (if (and id title content)
-                           (if (update-post (parse-integer id) (user-id user) title content)
-                             (json-response "success")
-                             (progn
-                               (setf (return-code*) hunchentoot:+http-forbidden+)
-                               (json-error "Permission denied")))
-                           (progn
-                             (setf (return-code*) hunchentoot:+http-bad-request+)
-                             (json-error "Missing required fields")))
-                         (progn
-                           (setf (return-code*) hunchentoot:+http-authorization-required+)
-                           (json-error "Login required")))))
+                     (with-validation-handler
+                       (let ((user (get-current-user)))
+                         (unless user
+                           (setf (return-code*) +http-authorization-required+)
+                           (respond-json (make-error-response "ログインが必要です"))
+                           (return-from api-update-post))
+                         ;; IDの数値変換とチェック
+                         (unless id
+                           (setf (return-code*) +http-bad-request+)
+                           (respond-json (make-error-response "投稿IDが必要です"))
+                           (return-from api-update-post))
+                         (let ((post-id (handler-case (parse-integer id)
+                                          (error ()
+                                            (setf (return-code*) +http-bad-request+)
+                                            (respond-json (make-error-response "無効な投稿IDです"))
+                                            (return-from api-update-post)))))
+                           ;; 入力をサニタイズ
+                           (let ((clean-title (sanitize-input title))
+                                 (clean-content (sanitize-input content)))
+                             ;; バリデーション実行
+                             (validate-post-input clean-title clean-content)
+                             ;; 投稿更新（権限チェック含む）
+                             (if (update-post post-id (user-id user) clean-title clean-content)
+                               ;; 成功レスポンス
+                               (respond-json (make-success-response nil "投稿が正常に更新されました"))
+                               ;; 権限エラー
+                               (progn
+                                 (setf (return-code*) +http-forbidden+)
+                                 (respond-json (make-error-response "この投稿を編集する権限がありません")))))))))
 
 (define-easy-handler (api-delete-post :uri "/api/posts/delete") (id)
                      "投稿を削除（作成者のみ）"
