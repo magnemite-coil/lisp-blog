@@ -305,100 +305,135 @@
                          (:head
                            (:meta :charset "utf-8")
                            (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
-                           (:title "Common Lisp Blog")
-                           (:script :src "https://cdn.tailwindcss.com")
-                           (:script :src "https://unpkg.com/vue@3/dist/vue.global.js")
-                           (:script :src "https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js")
-                           (:link :rel "stylesheet" :href "/static/css/style.css"))
-                         (:body
+                           (:title "Common Lisp Blog - Modern Admin")
+                           (:link :rel "stylesheet" :href "/static/css/admin-card-layout.css")
+                           (:script :src "https://unpkg.com/vue@3/dist/vue.global.js"))
+                         (:body :class "admin-layout"
                            (:div :id "app"
-                                 (:header :class "bg-blue-600 text-white p-6 shadow-lg"
-                                          (:div :class "container mx-auto flex justify-between items-center"
-                                                (:div
-                                                  (:h1 :class "text-3xl font-bold" "Common Lisp Blog")
-                                                  (:p :class "text-blue-100" "Multi-user Blog System"))
-                                                (:div :class "flex gap-4"
-                                                      (:raw "<template v-if=\"currentUser\">")
-                                                      (:raw "<span class=\"text-blue-100\">Hello, {{ currentUser.display_name }}</span>")
-                                                      (:raw "<button class=\"bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-50\" @click=\"logout\">Logout</button>")
-                                                      (:raw "</template>")
-                                                      (:raw "<template v-else>")
-                                                      (:raw "<button class=\"bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-50 mr-2\" @click=\"showLoginModal = true\">Login</button>")
-                                                      (:raw "<button class=\"bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600\" @click=\"showSignupModal = true\">Sign Up</button>")
-                                                      (:raw "</template>"))))
+                                 ;; Top Bar
+                                 (:div :class "top-bar"
+                                       (:div :class "breadcrumb"
+                                             (:raw "<template v-if=\"showCreateView\">")
+                                             (:span :class "breadcrumb-item" "📝 記事")
+                                             (:span "›")
+                                             (:span :class "breadcrumb-item active" "新規作成")
+                                             (:raw "</template>")
+                                             (:raw "<template v-else>")
+                                             (:span :class "breadcrumb-item active" "📚 記事一覧")
+                                             (:raw "</template>"))
+                                       (:div :class "top-actions"
+                                             (:raw "<template v-if=\"currentUser\">")
+                                             (:raw "<span style=\"color: var(--text-secondary); margin-right: 15px;\">{{ currentUser.display_name }}</span>")
+                                             (:raw "<button v-if=\"!showCreateView\" class=\"btn btn-gradient\" @click=\"showCreateView = true\">✏️ 新規作成</button>")
+                                             (:raw "<button v-if=\"showCreateView\" class=\"btn btn-outline\" @click=\"showCreateView = false\">← 一覧に戻る</button>")
+                                             (:button :class "btn btn-outline" "@click" "logout" "Logout")
+                                             (:raw "</template>")
+                                             (:raw "<template v-else>")
+                                             (:button :class "btn btn-outline" "@click" "showLoginModal = true" "Login")
+                                             (:button :class "btn btn-gradient" "@click" "showSignupModal = true" "Sign Up")
+                                             (:raw "</template>")))
 
+                                 ;; Main Container - Create Post View
+                                 (:raw "<div v-if=\"showCreateView && currentUser\" class=\"admin-container\">")
+                                 (:div :class "admin-grid"
+                                       ;; Editor Section
+                                       (:div :class "editor-section"
+                                             ;; Title Card
+                                             (:div :class "card title-card"
+                                                   (:raw "<input type=\"text\" class=\"title-input\" v-model=\"newPost.title\" placeholder=\"魅力的なタイトルを入力...\">"))
 
-                                 ;       (:header :class "bg-blue-600 text-white p-6 shadow-lg"
-                                 ;        (:div :class "container mx-auto flex justify-between items-center"
-                                 ;         (:div
-                                 ;          (:h1 :class "text-3xl font-bold" "Common Lisp Blog")
-                                 ;          (:p :class "text-blue-100" "Multi-user Blog System"))
-                                 ;         (:div :class "flex gap-4"
-                                 ;          (:raw "<template v-if=\"currentUser\">")
-                                 ;          (:span :class "text-blue-100" "Hello, {{ currentUser.display_name }}")
-                                 ;          (:button :class "bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-50"
-                                 ;                   :onclick "app.logout()" "Logout")
-                                 ;          (:raw "</template>")
-                                 ;          (:raw "<template v-else>")
-                                 ;          (:button :class "bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-50 mr-2"
-                                 ;                   :onclick "app.showLoginModal = true" "Login")
-                                 ;          (:button :class "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                                 ;                   :onclick "app.showSignupModal = true" "Sign Up")
-                                 ;          (:raw "</template>"))))
+                                             ;; Content Card
+                                             (:div :class "card content-card"
+                                                   (:div :class "card-header"
+                                                         (:div :class "card-title"
+                                                               (:div :class "card-icon" "✏️")
+                                                               (:span "本文")))
+                                                   (:raw "<textarea class=\"content-textarea\" v-model=\"newPost.content\" placeholder=\"ここから書き始めましょう...\n\nMarkdownで自由に執筆できます。\n\n# 見出し\n## サブ見出し\n\n**太字** や *斜体* も使えます。\"></textarea>")))
 
+                                       ;; Sidebar
+                                       (:aside :class "sidebar"
+                                               ;; Status Card
+                                               (:div :class "card"
+                                                     (:div :class "card-header"
+                                                           (:div :class "card-title"
+                                                                 (:div :class "card-icon" "📊")
+                                                                 (:span "公開設定")))
+                                                     (:div :class "status-options"
+                                                           (:raw "<div class=\"status-btn\" :class=\"{active: newPost.status === 'draft'}\" @click=\"newPost.status = 'draft'\">")
+                                                           (:div :class "status-btn-header"
+                                                                 (:span :class "status-emoji" "📝")
+                                                                 (:span :class "status-name" "下書き"))
+                                                           (:div :class "status-desc" "非公開で保存")
+                                                           (:raw "</div>")
+                                                           (:raw "<div class=\"status-btn\" :class=\"{active: newPost.status === 'published'}\" @click=\"newPost.status = 'published'\">")
+                                                           (:div :class "status-btn-header"
+                                                                 (:span :class "status-emoji" "🚀")
+                                                                 (:span :class "status-name" "公開"))
+                                                           (:div :class "status-desc" "すぐに公開する")
+                                                           (:raw "</div>"))
+                                                     (:button :class "btn btn-gradient" :style "width: 100%; margin-top: 15px;" "@click" "createPost"
+                                                              (:raw "{{ newPost.status === 'draft' ? '下書き保存' : '公開する' }}")))
 
-                                 (:main :class "container mx-auto p-6"
-                                        (:raw "<div v-if=\"currentUser\" class=\"mb-8 bg-white rounded-lg shadow-md p-6\">")
-                                        (:h2 :class "text-2xl font-bold mb-4" "新しい投稿を作成")
-                                        (:raw "<form @submit.prevent=\"createPost\">")
-                                        (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"newPost.title\" placeholder=\"タイトル\">")
-                                        (:raw "<textarea class=\"w-full p-2 border rounded mb-3\" v-model=\"newPost.content\" placeholder=\"内容\" rows=\"4\"></textarea>")
-                                        (:button :class "bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                                                 :type "submit" "投稿する")
-                                        (:raw "</form>")
-                                        (:raw "</div>")
+                                               ;; Stats Card
+                                               (:div :class "card"
+                                                     (:div :class "card-header"
+                                                           (:div :class "card-title"
+                                                                 (:div :class "card-icon" "📈")
+                                                                 (:span "統計")))
+                                                     (:div :class "stats-grid"
+                                                           (:div :class "stat-item"
+                                                                 (:raw "<div class=\"stat-value\">{{ getWordCount() }}</div>")
+                                                                 (:div :class "stat-label" "文字数"))
+                                                           (:div :class "stat-item"
+                                                                 (:raw "<div class=\"stat-value\">{{ getReadTime() }}</div>")
+                                                                 (:div :class "stat-label" "分で読める"))))))
+                                 (:raw "</div>")
 
-                                        (:div :class "masonry-grid" :ref "masonryGrid"
-                                              (:raw "<div class=\"masonry-item\" v-for=\"post in posts\" :key=\"post.id\">")
-                                              (:div :class "bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow"
-                                                    (:raw "<h3 class=\"text-xl font-bold mb-2\">{{ post.title }}</h3>")
-                                                    (:raw "<p class=\"text-gray-600 text-sm mb-3\">by {{ post.author }} - {{ formatDate(post.created_at) }}</p>")
-                                                    (:raw "<p class=\"text-gray-700 mb-4\">{{ post.content }}</p>")
-                                                    (:raw "<div v-if=\"currentUser && currentUser.id === post.user_id\" class=\"flex gap-2\">")
-                                                    (:raw "<button class=\"text-blue-600 hover:text-blue-800\" @click=\"editPost(post)\">編集</button>")
-                                                    (:raw "<button class=\"text-red-600 hover:text-red-800\" @click=\"deletePost(post.id)\">削除</button>")
-                                                    (:raw "</div>"))
-                                              (:raw "</div>")))
+                                 ;; Main Container - Posts List View
+                                 (:raw "<div v-if=\"!showCreateView\" class=\"admin-container\">")
+                                 (:div :class "posts-grid"
+                                       (:raw "<div v-for=\"post in posts\" :key=\"post.id\" class=\"post-card\">")
+                                       (:div :class "post-card-header"
+                                             (:raw "<h3 class=\"post-title-link\">{{ post.title }}</h3>")
+                                             (:raw "<span class=\"post-status-badge\" :class=\"post.status\">{{ post.status === 'draft' ? '下書き' : '公開済み' }}</span>"))
+                                       (:div :class "post-meta"
+                                             (:raw "<span class=\"post-meta-item\">✍️ {{ post.author }}</span>")
+                                             (:raw "<span class=\"post-meta-item\">📅 {{ formatDate(post.created_at) }}</span>"))
+                                       (:raw "<p class=\"post-content-preview\">{{ post.content.substring(0, 150) }}...</p>")
+                                       (:raw "<div v-if=\"currentUser && currentUser.id === post.user_id\" class=\"post-actions\">")
+                                       (:raw "<button class=\"post-action-btn edit\" @click=\"editPost(post)\">✏️ 編集</button>")
+                                       (:raw "<button v-if=\"post.status === 'draft'\" class=\"post-action-btn publish\" @click=\"publishDraft(post.id)\">🚀 公開</button>")
+                                       (:raw "<button v-if=\"post.status === 'published'\" class=\"post-action-btn\" style=\"background: rgba(255, 230, 109, 0.2); color: var(--accent-tertiary);\" @click=\"unpublishPost(post.id)\">📝 下書きに戻す</button>")
+                                       (:raw "<button class=\"post-action-btn delete\" @click=\"deletePost(post.id)\">🗑️ 削除</button>")
+                                       (:raw "</div>")
+                                       (:raw "</div>"))
+                                 (:raw "</div>")
 
-                                 (:raw "<div v-if=\"showLoginModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" @click.self=\"showLoginModal = false\">")
-                                 (:div :class "bg-white rounded-lg p-8 max-w-md w-full"
-                                       (:h2 :class "text-2xl font-bold mb-4" "Login")
+                                 ;; Login Modal
+                                 (:raw "<div v-if=\"showLoginModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" style=\"z-index: 1000;\" @click.self=\"showLoginModal = false\">")
+                                 (:div :class "card" :style "max-width: 400px; width: 100%; margin: 20px;"
+                                       (:h2 :style "font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);" "Login")
                                        (:raw "<form @submit.prevent=\"login\">")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"loginForm.username\" placeholder=\"Username\" required>")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"loginForm.password\" type=\"password\" placeholder=\"Password\" required>")
-                                       (:div :class "flex gap-2"
-                                             (:button :class "bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                                                      :type "submit" "Login")
-                                             (:button :class "bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
-                                                      :type "button"
-                                                      :onclick "app.showLoginModal = false" "Cancel"))
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "loginForm.username" :placeholder "Username" :required "required")
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "password" :v-model "loginForm.password" :placeholder "Password" :required "required")
+                                       (:div :style "display: flex; gap: 10px;"
+                                             (:button :class "btn btn-gradient" :type "submit" :style "flex: 1;" "Login")
+                                             (:button :class "btn btn-outline" :type "button" :style "flex: 1;" "@click" "showLoginModal = false" "Cancel"))
                                        (:raw "</form>"))
                                  (:raw "</div>")
 
-                                 (:raw "<div v-if=\"showSignupModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" @click.self=\"showSignupModal = false\">")
-                                 (:div :class "bg-white rounded-lg p-8 max-w-md w-full"
-                                       (:h2 :class "text-2xl font-bold mb-4" "Sign Up")
+                                 ;; Signup Modal
+                                 (:raw "<div v-if=\"showSignupModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" style=\"z-index: 1000;\" @click.self=\"showSignupModal = false\">")
+                                 (:div :class "card" :style "max-width: 400px; width: 100%; margin: 20px;"
+                                       (:h2 :style "font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);" "Sign Up")
                                        (:raw "<form @submit.prevent=\"signup\">")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"signupForm.username\" placeholder=\"Username (3-50 characters)\" required>")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"signupForm.email\" type=\"email\" placeholder=\"Email\" required>")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"signupForm.password\" type=\"password\" placeholder=\"Password (min 8 characters)\" required>")
-                                       (:raw "<input class=\"w-full p-2 border rounded mb-3\" v-model=\"signupForm.display_name\" placeholder=\"Display Name (optional)\">")
-                                       (:div :class "flex gap-2"
-                                             (:button :class "bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
-                                                      :type "submit" "Sign Up")
-                                             (:button :class "bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
-                                                      :type "button"
-                                                      :onclick "app.showSignupModal = false" "Cancel"))
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "signupForm.username" :placeholder "Username (3-50 characters)" :required "required")
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "email" :v-model "signupForm.email" :placeholder "Email" :required "required")
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "password" :v-model "signupForm.password" :placeholder "Password (min 8 characters)" :required "required")
+                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "signupForm.display_name" :placeholder "Display Name (optional)")
+                                       (:div :style "display: flex; gap: 10px;"
+                                             (:button :class "btn btn-gradient" :type "submit" :style "flex: 1;" "Sign Up")
+                                             (:button :class "btn btn-outline" :type "button" :style "flex: 1;" "@click" "showSignupModal = false" "Cancel"))
                                        (:raw "</form>"))
                                  (:raw "</div>"))
                            (:script :src "/static/js/app.js")))))

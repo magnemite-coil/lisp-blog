@@ -29,9 +29,11 @@ Thumbs.db
 
 # Development - Claude Code documentation
 CLAUDE.md
+PROGRESS.md
 
 # Development - Test artifacts
 cookies.txt
+test-*.txt
 
 # Security - Environment Variables
 .env

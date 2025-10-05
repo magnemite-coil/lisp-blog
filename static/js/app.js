@@ -5,9 +5,11 @@ const app = createApp({
     return {
       posts: [],
       currentUser: null,
+      showCreateView: false,
       newPost: {
         title: '',
-        content: ''
+        content: '',
+        status: 'draft'
       },
       loginForm: {
         username: '',
@@ -117,12 +119,15 @@ const app = createApp({
     
     async fetchPosts() {
       try {
-        const response = await fetch('/api/posts');
-        this.posts = await response.json();
-        
-        this.$nextTick(() => {
-          this.initMasonry();
-        });
+        // 全ての投稿を取得（公開済み + 自分の下書き）
+        const response = await fetch('/api/user/posts');
+        if (response.ok) {
+          this.posts = await response.json();
+        } else {
+          // ログインしていない場合は公開済みのみ取得
+          const publicResponse = await fetch('/api/posts?status=published');
+          this.posts = await publicResponse.json();
+        }
       } catch (error) {
         console.error('投稿の取得に失敗しました:', error);
       }
@@ -133,12 +138,13 @@ const app = createApp({
         alert('タイトルと内容を入力してください');
         return;
       }
-      
+
       try {
         const formData = new URLSearchParams();
         formData.append('title', this.newPost.title);
         formData.append('content', this.newPost.content);
-        
+        formData.append('status', this.newPost.status);
+
         const response = await fetch('/api/posts/create', {
           method: 'POST',
           headers: {
@@ -146,11 +152,13 @@ const app = createApp({
           },
           body: formData
         });
-        
+
         if (response.ok) {
-          this.newPost = { title: '', content: '' };
+          this.newPost = { title: '', content: '', status: 'draft' };
+          this.showCreateView = false;
           await this.fetchPosts();
-          alert('投稿が作成されました！');
+          const message = this.newPost.status === 'draft' ? '下書きが保存されました！' : '投稿が公開されました！';
+          alert(message);
         } else {
           const result = await response.json();
           alert(result.error || '投稿の作成に失敗しました');
@@ -238,15 +246,55 @@ const app = createApp({
       });
     },
     
-    initMasonry() {
-      const grid = this.$refs.masonryGrid;
-      if (grid && window.Masonry) {
-        new Masonry(grid, {
-          itemSelector: '.masonry-item',
-          columnWidth: '.masonry-item',
-          percentPosition: true
+    async publishDraft(postId) {
+      try {
+        const response = await fetch(`/api/posts/${postId}/publish`, {
+          method: 'PUT'
         });
+
+        if (response.ok) {
+          alert('下書きが公開されました！');
+          await this.fetchPosts();
+        } else {
+          const result = await response.json();
+          alert(result.error || '公開に失敗しました');
+        }
+      } catch (error) {
+        console.error('公開に失敗しました:', error);
+        alert('公開に失敗しました');
       }
+    },
+
+    async unpublishPost(postId) {
+      try {
+        const response = await fetch(`/api/posts/${postId}/unpublish`, {
+          method: 'PUT'
+        });
+
+        if (response.ok) {
+          alert('投稿が下書きに戻されました！');
+          await this.fetchPosts();
+        } else {
+          const result = await response.json();
+          alert(result.error || '下書きに戻す処理に失敗しました');
+        }
+      } catch (error) {
+        console.error('下書きに戻す処理に失敗しました:', error);
+        alert('下書きに戻す処理に失敗しました');
+      }
+    },
+
+    getWordCount() {
+      const title = this.newPost.title || '';
+      const content = this.newPost.content || '';
+      return (title + ' ' + content).trim().length;
+    },
+
+    getReadTime() {
+      const wordCount = this.getWordCount();
+      // 日本語の場合、1分あたり約600文字と仮定
+      const readTime = Math.ceil(wordCount / 600);
+      return readTime || 1;
     }
   }
 });
