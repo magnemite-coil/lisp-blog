@@ -329,8 +329,8 @@
                                              (:button :class "btn btn-outline" "@click" "logout" "Logout")
                                              (:raw "</template>")
                                              (:raw "<template v-else>")
-                                             (:button :class "btn btn-outline" "@click" "showLoginModal = true" "Login")
-                                             (:button :class "btn btn-gradient" "@click" "showSignupModal = true" "Sign Up")
+                                             (:a :href "/login" :class "btn btn-outline" "Login")
+                                             (:a :href "/signup" :class "btn btn-gradient" "Sign Up")
                                              (:raw "</template>")))
 
                                  ;; Main Container - Create Post View
@@ -409,31 +409,124 @@
                                        (:raw "</div>"))
                                  (:raw "</div>")
 
-                                 ;; Login Modal
-                                 (:raw "<div v-if=\"showLoginModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" style=\"z-index: 1000;\" @click.self=\"showLoginModal = false\">")
-                                 (:div :class "card" :style "max-width: 400px; width: 100%; margin: 20px;"
-                                       (:h2 :style "font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);" "Login")
-                                       (:raw "<form @submit.prevent=\"login\">")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "loginForm.username" :placeholder "Username" :required "required")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "password" :v-model "loginForm.password" :placeholder "Password" :required "required")
-                                       (:div :style "display: flex; gap: 10px;"
-                                             (:button :class "btn btn-gradient" :type "submit" :style "flex: 1;" "Login")
-                                             (:button :class "btn btn-outline" :type "button" :style "flex: 1;" "@click" "showLoginModal = false" "Cancel"))
-                                       (:raw "</form>"))
-                                 (:raw "</div>")
+                           (:script :src "https://unpkg.com/vue@3/dist/vue.global.js")
+                           (:script :src "/static/js/app.js"))))))
 
-                                 ;; Signup Modal
-                                 (:raw "<div v-if=\"showSignupModal\" class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center\" style=\"z-index: 1000;\" @click.self=\"showSignupModal = false\">")
-                                 (:div :class "card" :style "max-width: 400px; width: 100%; margin: 20px;"
-                                       (:h2 :style "font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);" "Sign Up")
-                                       (:raw "<form @submit.prevent=\"signup\">")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "signupForm.username" :placeholder "Username (3-50 characters)" :required "required")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "email" :v-model "signupForm.email" :placeholder "Email" :required "required")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :type "password" :v-model "signupForm.password" :placeholder "Password (min 8 characters)" :required "required")
-                                       (:input :class "form-control" :style "margin-bottom: 15px;" :v-model "signupForm.display_name" :placeholder "Display Name (optional)")
-                                       (:div :style "display: flex; gap: 10px;"
-                                             (:button :class "btn btn-gradient" :type "submit" :style "flex: 1;" "Sign Up")
-                                             (:button :class "btn btn-outline" :type "button" :style "flex: 1;" "@click" "showSignupModal = false" "Cancel"))
-                                       (:raw "</form>"))
-                                 (:raw "</div>"))
-                           (:script :src "/static/js/app.js")))))
+;;; ログイン・サインアップページ
+
+(define-easy-handler (login-page :uri "/login") ()
+                     "ログインページ"
+                     (setf (content-type*) "text/html")
+                     (with-html-string
+                       (:doctype)
+                       (:html :lang "ja"
+                         (:head
+                           (:meta :charset "utf-8")
+                           (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
+                           (:title "ログイン - Common Lisp Blog")
+                           (:link :rel "stylesheet" :href "/static/css/login.css"))
+                         (:body :class "login-page"
+                           (:div :class "background")
+
+                           (:div :class "login-header"
+                                 (:div :class "logo"
+                                       (:div :class "logo-icon" "B")
+                                       (:span :class "logo-text" "Common Lisp Blog"))
+                                 (:a :href "/signup" :class "signup-btn" "新規登録"))
+
+                           (:div :class "container"
+                                 (:div :class "login-card"
+                                       (:h1 :class "brand-name" "MyBlog")
+                                       (:p :class "brand-subtitle" "ログインしてブログを書こう")
+
+                                       (:div :id "error-message" :class "error-message" :style "display: none;")
+
+                                       (:form :id "login-form" :action "/api/auth/login" :method "post"
+                                             (:div :class "form-group"
+                                                   (:input :type "text"
+                                                           :name "username"
+                                                           :class "form-input"
+                                                           :placeholder "ユーザー名"
+                                                           :required "required"))
+
+                                             (:div :class "form-group"
+                                                   (:input :type "password"
+                                                           :name "password"
+                                                           :class "form-input"
+                                                           :placeholder "パスワード"
+                                                           :required "required"))
+
+                                             (:button :type "submit" :class "login-btn" "ログイン"))
+
+                                       (:div :class "switch-link"
+                                             "アカウントをお持ちでない方は "
+                                             (:a :href "/signup" "新規登録"))))
+
+                           (:script :src "/static/js/login.js")))))
+
+(define-easy-handler (signup-page :uri "/signup") ()
+                     "サインアップページ"
+                     (setf (content-type*) "text/html")
+                     (with-html-string
+                       (:doctype)
+                       (:html :lang "ja"
+                         (:head
+                           (:meta :charset "utf-8")
+                           (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
+                           (:title "新規登録 - Common Lisp Blog")
+                           (:link :rel "stylesheet" :href "/static/css/login.css"))
+                         (:body :class "login-page"
+                           (:div :class "background")
+
+                           (:div :class "login-header"
+                                 (:div :class "logo"
+                                       (:div :class "logo-icon" "B")
+                                       (:span :class "logo-text" "Common Lisp Blog"))
+                                 (:a :href "/login" :class "login-btn-header" "ログイン"))
+
+                           (:div :class "container"
+                                 (:div :class "login-card"
+                                       (:h1 :class "brand-name" "MyBlog")
+                                       (:p :class "brand-subtitle" "アカウントを作成")
+
+                                       (:div :id "error-message" :class "error-message" :style "display: none;")
+                                       (:div :id "success-message" :class "success-message" :style "display: none;")
+
+                                       (:form :id "signup-form" :action "/api/auth/signup" :method "post"
+                                             (:div :class "form-group"
+                                                   (:input :type "text"
+                                                           :name "username"
+                                                           :class "form-input"
+                                                           :placeholder "ユーザー名 (3-50文字)"
+                                                           :required "required"
+                                                           :minlength "3"
+                                                           :maxlength "50"))
+
+                                             (:div :class "form-group"
+                                                   (:input :type "email"
+                                                           :name "email"
+                                                           :class "form-input"
+                                                           :placeholder "メールアドレス"
+                                                           :required "required"))
+
+                                             (:div :class "form-group"
+                                                   (:input :type "password"
+                                                           :name "password"
+                                                           :class "form-input"
+                                                           :placeholder "パスワード (8文字以上)"
+                                                           :required "required"
+                                                           :minlength "8"))
+
+                                             (:div :class "form-group"
+                                                   (:input :type "text"
+                                                           :name "display-name"
+                                                           :class "form-input"
+                                                           :placeholder "表示名 (任意)"))
+
+                                             (:button :type "submit" :class "login-btn" "アカウント作成"))
+
+                                       (:div :class "switch-link"
+                                             "すでにアカウントをお持ちの方は "
+                                             (:a :href "/login" "ログイン"))))
+
+                           (:script :src "/static/js/login.js")))))

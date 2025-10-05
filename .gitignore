@@ -33,7 +33,26 @@ PROGRESS.md
 
 # Development - Test artifacts
 cookies.txt
+*cookies*.txt
 test-*.txt
+test_*.log
+test_*.sh
+*_test.lisp
+test_*.html
+test_summary.md
+/tmp/
+*.test
+*.spec
+
+# Development - Test outputs and temporary files
+handlers_part*.lisp
+login_page.html
+signup_page.html
+test_endpoints.sh
+test_rendering.sh
+test_auth.sh
+test_static.sh
+test_errors.sh
 
 # Security - Environment Variables
 .env
@@ -76,6 +95,9 @@ access.log
 error.log
 debug.log
 application.log
+*.log
+server_output.log
+test_server.log
 
 # Security - Backup files
 *.backup
