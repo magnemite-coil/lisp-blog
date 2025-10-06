@@ -83,3 +83,29 @@ Markdownで自由に執筆できます。
 (set-translation :ja "error.not-logged-in" "ログインが必要です")
 (set-translation :ja "error.invalid-credentials" "ユーザー名またはパスワードが正しくありません")
 (set-translation :ja "error.server-error" "サーバーエラーが発生しました")
+
+;;; API メッセージ - 認証
+(set-translation :ja "api.auth.account-created" "アカウントが正常に作成されました")
+(set-translation :ja "api.auth.login-success" "ログインに成功しました")
+(set-translation :ja "api.auth.invalid-credentials" "ユーザー名またはパスワードが正しくありません")
+(set-translation :ja "api.auth.logout-success" "ログアウトしました")
+(set-translation :ja "api.auth.login-required" "ログインが必要です")
+
+;;; API メッセージ - 投稿
+(set-translation :ja "api.post.created" "投稿が正常に作成されました")
+(set-translation :ja "api.post.updated" "投稿が正常に更新されました")
+(set-translation :ja "api.post.deleted" "投稿が削除されました")
+(set-translation :ja "api.post.published" "下書きが公開されました")
+(set-translation :ja "api.post.unpublished" "投稿が下書きに戻されました")
+(set-translation :ja "api.post.permission-denied" "この投稿を編集する権限がありません")
+(set-translation :ja "api.post.not-found" "投稿が見つかりません")
+(set-translation :ja "api.post.draft-not-found" "下書きが見つからないか、権限がありません")
+(set-translation :ja "api.post.missing-id" "投稿IDが必要です")
+(set-translation :ja "api.post.invalid-id" "無効な投稿IDです")
+
+;;; バリデーションエラー
+(set-translation :ja "validation.username.format" "ユーザー名は3-50文字の英数字、アンダースコア、ハイフンである必要があります")
+(set-translation :ja "validation.username.taken" "このユーザー名は既に使用されています")
+(set-translation :ja "validation.email.format" "有効なメールアドレス形式ではありません")
+(set-translation :ja "validation.email.taken" "このメールアドレスは既に使用されています")
+(set-translation :ja "validation.password.length" "パスワードは8-100文字である必要があります")

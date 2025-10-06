@@ -59,7 +59,7 @@
                          ;; ユーザー作成
                          (create-user clean-username clean-email password clean-display-name nil)
                          ;; 成功レスポンス
-                         (respond-json (make-success-response nil "アカウントが正常に作成されました")))))
+                         (respond-json (make-success-response nil (t! "api.auth.account-created"))))))
 
 (define-easy-handler (api-login :uri "/api/auth/login")
                      (username password)
@@ -100,7 +100,7 @@
                      (let ((session-id (cookie-in "session_id")))
                        (delete-session session-id)
                        (set-cookie "session_id" :value "" :path "/" :max-age 0)
-                       (json-response "success" "Logged out")))
+                       (json-response "success" (t! "api.auth.logout-success"))))
 
 (define-easy-handler (api-current-user :uri "/api/auth/me") ()
                      "現在のユーザー情報を取得"
@@ -114,7 +114,7 @@
                                  (or (user-bio user) ""))
                          (progn
                            (setf (return-code*) hunchentoot:+http-authorization-required+)
-                           (json-error "Not logged in")))))
+                           (json-error (t! "api.auth.login-required"))))))
 
 ;;; 投稿API
 
@@ -149,7 +149,7 @@
                        (let ((user (get-current-user)))
                          (unless user
                            (setf (return-code*) +http-authorization-required+)
-                           (respond-json (make-error-response "ログインが必要です"))
+                           (respond-json (make-error-response (t! "api.auth.login-required")))
                            (return-from api-create-post))
                          ;; 入力をサニタイズ
                          (let ((clean-title (sanitize-input title))
@@ -162,7 +162,7 @@
                                                    "published"))) ; デフォルトは公開
                              (create-post (user-id user) clean-title clean-content post-status))
                            ;; 成功レスポンス
-                           (respond-json (make-success-response nil "投稿が正常に作成されました"))))))
+                           (respond-json (make-success-response nil (t! "api.post.created")))))))
 
 (define-easy-handler (api-update-post :uri "/api/posts/update")
                      (id title content status)
@@ -171,17 +171,17 @@
                        (let ((user (get-current-user)))
                          (unless user
                            (setf (return-code*) +http-authorization-required+)
-                           (respond-json (make-error-response "ログインが必要です"))
+                           (respond-json (make-error-response (t! "api.auth.login-required")))
                            (return-from api-update-post))
                          ;; IDの数値変換とチェック
                          (unless id
                            (setf (return-code*) +http-bad-request+)
-                           (respond-json (make-error-response "投稿IDが必要です"))
+                           (respond-json (make-error-response (t! "api.post.missing-id")))
                            (return-from api-update-post))
                          (let ((post-id (handler-case (parse-integer id)
                                           (error ()
                                             (setf (return-code*) +http-bad-request+)
-                                            (respond-json (make-error-response "無効な投稿IDです"))
+                                            (respond-json (make-error-response (t! "api.post.invalid-id")))
                                             (return-from api-update-post)))))
                            ;; 入力をサニタイズ
                            (let ((clean-title (sanitize-input title))
@@ -193,11 +193,11 @@
                                                    status)))
                                (if (update-post post-id (user-id user) clean-title clean-content post-status)
                                  ;; 成功レスポンス
-                                 (respond-json (make-success-response nil "投稿が正常に更新されました"))
+                                 (respond-json (make-success-response nil (t! "api.post.updated")))
                                  ;; 権限エラー
                                  (progn
                                    (setf (return-code*) +http-forbidden+)
-                                   (respond-json (make-error-response "この投稿を編集する権限がありません"))))))))))
+                                   (respond-json (make-error-response (t! "api.post.permission-denied")))))))))))
 
 (define-easy-handler (api-delete-post :uri "/api/posts/delete") (id)
                      "投稿を削除（作成者のみ）"
@@ -208,13 +208,13 @@
                              (json-response "success")
                              (progn
                                (setf (return-code*) hunchentoot:+http-forbidden+)
-                               (json-error "Permission denied")))
+                               (json-error (t! "api.post.permission-denied"))))
                            (progn
                              (setf (return-code*) hunchentoot:+http-bad-request+)
-                             (json-error "Missing post ID")))
+                             (json-error (t! "api.post.missing-id"))))
                          (progn
                            (setf (return-code*) hunchentoot:+http-authorization-required+)
-                           (json-error "Login required")))))
+                           (json-error (t! "api.auth.login-required"))))))
 
 ;; 下書き公開用API
 (define-easy-handler (api-publish-post :uri "/api/posts/publish") (id)
@@ -223,26 +223,26 @@
                        (let ((user (get-current-user)))
                          (unless user
                            (setf (return-code*) +http-authorization-required+)
-                           (respond-json (make-error-response "ログインが必要です"))
+                           (respond-json (make-error-response (t! "api.auth.login-required")))
                            (return-from api-publish-post))
                          ;; IDの数値変換とチェック
                          (unless id
                            (setf (return-code*) +http-bad-request+)
-                           (respond-json (make-error-response "投稿IDが必要です"))
+                           (respond-json (make-error-response (t! "api.post.missing-id")))
                            (return-from api-publish-post))
                          (handler-case
                            (let ((post-id-int (parse-integer id)))
                              ;; 下書き公開
                              (if (publish-draft post-id-int (user-id user))
                                ;; 成功
-                               (respond-json (make-success-response nil "下書きが公開されました"))
+                               (respond-json (make-success-response nil (t! "api.post.published")))
                                ;; エラー（下書きが存在しないまたは権限なし）
                                (progn
                                  (setf (return-code*) +http-forbidden+)
-                                 (respond-json (make-error-response "下書きが見つからないか、権限がありません")))))
+                                 (respond-json (make-error-response (t! "api.post.draft-not-found"))))))
                            (error ()
                              (setf (return-code*) +http-bad-request+)
-                             (respond-json (make-error-response "無効な投稿IDです")))))))
+                             (respond-json (make-error-response (t! "api.post.invalid-id"))))))))
 
 ;; 投稿非公開用API
 (define-easy-handler (api-unpublish-post :uri "/api/posts/unpublish") (id)
@@ -251,26 +251,26 @@
                        (let ((user (get-current-user)))
                          (unless user
                            (setf (return-code*) +http-authorization-required+)
-                           (respond-json (make-error-response "ログインが必要です"))
+                           (respond-json (make-error-response (t! "api.auth.login-required")))
                            (return-from api-unpublish-post))
                          ;; IDの数値変換とチェック
                          (unless id
                            (setf (return-code*) +http-bad-request+)
-                           (respond-json (make-error-response "投稿IDが必要です"))
+                           (respond-json (make-error-response (t! "api.post.missing-id")))
                            (return-from api-unpublish-post))
                          (handler-case
                            (let ((post-id-int (parse-integer id)))
                              ;; 投稿非公開
                              (if (unpublish-post post-id-int (user-id user))
                                ;; 成功
-                               (respond-json (make-success-response nil "投稿が下書きに戻されました"))
+                               (respond-json (make-success-response nil (t! "api.post.unpublished")))
                                ;; エラー（投稿が存在しないまたは権限なし）
                                (progn
                                  (setf (return-code*) +http-forbidden+)
-                                 (respond-json (make-error-response "投稿が見つからないか、権限がありません")))))
+                                 (respond-json (make-error-response (t! "api.post.not-found"))))))
                            (error ()
                              (setf (return-code*) +http-bad-request+)
-                             (respond-json (make-error-response "無効な投稿IDです")))))))
+                             (respond-json (make-error-response (t! "api.post.invalid-id"))))))))
 
 ;; ユーザーの投稿一覧API（下書き含む、本人のみ）
 (define-easy-handler (api-user-posts :uri "/api/user/posts") ()
@@ -292,7 +292,7 @@
                                              posts)))
                            (progn
                              (setf (return-code*) +http-authorization-required+)
-                             (json-error "Login required")))))
+                             (json-error (t! "api.auth.login-required"))))))
 
 ;;; メインページ
 

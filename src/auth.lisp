@@ -12,29 +12,29 @@
 
 (defun create-user (username email password &optional display-name bio)
   "新しいユーザーを作成"
-  ;; バリデーション（新しいシステムを使用）
+  ;; バリデーション（i18n対応）
   (validate-input :username username #'valid-username-p
-                  "ユーザー名は3-50文字の英数字、アンダースコア、ハイフンである必要があります")
+                  (t! "validation.username.format"))
   (validate-input :email email #'valid-email-p
-                  "有効なメールアドレス形式ではありません")
+                  (t! "validation.email.format"))
   (validate-input :password password #'valid-password-p
-                  "パスワードは8-100文字である必要があります")
+                  (t! "validation.password.length"))
 
   (with-db
     ;; ユーザー名の重複チェック
     (when (query "SELECT id FROM users WHERE username = $1" username :single)
-      (error 'validation-error :field :username :message "このユーザー名は既に使用されています"))
+      (error 'validation-error :field :username :message (t! "validation.username.taken")))
 
     ;; メールアドレスの重複チェック
     (when (query "SELECT id FROM users WHERE email = $1" email :single)
-      (error 'validation-error :field :email :message "このメールアドレスは既に使用されています"))
-    
+      (error 'validation-error :field :email :message (t! "validation.email.taken")))
+
     ;; ユーザーを作成
     (let ((password-hash (hash-password password)))
-      (execute "INSERT INTO users (username, email, password_hash, display_name, bio) 
+      (execute "INSERT INTO users (username, email, password_hash, display_name, bio)
                 VALUES ($1, $2, $3, $4, $5)"
-               username email password-hash 
-               (or display-name username) 
+               username email password-hash
+               (or display-name username)
                (or bio "")))))
 
 
