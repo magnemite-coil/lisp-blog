@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Cookie-based locale persistence
   - Automatic language switcher UI on all pages
   - Translation support for login, signup, and main pages
+  - API message localization (authentication and post management endpoints)
 - Dedicated login and signup pages with modern UI
   - Gradient background design
   - Responsive card layout
