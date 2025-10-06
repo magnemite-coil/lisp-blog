@@ -121,7 +121,8 @@
          ((string= match "&") "&amp;")
          ((string= match "\"") "&quot;")
          ((string= match "'") "&#x27;")
-         (t match))))))
+         (t match)))
+     :simple-calls t)))
 
 (defun sanitize-input (input)
   "入力値の一般的なサニタイゼーション"

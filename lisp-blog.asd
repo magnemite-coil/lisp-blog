@@ -10,7 +10,8 @@
                :local-time
                :ironclad          ; パスワードハッシュ化
                :cl-base64         ; Base64エンコード
-               :uuid)             ; セッションID生成
+               :uuid              ; セッションID生成
+               :babel)            ; 文字列エンコーディング
   :components ((:module "src"
                 :components
                 ((:file "package")
