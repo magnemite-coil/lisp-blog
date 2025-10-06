@@ -40,7 +40,11 @@
   "全ての翻訳ファイルをロード"
   (dolist (locale *supported-locales*)
     (let* ((filename (format nil "src/locales/~A.lisp" locale))
-           (file (merge-pathnames filename *project-root*)))
+           ;; *PROJECT-ROOT*が未定義の場合はASDFから取得
+           (root (if (boundp '*PROJECT-ROOT*)
+                     (symbol-value '*PROJECT-ROOT*)
+                     (asdf:system-source-directory :lisp-blog)))
+           (file (merge-pathnames filename root)))
       (when (probe-file file)
         (load file)
         (format t "Loaded translations: ~A~%" locale)))))
