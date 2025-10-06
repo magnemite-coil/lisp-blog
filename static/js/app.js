@@ -35,7 +35,7 @@ const app = createApp({
       try {
         await fetch('/api/auth/logout', { method: 'POST' });
         this.currentUser = null;
-        alert('ログアウトしました');
+        alert(i18n.t('auth.logged-out'));
         await this.fetchPosts();
       } catch (error) {
         console.error('ログアウトエラー:', error);
@@ -60,7 +60,7 @@ const app = createApp({
     
     async createPost() {
       if (!this.newPost.title || !this.newPost.content) {
-        alert('タイトルと内容を入力してください');
+        alert(i18n.t('validation.required'));
         return;
       }
 
@@ -79,18 +79,19 @@ const app = createApp({
         });
 
         if (response.ok) {
+          const status = this.newPost.status;
           this.newPost = { title: '', content: '', status: 'draft' };
           this.showCreateView = false;
           await this.fetchPosts();
-          const message = this.newPost.status === 'draft' ? '下書きが保存されました！' : '投稿が公開されました！';
+          const message = status === 'draft' ? i18n.t('post.created.draft') : i18n.t('post.created.published');
           alert(message);
         } else {
           const result = await response.json();
-          alert(result.error || '投稿の作成に失敗しました');
+          alert(result.error || i18n.t('post.created'));
         }
       } catch (error) {
         console.error('投稿の作成に失敗しました:', error);
-        alert('投稿の作成に失敗しました');
+        alert(i18n.t('login.error.server'));
       }
     },
     
@@ -121,19 +122,19 @@ const app = createApp({
         
         if (response.ok) {
           await this.fetchPosts();
-          alert('投稿が更新されました！');
+          alert(i18n.t('post.updated'));
         } else {
           const result = await response.json();
-          alert(result.error || '投稿の更新に失敗しました');
+          alert(result.error || i18n.t('post.updated'));
         }
       } catch (error) {
         console.error('投稿の更新に失敗しました:', error);
-        alert('投稿の更新に失敗しました');
+        alert(i18n.t('login.error.server'));
       }
     },
     
     async deletePost(id) {
-      if (!confirm('本当に削除しますか？')) {
+      if (!confirm(i18n.t('validation.confirm-delete'))) {
         return;
       }
       
@@ -151,14 +152,14 @@ const app = createApp({
         
         if (response.ok) {
           await this.fetchPosts();
-          alert('投稿が削除されました');
+          alert(i18n.t('post.deleted'));
         } else {
           const result = await response.json();
-          alert(result.error || '削除に失敗しました');
+          alert(result.error || i18n.t('post.deleted'));
         }
       } catch (error) {
         console.error('削除に失敗しました:', error);
-        alert('削除に失敗しました');
+        alert(i18n.t('login.error.server'));
       }
     },
     
@@ -178,15 +179,15 @@ const app = createApp({
         });
 
         if (response.ok) {
-          alert('下書きが公開されました！');
+          alert(i18n.t('post.published'));
           await this.fetchPosts();
         } else {
           const result = await response.json();
-          alert(result.error || '公開に失敗しました');
+          alert(result.error || i18n.t('post.published'));
         }
       } catch (error) {
         console.error('公開に失敗しました:', error);
-        alert('公開に失敗しました');
+        alert(i18n.t('login.error.server'));
       }
     },
 
@@ -197,15 +198,15 @@ const app = createApp({
         });
 
         if (response.ok) {
-          alert('投稿が下書きに戻されました！');
+          alert(i18n.t('post.unpublished'));
           await this.fetchPosts();
         } else {
           const result = await response.json();
-          alert(result.error || '下書きに戻す処理に失敗しました');
+          alert(result.error || i18n.t('post.unpublished'));
         }
       } catch (error) {
         console.error('下書きに戻す処理に失敗しました:', error);
-        alert('下書きに戻す処理に失敗しました');
+        alert(i18n.t('login.error.server'));
       }
     },
 

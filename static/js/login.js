@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = '/';
                 } else {
                     // エラー表示
-                    showError(result.error || result.message || 'ログインに失敗しました');
+                    showError(result.error || result.message || i18n.t('login.error.invalid'));
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError('ログインに失敗しました。もう一度お試しください。');
+                showError(i18n.t('login.error.server'));
             }
         });
     }
@@ -60,17 +60,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (response.ok) {
                     // サインアップ成功
-                    showSuccess('アカウントが作成されました！ログインページに移動します...');
+                    showSuccess(i18n.t('signup.success') + ' ' + i18n.t('signup.redirect'));
                     setTimeout(() => {
                         window.location.href = '/login';
                     }, 2000);
                 } else {
                     // エラー表示
-                    showError(result.error || result.message || 'アカウント作成に失敗しました');
+                    showError(result.error || result.message || i18n.t('signup.error.validation'));
                 }
             } catch (error) {
                 console.error('Signup error:', error);
-                showError('アカウント作成に失敗しました。もう一度お試しください。');
+                showError(i18n.t('login.error.server'));
             }
         });
     }
