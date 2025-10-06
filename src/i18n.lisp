@@ -17,14 +17,17 @@
 
 ;;; 翻訳関数
 
-(defun t! (key &optional (locale *current-locale*))
+(defun t! (key &optional locale)
   "翻訳を取得する
    引数:
      key - 翻訳キー (例: 'login.title')
-     locale - ロケール（省略時は *current-locale* を使用）
+     locale - ロケール（省略時はクッキーまたは *current-locale* を使用）
    戻り値:
      翻訳されたテキスト（見つからない場合はキーをそのまま返す）"
-  (let ((full-key (format nil "~A.~A" locale key)))
+  (let* ((actual-locale (or locale
+                            (get-locale-from-cookie)
+                            *current-locale*))
+         (full-key (format nil "~A.~A" actual-locale key)))
     (gethash full-key *translations* key)))
 
 (defun set-translation (locale key value)

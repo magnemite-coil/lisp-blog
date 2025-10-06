@@ -83,3 +83,29 @@ You can write freely in Markdown.
 (set-translation :en "error.not-logged-in" "Login required")
 (set-translation :en "error.invalid-credentials" "Invalid username or password")
 (set-translation :en "error.server-error" "Server error occurred")
+
+;;; API Messages - Authentication
+(set-translation :en "api.auth.account-created" "Account created successfully")
+(set-translation :en "api.auth.login-success" "Login successful")
+(set-translation :en "api.auth.invalid-credentials" "Invalid username or password")
+(set-translation :en "api.auth.logout-success" "Logged out")
+(set-translation :en "api.auth.login-required" "Login required")
+
+;;; API Messages - Posts
+(set-translation :en "api.post.created" "Post created successfully")
+(set-translation :en "api.post.updated" "Post updated successfully")
+(set-translation :en "api.post.deleted" "Post deleted")
+(set-translation :en "api.post.published" "Draft published successfully")
+(set-translation :en "api.post.unpublished" "Post unpublished successfully")
+(set-translation :en "api.post.permission-denied" "Permission denied to edit this post")
+(set-translation :en "api.post.not-found" "Post not found")
+(set-translation :en "api.post.draft-not-found" "Draft not found or permission denied")
+(set-translation :en "api.post.missing-id" "Post ID required")
+(set-translation :en "api.post.invalid-id" "Invalid post ID")
+
+;;; Validation Errors
+(set-translation :en "validation.username.format" "Username must be 3-50 characters of alphanumeric, underscore, or hyphen")
+(set-translation :en "validation.username.taken" "This username is already taken")
+(set-translation :en "validation.email.format" "Invalid email format")
+(set-translation :en "validation.email.taken" "This email is already in use")
+(set-translation :en "validation.password.length" "Password must be 8-100 characters")
