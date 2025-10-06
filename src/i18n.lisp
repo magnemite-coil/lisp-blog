@@ -54,11 +54,12 @@
 
 (defun get-locale-from-cookie ()
   "クッキーからロケールを取得"
-  (let ((locale-str (hunchentoot:cookie-in "locale")))
-    (when locale-str
-      (let ((locale (intern (string-upcase locale-str) :keyword)))
-        (when (member locale *supported-locales*)
-          locale)))))
+  (when (boundp 'hunchentoot:*request*)
+    (let ((locale-str (hunchentoot:cookie-in "locale")))
+      (when locale-str
+        (let ((locale (intern (string-upcase locale-str) :keyword)))
+          (when (member locale *supported-locales*)
+            locale))))))
 
 (defun set-current-locale-from-request ()
   "リクエストから現在のロケールを設定
