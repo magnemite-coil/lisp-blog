@@ -31,6 +31,9 @@ Thumbs.db
 CLAUDE.md
 PROGRESS.md
 
+# Development - Design documents (may contain security details)
+docs/design/
+
 # Development - Test artifacts
 cookies.txt
 *cookies*.txt
