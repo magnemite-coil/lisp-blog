@@ -298,14 +298,15 @@
 
 (define-easy-handler (index :uri "/") ()
                      "メインページ"
+                     (set-current-locale-from-request)
                      (setf (content-type*) "text/html")
                      (with-html-string
                        (:doctype)
-                       (:html
+                       (:html :lang (string-downcase (symbol-name *current-locale*))
                          (:head
                            (:meta :charset "utf-8")
                            (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
-                           (:title "Common Lisp Blog - Modern Admin")
+                           (:title (t! "main.page-title"))
                            (:link :rel "stylesheet" :href "/static/css/admin-card-layout.css")
                            (:script :src "https://unpkg.com/vue@3/dist/vue.global.js"))
                          (:body :class "admin-layout"
@@ -326,11 +327,11 @@
                                              (:raw "<span style=\"color: var(--text-secondary); margin-right: 15px;\">{{ currentUser.display_name }}</span>")
                                              (:raw "<button v-if=\"!showCreateView\" class=\"btn btn-gradient\" @click=\"showCreateView = true\">✏️ 新規作成</button>")
                                              (:raw "<button v-if=\"showCreateView\" class=\"btn btn-outline\" @click=\"showCreateView = false\">← 一覧に戻る</button>")
-                                             (:button :class "btn btn-outline" "@click" "logout" "Logout")
+                                             (:button :class "btn btn-outline" "@click" "logout" (t! "main.logout"))
                                              (:raw "</template>")
                                              (:raw "<template v-else>")
-                                             (:a :href "/login" :class "btn btn-outline" "Login")
-                                             (:a :href "/signup" :class "btn btn-gradient" "Sign Up")
+                                             (:a :href "/login" :class "btn btn-outline" (t! "common.login"))
+                                             (:a :href "/signup" :class "btn btn-gradient" (t! "common.sign-up"))
                                              (:raw "</template>")))
 
                                  ;; Main Container - Create Post View
@@ -410,20 +411,22 @@
                                  (:raw "</div>")
 
                            (:script :src "https://unpkg.com/vue@3/dist/vue.global.js")
+                           (:script :src "/static/js/i18n.js")
                            (:script :src "/static/js/app.js"))))))
 
 ;;; ログイン・サインアップページ
 
 (define-easy-handler (login-page :uri "/login") ()
                      "ログインページ"
+                     (set-current-locale-from-request)
                      (setf (content-type*) "text/html")
                      (with-html-string
                        (:doctype)
-                       (:html :lang "ja"
+                       (:html :lang (string-downcase (symbol-name *current-locale*))
                          (:head
                            (:meta :charset "utf-8")
                            (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
-                           (:title "ログイン - Common Lisp Blog")
+                           (:title (t! "login.page-title"))
                            (:link :rel "stylesheet" :href "/static/css/login.css"))
                          (:body :class "login-page"
                            (:div :class "background")
@@ -431,13 +434,13 @@
                            (:div :class "login-header"
                                  (:div :class "logo"
                                        (:div :class "logo-icon" "B")
-                                       (:span :class "logo-text" "Common Lisp Blog"))
-                                 (:a :href "/signup" :class "signup-btn" "新規登録"))
+                                       (:span :class "logo-text" (t! "login.logo-text")))
+                                 (:a :href "/signup" :class "signup-btn" (t! "common.signup")))
 
                            (:div :class "container"
                                  (:div :class "login-card"
-                                       (:h1 :class "brand-name" "MyBlog")
-                                       (:p :class "brand-subtitle" "ログインしてブログを書こう")
+                                       (:h1 :class "brand-name" (t! "login.brand"))
+                                       (:p :class "brand-subtitle" (t! "login.subtitle"))
 
                                        (:div :id "error-message" :class "error-message" :style "display: none;")
 
@@ -446,34 +449,36 @@
                                                    (:input :type "text"
                                                            :name "username"
                                                            :class "form-input"
-                                                           :placeholder "ユーザー名"
+                                                           :placeholder (t! "login.username")
                                                            :required "required"))
 
                                              (:div :class "form-group"
                                                    (:input :type "password"
                                                            :name "password"
                                                            :class "form-input"
-                                                           :placeholder "パスワード"
+                                                           :placeholder (t! "login.password")
                                                            :required "required"))
 
-                                             (:button :type "submit" :class "login-btn" "ログイン"))
+                                             (:button :type "submit" :class "login-btn" (t! "login.button")))
 
                                        (:div :class "switch-link"
-                                             "アカウントをお持ちでない方は "
-                                             (:a :href "/signup" "新規登録"))))
+                                             (t! "login.no-account") " "
+                                             (:a :href "/signup" (t! "common.signup")))))
 
+                           (:script :src "/static/js/i18n.js")
                            (:script :src "/static/js/login.js")))))
 
 (define-easy-handler (signup-page :uri "/signup") ()
                      "サインアップページ"
+                     (set-current-locale-from-request)
                      (setf (content-type*) "text/html")
                      (with-html-string
                        (:doctype)
-                       (:html :lang "ja"
+                       (:html :lang (string-downcase (symbol-name *current-locale*))
                          (:head
                            (:meta :charset "utf-8")
                            (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
-                           (:title "新規登録 - Common Lisp Blog")
+                           (:title (t! "signup.page-title"))
                            (:link :rel "stylesheet" :href "/static/css/login.css"))
                          (:body :class "login-page"
                            (:div :class "background")
@@ -481,13 +486,13 @@
                            (:div :class "login-header"
                                  (:div :class "logo"
                                        (:div :class "logo-icon" "B")
-                                       (:span :class "logo-text" "Common Lisp Blog"))
-                                 (:a :href "/login" :class "login-btn-header" "ログイン"))
+                                       (:span :class "logo-text" (t! "login.logo-text")))
+                                 (:a :href "/login" :class "login-btn-header" (t! "signup.login-btn-header")))
 
                            (:div :class "container"
                                  (:div :class "login-card"
-                                       (:h1 :class "brand-name" "MyBlog")
-                                       (:p :class "brand-subtitle" "アカウントを作成")
+                                       (:h1 :class "brand-name" (t! "signup.brand"))
+                                       (:p :class "brand-subtitle" (t! "signup.subtitle"))
 
                                        (:div :id "error-message" :class "error-message" :style "display: none;")
                                        (:div :id "success-message" :class "success-message" :style "display: none;")
@@ -497,7 +502,7 @@
                                                    (:input :type "text"
                                                            :name "username"
                                                            :class "form-input"
-                                                           :placeholder "ユーザー名 (3-50文字)"
+                                                           :placeholder (t! "signup.username")
                                                            :required "required"
                                                            :minlength "3"
                                                            :maxlength "50"))
@@ -506,14 +511,14 @@
                                                    (:input :type "email"
                                                            :name "email"
                                                            :class "form-input"
-                                                           :placeholder "メールアドレス"
+                                                           :placeholder (t! "signup.email")
                                                            :required "required"))
 
                                              (:div :class "form-group"
                                                    (:input :type "password"
                                                            :name "password"
                                                            :class "form-input"
-                                                           :placeholder "パスワード (8文字以上)"
+                                                           :placeholder (t! "signup.password")
                                                            :required "required"
                                                            :minlength "8"))
 
@@ -521,12 +526,13 @@
                                                    (:input :type "text"
                                                            :name "display-name"
                                                            :class "form-input"
-                                                           :placeholder "表示名 (任意)"))
+                                                           :placeholder (t! "signup.display-name")))
 
-                                             (:button :type "submit" :class "login-btn" "アカウント作成"))
+                                             (:button :type "submit" :class "login-btn" (t! "signup.button")))
 
                                        (:div :class "switch-link"
-                                             "すでにアカウントをお持ちの方は "
-                                             (:a :href "/login" "ログイン"))))
+                                             (t! "signup.has-account") " "
+                                             (:a :href "/login" (t! "common.login")))))
 
+                           (:script :src "/static/js/i18n.js")
                            (:script :src "/static/js/login.js")))))
