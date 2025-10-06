@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 19 creator-focused blog themes
   - 10 admin panel layouts
   - GitHub Pages deployment for preview
+- Automated test suite with FiveAM framework
+  - 97 test cases covering utility functions
+  - PostgreSQL-based test database with transaction isolation
+  - Comprehensive validation and security function tests
 
 ### Changed
 - Improved session management for better performance
@@ -44,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced session security with 7-day expiration
 - Protected sensitive files via .gitignore
 - SQL injection prevention with parameterized queries
+- Fixed HTML sanitization function for proper XSS protection
 
 ### Fixed
 - Session timeout issues
