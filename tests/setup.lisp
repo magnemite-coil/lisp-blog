@@ -44,6 +44,7 @@
     (postmodern:with-connection *test-db-spec*
       (postmodern:execute "TRUNCATE users, sessions, posts, comments RESTART IDENTITY CASCADE"))))
 
+
 ;;; FiveAM フィクスチャ定義
 
 (def-fixture with-empty-db ()
@@ -60,6 +61,7 @@
       (unwind-protect
            (&body)
         (postmodern:execute "ROLLBACK")))))
+
 
 ;;; テスト用ヘルパー関数
 
