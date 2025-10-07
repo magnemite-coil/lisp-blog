@@ -40,33 +40,28 @@
 
 (defun clean-test-db ()
   "テスト用データベースの全データを削除（テーブル構造は保持）"
-  ;; run-testsで既に*db-spec*が設定されているので、ここでは変更しない
-  (postmodern:with-connection *test-db-spec*
-    (handler-case
-        (postmodern:execute "TRUNCATE users, sessions, posts, comments RESTART IDENTITY CASCADE")
-      (error (e)
-        ;; テーブルが存在しない場合は何もしない（run-testsで初期化される）
-        (format t "Warning: Could not truncate tables: ~A~%" e)
-        nil))))
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (postmodern:with-connection *test-db-spec*
+      (postmodern:execute "TRUNCATE users, sessions, posts, comments RESTART IDENTITY CASCADE"))))
+
 
 ;;; FiveAM フィクスチャ定義
 
 (def-fixture with-empty-db ()
   "空のデータベースでテストを実行するフィクスチャ"
-  ;; run-testsで既に*db-spec*が設定されているので、ここでは変更しない
-  ;; clean-test-dbは独自の接続を確立して閉じる
-  (clean-test-db)
-  ;; テスト本体を実行（各テストはwith-dbで独自の接続を確立する）
-  (&body))
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (clean-test-db)
+    (&body)))
 
 (def-fixture with-transaction ()
   "トランザクションをロールバックするフィクスチャ（データベースを変更しない）"
-  ;; run-testsで既に*db-spec*が設定されているので、ここでは変更しない
-  (postmodern:with-connection *test-db-spec*
-    (postmodern:execute "BEGIN")
-    (unwind-protect
-         (&body)
-      (postmodern:execute "ROLLBACK"))))
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (postmodern:with-connection *test-db-spec*
+      (postmodern:execute "BEGIN")
+      (unwind-protect
+           (&body)
+        (postmodern:execute "ROLLBACK")))))
+
 
 ;;; テスト用ヘルパー関数
 
@@ -76,24 +71,21 @@
                           (password "password123")
                           (display-name "Test User")
                           (bio "Test bio"))
-  "テスト用ユーザーを作成してIDを返す（フィクスチャ内で使用）"
-  ;; *db-spec*はフィクスチャで既に設定されている
-  (lisp-blog::create-user username email password display-name bio)
-  ;; 作成したユーザーのIDを取得して返す
-  (lisp-blog::with-db
-    (postmodern:query "SELECT id FROM users WHERE username = $1" username :single)))
+  "テスト用ユーザーを作成"
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (lisp-blog::create-user username email password display-name bio)))
 
 (defun create-test-post (user-id &key
                                   (title "Test Post")
                                   (content "Test content")
                                   (status "published"))
-  "テスト用投稿を作成（フィクスチャ内で使用）"
-  ;; *db-spec*はフィクスチャで既に設定されている
-  (lisp-blog::create-post user-id title content status))
+  "テスト用投稿を作成"
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (lisp-blog::create-post user-id title content status)))
 
 (defun get-test-user-id (username)
-  "テスト用ユーザーのIDを取得（フィクスチャ内で使用）"
-  ;; *db-spec*はフィクスチャで既に設定されている
-  (lisp-blog::with-db
-    (postmodern:query (:select 'id :from 'users :where (:= 'username username))
-                      :single)))
+  "テスト用ユーザーのIDを取得"
+  (let ((lisp-blog::*db-spec* *test-db-spec*))
+    (postmodern:with-connection *test-db-spec*
+      (postmodern:query (:select 'id :from 'users :where (:= 'username username))
+                        :single))))

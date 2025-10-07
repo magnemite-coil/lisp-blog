@@ -412,10 +412,10 @@
     (is (string= "test-data" (cdr (assoc "data" response :test #'string=))))))
 
 ;; Note: respond-json tests require HTTP context and are tested in handlers-test.lisp
-
 ;;; Note: データベース依存のセッション管理関数テストは Phase 3 で実装予定
 ;;; (create-session, get-session-user-id, delete-session, clean-expired-sessions)
 ;;;
 ;;; これらの関数は with-db マクロを使用しており、マクロ展開時に *db-spec* を
 ;;; 参照するため、テスト実行時の動的な設定変更では対応できません。
 ;;; Phase 3 では、データベース統合テスト用のインフラを整備して実装します。
+
