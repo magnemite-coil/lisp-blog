@@ -494,6 +494,47 @@ MIT License
 
 ---
 
+## 開発者向け情報
+
+### キャッシュ管理
+
+このプロジェクトでは、コンパイル済みファイル（.fasl）をプロジェクト内の `.fasl-cache/` ディレクトリに保存します。これにより、ホームディレクトリを汚すことなく、安全にキャッシュを管理できます。
+
+**キャッシュの場所:**
+```
+lisp-blog/.fasl-cache/sbcl-<version>-<platform>/
+```
+
+**キャッシュのクリーンアップ:**
+```bash
+# 対話モード（確認あり）
+./clean-cache.sh
+
+# 自動モード（確認なし）
+./clean-cache.sh -y
+```
+
+**キャッシュ設定:**
+
+`setup-cache.lisp` が自動的に読み込まれ、ASDFの出力先を設定します。
+- `run-tests.sh`: テスト実行時に自動適用
+- `main.lisp`: サーバー起動時に自動適用
+
+手動でREPLから実行する場合:
+```lisp
+(load "setup-cache.lisp")
+(ql:quickload :lisp-blog)
+```
+
+### テスト実行
+
+```bash
+# 全テスト実行（Phase 1: 97テスト）
+./run-tests.sh
+```
+
+---
+
 ## 参考リンク
 
 - [SBCL Documentation](http://www.sbcl.org/manual/)
