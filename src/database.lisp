@@ -1,13 +1,30 @@
 (in-package :lisp-blog)
 
-(defparameter *db-spec* 
+(defparameter *db-spec*
   '("blogdb" "bloguser" "" "localhost")
   "データベース接続仕様")
 
+(defun call-with-db (fn)
+  "データベース接続を自動管理（関数版）
+実行時に*db-spec*を評価するため、テスト時に動的に接続先を変更可能
+既存の接続がある場合はそれを再利用する"
+  (if (and (boundp 'postmodern:*database*)
+           postmodern:*database*)
+      ;; 既に接続がある場合はそのまま使用
+      (funcall fn)
+      ;; 接続がない場合は新規接続
+      ;; with-connection マクロを使わず、apply を使って実行時に接続
+      (let ((db (first *db-spec*))
+            (user (second *db-spec*))
+            (password (third *db-spec*))
+            (host (fourth *db-spec*)))
+        (postmodern:with-connection (list db user password host)
+          (funcall fn)))))
+
 (defmacro with-db (&body body)
-  "データベース接続を自動管理"
-  `(with-connection *db-spec*
-     ,@body))
+  "データベース接続を自動管理
+内部的にcall-with-db関数を呼び出すことで、実行時の柔軟性を確保"
+  `(call-with-db (lambda () ,@body)))
 
 (defun init-db ()
   "データベーステーブルの初期化"
