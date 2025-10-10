@@ -1,4 +1,5 @@
 (load "~/quicklisp/setup.lisp")
+(load "setup-cache.lisp")
 (ql:quickload :lisp-blog)
 
 (in-package :lisp-blog)
