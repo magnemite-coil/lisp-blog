@@ -44,6 +44,43 @@
                           ((null value) "null")
                           (t (format nil "\"~A\"" value))))))
 
+;;; ページネーションヘルパー関数
+
+(defun get-query-param (name &optional (default nil))
+  "クエリパラメータを取得して整数に変換
+
+  Parameters:
+    name    - パラメータ名（文字列）
+    default - デフォルト値（パラメータがない場合または変換失敗時）
+
+  Returns:
+    整数値またはデフォルト値"
+  (let ((value (hunchentoot:get-parameter name)))
+    (if value
+        (handler-case
+            (parse-integer value)
+          (error () default))
+        default)))
+
+(defun calculate-pagination (page per-page total)
+  "ページネーション情報を計算
+
+  Parameters:
+    page     - 現在のページ番号
+    per-page - 1ページあたりの件数
+    total    - 総件数
+
+  Returns:
+    plist形式のページネーション情報
+    (:page :per_page :total :total_pages :has_next :has_prev)"
+  (let ((total-pages (if (zerop total) 0 (ceiling total per-page))))
+    (list :page page
+          :per_page per-page
+          :total total
+          :total_pages total-pages
+          :has_next (< page total-pages)
+          :has_prev (> page 1))))
+
 ;;; 認証API
 
 (define-easy-handler (api-signup :uri "/api/auth/signup")
@@ -119,28 +156,70 @@
 ;;; 投稿API
 
 (define-easy-handler (api-posts :uri "/api/posts") (status)
-                     "投稿を取得（statusパラメータでフィルタリング可能）"
+                     "投稿を取得（statusパラメータでフィルタリング可能、ページネーション対応）"
                      (setf (content-type*) "application/json")
-                     (let ((posts (cond
-                                    ((string= status "published") (get-published-posts))
-                                    ((string= status "draft")
-                                     ;; 下書きはログインユーザーのみアクセス可能
-                                     (let ((user (get-current-user)))
-                                       (if user
-                                           (get-user-drafts (user-id user))
-                                           '())))
-                                    (t (get-published-posts))))) ; デフォルトは公開済みのみ
-                       (format nil "[~{~A~^,~}]"
-                               (mapcar (lambda (post)
-                                         (format nil "{\"id\":~A,\"user_id\":~A,\"title\":\"~A\",\"content\":\"~A\",\"author\":\"~A\",\"created_at\":\"~A\",\"status\":\"~A\"}"
-                                                 (post-id post)
-                                                 (post-user-id post)
-                                                 (post-title post)
-                                                 (post-content post)
-                                                 (post-author-name post)
-                                                 (format-timestamp (post-created-at post))
-                                                 (post-status post)))
-                                       posts))))
+
+                     ;; 下書き一覧の場合はページネーション無し（既存動作を維持）
+                     (when (string= status "draft")
+                       (let ((user (get-current-user)))
+                         (if user
+                             (let ((posts (get-user-drafts (user-id user))))
+                               (return-from api-posts
+                                 (format nil "[~{~A~^,~}]"
+                                         (mapcar (lambda (post)
+                                                   (format nil "{\"id\":~A,\"user_id\":~A,\"title\":\"~A\",\"content\":\"~A\",\"author\":\"~A\",\"created_at\":\"~A\",\"status\":\"~A\"}"
+                                                           (post-id post)
+                                                           (post-user-id post)
+                                                           (post-title post)
+                                                           (post-content post)
+                                                           (post-author-name post)
+                                                           (format-timestamp (post-created-at post))
+                                                           (post-status post)))
+                                                 posts))))
+                             (return-from api-posts "[]"))))
+
+                     ;; 公開済み投稿の場合はページネーション対応
+                     (let* ((page (or (get-query-param "page") 1))
+                            (per-page (or (get-query-param "per_page") 10)))
+
+                       ;; バリデーション
+                       (when (or (<= page 0) (> per-page 100) (<= per-page 0))
+                         (setf (return-code*) hunchentoot:+http-bad-request+)
+                         (return-from api-posts
+                           (json-error "Invalid pagination parameters")))
+
+                       ;; 総件数を取得
+                       (let* ((total (count-published-posts))
+                              (total-pages (if (zerop total) 0 (ceiling total per-page))))
+
+                         ;; ページ番号が範囲外の場合
+                         (when (and (> page total-pages) (> total 0))
+                           (setf (return-code*) hunchentoot:+http-bad-request+)
+                           (return-from api-posts
+                             (json-error (format nil "Page ~A does not exist (max: ~A)" page total-pages))))
+
+                         ;; 投稿を取得
+                         (let* ((posts (get-published-posts-paginated page per-page))
+                                (pagination (calculate-pagination page per-page total)))
+
+                           ;; JSONレスポンス生成
+                           (format nil "{\"posts\":[~{~A~^,~}],\"pagination\":{\"page\":~A,\"per_page\":~A,\"total\":~A,\"total_pages\":~A,\"has_next\":~A,\"has_prev\":~A}}"
+                                   (mapcar (lambda (post)
+                                             (format nil "{\"id\":~A,\"user_id\":~A,\"title\":\"~A\",\"content\":\"~A\",\"author\":\"~A\",\"created_at\":\"~A\",\"status\":\"~A\"}"
+                                                     (post-id post)
+                                                     (post-user-id post)
+                                                     (post-title post)
+                                                     (post-content post)
+                                                     (post-author-name post)
+                                                     (format-timestamp (post-created-at post))
+                                                     (post-status post)))
+                                           posts)
+                                   (getf pagination :page)
+                                   (getf pagination :per_page)
+                                   (getf pagination :total)
+                                   (getf pagination :total_pages)
+                                   (if (getf pagination :has_next) "true" "false")
+                                   (if (getf pagination :has_prev) "true" "false"))))))
 
 (define-easy-handler (api-create-post :uri "/api/posts/create")
                      (title content status)
@@ -327,7 +406,7 @@
                                              (:raw "<span style=\"color: var(--text-secondary); margin-right: 15px;\">{{ currentUser.display_name }}</span>")
                                              (:raw "<button v-if=\"!showCreateView\" class=\"btn btn-gradient\" @click=\"showCreateView = true\">✏️ 新規作成</button>")
                                              (:raw "<button v-if=\"showCreateView\" class=\"btn btn-outline\" @click=\"showCreateView = false\">← 一覧に戻る</button>")
-                                             (:button :class "btn btn-outline" "@click" "logout" (t! "main.logout"))
+                                             (:raw (format nil "<button class=\"btn btn-outline\" @click=\"logout\">~A</button>" (t! "main.logout")))
                                              (:raw "</template>")
                                              (:raw "<template v-else>")
                                              (:a :href "/login" :class "btn btn-outline" (t! "common.login"))
@@ -372,8 +451,7 @@
                                                                  (:span :class "status-name" "公開"))
                                                            (:div :class "status-desc" "すぐに公開する")
                                                            (:raw "</div>"))
-                                                     (:button :class "btn btn-gradient" :style "width: 100%; margin-top: 15px;" "@click" "createPost"
-                                                              (:raw "{{ newPost.status === 'draft' ? '下書き保存' : '公開する' }}")))
+                                                     (:raw "<button class=\"btn btn-gradient\" style=\"width: 100%; margin-top: 15px;\" @click=\"createPost\">{{ newPost.status === 'draft' ? '下書き保存' : '公開する' }}</button>"))
 
                                                ;; Stats Card
                                                (:div :class "card"
@@ -408,6 +486,26 @@
                                        (:raw "<button class=\"post-action-btn delete\" @click=\"deletePost(post.id)\">🗑️ 削除</button>")
                                        (:raw "</div>")
                                        (:raw "</div>"))
+
+                                 ;; Pagination
+                                 (:raw "<div v-if=\"!currentUser && pagination.total_pages > 1\" class=\"pagination-container\">")
+                                 (:div :class "pagination"
+                                       (:raw "<button @click=\"prevPage\" :disabled=\"!pagination.has_prev\" class=\"pagination-btn pagination-arrow\">")
+                                       (:span "« 前へ")
+                                       (:raw "</button>")
+
+                                       (:raw "<button v-for=\"page in pageNumbers\" :key=\"page\" @click=\"typeof page === 'number' ? goToPage(page) : null\" :class=\"['pagination-btn', page === pagination.page ? 'active' : '', typeof page !== 'number' ? 'ellipsis' : '']\" :disabled=\"typeof page !== 'number'\">")
+                                       (:raw "{{ page }}")
+                                       (:raw "</button>")
+
+                                       (:raw "<button @click=\"nextPage\" :disabled=\"!pagination.has_next\" class=\"pagination-btn pagination-arrow\">")
+                                       (:span "次へ »")
+                                       (:raw "</button>"))
+
+                                 (:raw "<div v-if=\"!currentUser && pagination.total > 0\" class=\"pagination-info\">")
+                                 (:raw "表示中: {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ Math.min(pagination.page * pagination.per_page, pagination.total) }} / 全{{ pagination.total }}件")
+                                 (:raw "</div>")
+                                 (:raw "</div>")
                                  (:raw "</div>")
 
                            (:script :src "https://unpkg.com/vue@3/dist/vue.global.js")

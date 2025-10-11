@@ -11,6 +11,14 @@ const app = createApp({
         content: '',
         status: 'draft'
       },
+      pagination: {
+        page: 1,
+        per_page: 10,
+        total: 0,
+        total_pages: 0,
+        has_next: false,
+        has_prev: false
+      }
     }
   },
   
@@ -44,14 +52,33 @@ const app = createApp({
     
     async fetchPosts() {
       try {
-        // 全ての投稿を取得（公開済み + 自分の下書き）
+        // ログイン中: 全ての投稿を取得（公開済み + 自分の下書き）
         const response = await fetch('/api/user/posts');
         if (response.ok) {
           this.posts = await response.json();
+          // ユーザー投稿はページネーション無し（将来実装可能）
+          this.pagination = {
+            page: 1,
+            per_page: this.posts.length,
+            total: this.posts.length,
+            total_pages: 1,
+            has_next: false,
+            has_prev: false
+          };
         } else {
-          // ログインしていない場合は公開済みのみ取得
-          const publicResponse = await fetch('/api/posts?status=published');
-          this.posts = await publicResponse.json();
+          // 未ログイン: 公開済みのみページネーション付きで取得
+          const publicResponse = await fetch(`/api/posts?page=${this.pagination.page}&per_page=${this.pagination.per_page}`);
+          const data = await publicResponse.json();
+
+          // レスポンス形式が異なる場合の処理
+          if (data.posts && data.pagination) {
+            // 新しいページネーション対応API
+            this.posts = data.posts;
+            this.pagination = data.pagination;
+          } else {
+            // 旧形式（配列のみ）の場合
+            this.posts = data;
+          }
         }
       } catch (error) {
         console.error('投稿の取得に失敗しました:', error);
@@ -221,6 +248,70 @@ const app = createApp({
       // 日本語の場合、1分あたり約600文字と仮定
       const readTime = Math.ceil(wordCount / 600);
       return readTime || 1;
+    },
+
+    // ページネーション関連メソッド
+    goToPage(page) {
+      if (page < 1 || page > this.pagination.total_pages) return;
+      this.pagination.page = page;
+      this.fetchPosts();
+      // ページ最上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    nextPage() {
+      if (this.pagination.has_next) {
+        this.goToPage(this.pagination.page + 1);
+      }
+    },
+
+    prevPage() {
+      if (this.pagination.has_prev) {
+        this.goToPage(this.pagination.page - 1);
+      }
+    }
+  },
+
+  computed: {
+    pageNumbers() {
+      const pages = [];
+      const total = this.pagination.total_pages;
+      const current = this.pagination.page;
+
+      if (total <= 1) {
+        return pages; // ページが1つ以下の場合は空配列
+      }
+
+      if (total <= 7) {
+        // 7ページ以下の場合は全て表示
+        for (let i = 1; i <= total; i++) {
+          pages.push(i);
+        }
+      } else {
+        // 7ページ超の場合は省略表示
+        // 例: [1] [2] [3] ... [8] [9] [10]
+        // 例: [1] ... [5] [6] [7] ... [10]
+        pages.push(1);
+
+        if (current > 3) {
+          pages.push('...');
+        }
+
+        const start = Math.max(2, current - 1);
+        const end = Math.min(total - 1, current + 1);
+
+        for (let i = start; i <= end; i++) {
+          pages.push(i);
+        }
+
+        if (current < total - 2) {
+          pages.push('...');
+        }
+
+        pages.push(total);
+      }
+
+      return pages;
     }
   }
 });
