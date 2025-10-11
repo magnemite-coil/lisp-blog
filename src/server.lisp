@@ -30,6 +30,10 @@
     (push (create-folder-dispatcher-and-handler "/static/" static-dir)
           hunchentoot:*dispatch-table*)
 
+    ;; 投稿詳細ページのルーティング（正規表現で /post/数字 にマッチ）
+    (push (hunchentoot:create-regex-dispatcher "^/post/\\d+$" 'post-detail-handler)
+          hunchentoot:*dispatch-table*)
+
     (start *acceptor*)
     (format t "Server started on http://localhost:~a~%" port)))
 

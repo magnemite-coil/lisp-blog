@@ -27,6 +27,17 @@
           (when data
             (format nil "\"message\":\"~A\"" data))))
 
+;;; Markdown変換ヘルパー関数
+
+(defun markdown-to-html (markdown-text)
+  "MarkdownをHTMLに変換（highlight.js用コードブロック対応）"
+  (with-output-to-string (stream)
+    (let ((3bmd-code-blocks:*code-blocks* t)      ; コードブロック有効化
+          (3bmd-code-blocks:*code-blocks-default-colorize* nil)  ; Colorize無効化（highlight.js使用のため）
+          (3bmd-code-blocks:*colorize-name-map* (make-hash-table :test 'equal))  ; 言語マップを空に
+          (3bmd:*smart-quotes* t))                ; スマート引用符
+      (3bmd:parse-string-and-print-to-stream markdown-text stream))))
+
 (defun json-error (message)
   "JSONエラーレスポンスを生成"
   (setf (content-type*) "application/json")
@@ -634,3 +645,66 @@
 
                            (:script :src "/static/js/i18n.js")
                            (:script :src "/static/js/login.js")))))
+
+;;; 投稿詳細ページ
+
+(defun render-404-page ()
+  "404エラーページをレンダリング"
+  (spinneret:with-html-string
+    (:doctype)
+    (:html :lang "ja"
+      (:head
+       (:meta :charset "UTF-8")
+       (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
+       (:title "404 Not Found")
+       (:link :rel "stylesheet" :href "/static/css/tokyo-night.css"))
+      (:body
+       (:div :class "error-page"
+         (:h1 "404")
+         (:p "投稿が見つかりませんでした"))))))
+
+(defun render-post-detail-page (post)
+  "投稿詳細ページのHTMLをレンダリング"
+  (let ((title (post-title post))
+        (content (post-content post))
+        (author (post-author-name post))
+        (created-at (post-created-at post)))
+    (spinneret:with-html-string
+      (:doctype)
+      (:html :lang "ja"
+        (:head
+         (:meta :charset "UTF-8")
+         (:meta :name "viewport" :content "width=device-width, initial-scale=1.0")
+         (:title title)
+         (:link :rel "stylesheet" :href "/static/css/tokyo-night.css")
+         (:link :rel "stylesheet"
+                :href "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css"))
+        (:body
+         (:article :class "post-detail"
+           (:header :class "post-header"
+             (:h1 :class "post-title" title)
+             (:div :class "post-meta"
+               (:span :class "author" author)
+               (:span :class "date" (format-timestamp created-at))))
+           (:div :class "post-content"
+             (:raw (markdown-to-html content))))
+         (:script :src "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js")
+         (:script :src "/static/js/highlight-init.js"))))))
+
+(defun post-detail-handler ()
+  "投稿詳細ページ /post/:id"
+  (let* ((uri (hunchentoot:request-uri*))
+         (post-id-str (cl-ppcre:scan-to-strings "\\d+" uri))
+         (post-id (when post-id-str (parse-integer post-id-str :junk-allowed t))))
+    (cond
+      ((null post-id)
+       (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
+       "Invalid post ID")
+      (t
+       (let ((post (get-post-by-id post-id)))
+         (cond
+           ((null post)
+            (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
+            (render-404-page))
+           (t
+            (render-post-detail-page post))))))))
