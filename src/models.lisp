@@ -243,3 +243,24 @@
     (let ((affected (execute "DELETE FROM posts WHERE id = $1 AND user_id = $2"
                              post-id user-id)))
       (> affected 0))))
+
+(defun get-post-by-id (post-id)
+  "IDで投稿を1件取得（著者情報付き）"
+  (with-db
+    (let ((post (query "SELECT p.id, p.user_id, p.title, p.content,
+                               u.display_name, p.created_at, p.updated_at, p.status
+                        FROM posts p
+                        JOIN users u ON p.user_id = u.id
+                        WHERE p.id = $1"
+                       post-id
+                       :row)))
+      (when post
+        (make-instance 'post
+                       :id (nth 0 post)
+                       :user-id (nth 1 post)
+                       :title (nth 2 post)
+                       :content (nth 3 post)
+                       :author-name (nth 4 post)
+                       :created-at (nth 5 post)
+                       :updated-at (nth 6 post)
+                       :status (nth 7 post))))))

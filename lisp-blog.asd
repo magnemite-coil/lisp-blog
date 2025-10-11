@@ -11,7 +11,9 @@
                :ironclad          ; パスワードハッシュ化
                :cl-base64         ; Base64エンコード
                :uuid              ; セッションID生成
-               :babel)            ; 文字列エンコーディング
+               :babel             ; 文字列エンコーディング
+               :3bmd              ; Markdown parser
+               :3bmd-ext-code-blocks)  ; Code block support
   :components ((:module "src"
                 :components
                 ((:file "package")

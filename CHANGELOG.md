@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Syntax highlighting for code blocks with highlight.js
+  - Client-side highlighting with highlight.js v11.9.0
+  - Tokyo Night Dark theme for consistent design
+  - Support for 200+ programming languages
+  - Automatic language detection
+- Test data with 10 programming language articles
+  - Rust, Python, JavaScript, Go, TypeScript, Java, C#, Swift, Kotlin, Common Lisp
+  - Practical code examples with Japanese explanations
 - Pagination system for blog posts
   - Offset-based pagination with configurable items per page (default: 10)
   - Smart page number display with ellipsis for large page counts
@@ -47,6 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Test fixtures for database isolation (with-empty-db, with-transaction)
 
 ### Changed
+- Migrated from server-side colorize to client-side highlight.js for syntax highlighting
+  - Disabled 3bmd colorize library completely
+  - Cleaner HTML output without inline style spans
+  - Better performance with client-side rendering
 - Improved session management for better performance
 - Enhanced error handling across the application
 - Removed modal-based authentication in favor of dedicated pages
