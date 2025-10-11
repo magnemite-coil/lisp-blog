@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Pagination system for blog posts
+  - Offset-based pagination with configurable items per page (default: 10)
+  - Smart page number display with ellipsis for large page counts
+  - Previous/Next navigation buttons
+  - Automatic scroll to top on page change
+  - DoS prevention with maximum per_page limit (100)
+  - Total items and page count display
+  - Responsive mobile design
 - Internationalization (i18n) support for Japanese and English
   - Hash-table based translation system
   - Cookie-based locale persistence
@@ -54,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed HTML sanitization function for proper XSS protection
 
 ### Fixed
+- Vue directive rendering in Spinneret templates (logout and create post buttons)
 - Session timeout issues
 - Database connection handling
 - Timestamp formatting errors
