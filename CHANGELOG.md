@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Migration to Caveman2 web framework and Mito ORM (Phase 1: Foundation)
+  - User model with Mito's `deftable` macro
+  - Automatic ID and timestamp generation
+  - Connection pooling built into Mito
 - Syntax highlighting for code blocks with highlight.js
   - Client-side highlighting with highlight.js v11.9.0
   - Tokyo Night Dark theme for consistent design
@@ -55,6 +59,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Test fixtures for database isolation (with-empty-db, with-transaction)
 
 ### Changed
+- **Technology Stack Migration (Phase 1):**
+  - Replaced Hunchentoot with Caveman2 web framework
+  - Replaced Postmodern with Mito ORM
+  - Added Clack/Lack middleware layer
+  - Replaced Yason with Jonathan for JSON handling
+  - Improved connection pooling with Mito's built-in support
 - Migrated from server-side colorize to client-side highlight.js for syntax highlighting
   - Disabled 3bmd colorize library completely
   - Cleaner HTML output without inline style spans
