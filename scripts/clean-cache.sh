@@ -2,7 +2,7 @@
 #
 # clean-cache.sh - プロジェクトのキャッシュをクリーンアップ
 #
-# このスクリプトは、プロジェクト内の .fasl-cache/ ディレクトリを
+# このスクリプトは、プロジェクト内の _build/fasl/ ディレクトリを
 # 安全に削除します。ホームディレクトリには一切触れません。
 #
 # 使い方:
@@ -11,7 +11,7 @@
 set -e  # エラーが発生したら即座に終了
 
 PROJECT_DIR="/Users/key-person/projects/lisp-blog"
-CACHE_DIR="${PROJECT_DIR}/.fasl-cache"
+CACHE_DIR="${PROJECT_DIR}/_build/fasl"
 
 echo "========================================="
 echo "  lisp-blog Cache Cleanup"
@@ -55,7 +55,7 @@ if [ "$1" != "-y" ]; then
 fi
 
 # 削除実行（安全チェック付き）
-if [[ "$CACHE_DIR" == *"lisp-blog"* ]] && [[ "$CACHE_DIR" == *".fasl-cache"* ]]; then
+if [[ "$CACHE_DIR" == *"lisp-blog"* ]] && [[ "$CACHE_DIR" == *"_build"* ]]; then
   echo "🗑️  Removing cache directory..."
   rm -rf "$CACHE_DIR"
   echo "✅ Cache cleaned successfully!"

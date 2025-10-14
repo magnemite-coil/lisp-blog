@@ -7,7 +7,7 @@
 *.x86f
 *.err
 *.tmp
-.fasl-cache/
+_build/
 
 # Language - ASDF system files
 *.asd~
@@ -36,14 +36,7 @@ PROGRESS.md
 docs/design/
 
 # Development - Test artifacts
-cookies.txt
-*cookies*.txt
-test-*.txt
-test_*.log
-test_*.sh
-*_test.lisp
-test_*.html
-test_summary.md
+var/
 /tmp/
 *.test
 *.spec
