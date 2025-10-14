@@ -1,27 +1,43 @@
 (defsystem "lisp-blog"
-  :version "0.2.0"
+  :version "0.3.0"
   :author "Your Name"
   :license "MIT"
-  :depends-on (:hunchentoot
-               :spinneret
-               :postmodern
-               :yason
-               :cl-ppcre
-               :local-time
-               :ironclad          ; パスワードハッシュ化
-               :cl-base64         ; Base64エンコード
-               :uuid              ; セッションID生成
-               :babel             ; 文字列エンコーディング
-               :3bmd              ; Markdown parser
-               :3bmd-ext-code-blocks)  ; Code block support
+  :depends-on (:caveman2              ; Webフレームワーク
+               :clack                  ; ミドルウェア層
+               :lack                   ; ミドルウェアコンポーネント
+               :lack-middleware-session ; セッション管理
+               :woo                    ; HTTPサーバー
+               :mito                   ; ORM
+               :sxql                   ; SQLビルダー
+               :ironclad               ; パスワードハッシュ化
+               :cl-base64              ; Base64エンコード
+               :jonathan               ; JSON（高速）
+               :local-time             ; タイムスタンプ
+               :cl-ppcre               ; 正規表現
+               :babel)                 ; 文字列エンコーディング
   :components ((:module "src"
                 :components
-                ((:file "package")
-                 (:file "utils" :depends-on ("package"))
-                 (:file "database" :depends-on ("package"))
-                 (:file "i18n" :depends-on ("package"))
-                 (:file "models" :depends-on ("package" "database" "utils"))
-                 (:file "auth" :depends-on ("package" "database" "models" "utils"))
-                 (:file "handlers" :depends-on ("package" "models" "auth" "i18n"))
-                 (:file "server" :depends-on ("package" "handlers")))))
-  :description "A blog system with user authentication")
+                ((:file "config")
+                 (:file "db" :depends-on ("config"))
+                 (:module "util"
+                  :components
+                  ((:file "crypto")))
+                 (:module "model"
+                  :depends-on ("db")
+                  :components
+                  ((:file "user")))
+                 (:file "web" :depends-on ("db" "model"))
+                 (:file "main" :depends-on ("config" "db" "web")))))
+  :description "A blog system with Caveman2 + Mito"
+  :in-order-to ((test-op (test-op "lisp-blog/tests"))))
+
+(defsystem "lisp-blog/tests"
+  :author "Your Name"
+  :license "MIT"
+  :depends-on ("lisp-blog"
+               "fiveam")
+  :components ((:module "test"
+                :components
+                ((:file "utils-test"))))
+  :description "Test system for lisp-blog"
+  :perform (test-op (op c) (symbol-call :fiveam :run! :lisp-blog-test-suite)))
