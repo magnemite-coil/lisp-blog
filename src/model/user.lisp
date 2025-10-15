@@ -20,3 +20,17 @@
              :documentation "PBKDF2でハッシュ化されたパスワード"))
   (:unique-keys username)
   (:documentation "システムユーザーモデル"))
+
+;;; アクセサー関数（Mitoが自動生成するフィールド用）
+
+(defun user-id (user)
+  "userのIDを取得"
+  (mito:object-id user))
+
+(defun user-created-at (user)
+  "userの作成日時を取得"
+  (slot-value user 'mito.dao.mixin::created-at))
+
+(defun user-updated-at (user)
+  "userの更新日時を取得"
+  (slot-value user 'mito.dao.mixin::updated-at))

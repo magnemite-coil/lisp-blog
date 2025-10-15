@@ -73,9 +73,9 @@
    - 失敗 (400/409): {\"success\": false, \"error\": \"...\"}
 
    params: リクエストパラメータ"
+  (declare (ignore params))
   (handler-case
-      (let* ((body (lack.request:request-body-parameters params))
-             (json-data (jonathan:parse body))
+      (let* ((json-data (lack.request:request-body-parameters *request*))
              (username (get-json-param json-data "username"))
              (password (get-json-param json-data "password")))
 
@@ -90,10 +90,12 @@
                     (session-id (getf result :session-id)))
                 (multiple-value-bind (json status headers)
                     (json-success (user-to-json user) :status 201)
-                  (values json
-                          status
-                          (append headers
-                                  (list :set-cookie (set-session-cookie session-id))))))
+                  ;; Lack形式のレスポンス: (list status headers body)
+                  ;; bodyは文字列のリストまたはバイトベクタである必要がある
+                  (list status
+                        (append headers
+                                (list :set-cookie (set-session-cookie session-id)))
+                        (list json))))
               ;; 失敗
               (let ((error (getf result :error)))
                 (cond
@@ -124,9 +126,9 @@
    - 失敗 (401): {\"success\": false, \"error\": \"Invalid credentials\"}
 
    params: リクエストパラメータ"
+  (declare (ignore params))
   (handler-case
-      (let* ((body (lack.request:request-body-parameters params))
-             (json-data (jonathan:parse body))
+      (let* ((json-data (lack.request:request-body-parameters *request*))
              (username (get-json-param json-data "username"))
              (password (get-json-param json-data "password")))
 
@@ -141,10 +143,12 @@
                     (session-id (getf result :session-id)))
                 (multiple-value-bind (json status headers)
                     (json-success (user-to-json user))
-                  (values json
-                          status
-                          (append headers
-                                  (list :set-cookie (set-session-cookie session-id))))))
+                  ;; Lack形式のレスポンス: (list status headers body)
+                  ;; bodyは文字列のリストまたはバイトベクタである必要がある
+                  (list status
+                        (append headers
+                                (list :set-cookie (set-session-cookie session-id)))
+                        (list json))))
               ;; 失敗
               (json-error "Invalid credentials" :status 401))))
     (error (e)
@@ -161,8 +165,9 @@
    - 失敗 (401): {\"success\": false, \"error\": \"Not authenticated\"}
 
    params: リクエストパラメータ"
+  (declare (ignore params))
   (handler-case
-      (let* ((cookies (lack.request:request-cookies params))
+      (let* ((cookies (lack.request:request-cookies *request*))
              (session-id (get-session-id-from-cookies cookies)))
 
         (unless session-id
@@ -187,8 +192,9 @@
    - 失敗 (401): {\"success\": false, \"error\": \"Not authenticated\"}
 
    params: リクエストパラメータ"
+  (declare (ignore params))
   (handler-case
-      (let* ((cookies (lack.request:request-cookies params))
+      (let* ((cookies (lack.request:request-cookies *request*))
              (session-id (get-session-id-from-cookies cookies)))
 
         (unless session-id
