@@ -27,14 +27,16 @@
                  (:module "model"
                   :depends-on ("db")
                   :components
-                  ((:file "user")))
+                  ((:file "user")
+                   (:file "post")))
                  (:module "middleware"
                   :components
                   ((:file "session")))
                  (:module "service"
                   :depends-on ("model" "util" "middleware")
                   :components
-                  ((:file "auth")))
+                  ((:file "auth")
+                   (:file "post")))
                  (:module "handler"
                   :depends-on ("service" "util" "model" "middleware")
                   :components
