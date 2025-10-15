@@ -57,6 +57,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive validation and security function tests
   - Password hashing, session ID generation, input validation, HTML sanitization tests
   - Test fixtures for database isolation (with-empty-db, with-transaction)
+- REST API authentication system (Phase 2: Authentication API)
+  - Redis-based session management with 7-day TTL
+  - JSON response utilities with standardized format
+  - Four authentication endpoints (register, login, logout, me)
+  - Cryptographically secure session ID generation (128-bit)
+  - HttpOnly and SameSite=Lax cookies for session security
+  - Timing attack prevention in authentication flow
+  - Input validation for username and password
 
 ### Changed
 - **Technology Stack Migration (Phase 1):**
@@ -78,7 +86,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Strengthened input validation and sanitization
 - Improved password hashing with PBKDF2 (100,000 iterations)
-- Enhanced session security with 7-day expiration
+- Enhanced session security with Redis-based storage and 7-day expiration
+- HttpOnly cookies to prevent XSS attacks
+- SameSite=Lax cookie attribute for CSRF mitigation
+- Timing attack prevention in user authentication
 - Protected sensitive files via .gitignore
 - SQL injection prevention with parameterized queries
 - Fixed HTML sanitization function for proper XSS protection
@@ -89,6 +100,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Database connection handling
 - Timestamp formatting errors
 - Masonry layout rendering
+- Caveman2 request handling in authentication handlers (Phase 2)
+- Lack response format for proper Woo/Fast-HTTP compatibility (Phase 2)
+- Mito accessor functions for auto-generated fields (Phase 2)
 
 ## [0.1.0] - 2025-10-04
 
