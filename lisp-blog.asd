@@ -66,11 +66,10 @@
                   :components
                   ((:file "user-test")
                    (:file "post-test")))
-                 ;; Phase 4.4以降で実装予定
-                 ;; (:module "service"
-                 ;;  :depends-on ("setup" "fixtures")
-                 ;;  :components
-                 ;;  ((:file "auth-test")
-                 ;;   (:file "post-test")))
+                 (:module "service"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "auth-test")
+                   (:file "post-test")))
                  )))
   :description "Test system for lisp-blog")
