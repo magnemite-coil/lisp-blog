@@ -40,7 +40,8 @@
                  (:module "handler"
                   :depends-on ("service" "util" "model" "middleware")
                   :components
-                  ((:file "auth")))
+                  ((:file "auth")
+                   (:file "post")))
                  (:file "web" :depends-on ("db" "model" "middleware" "service" "handler"))
                  (:file "main" :depends-on ("config" "db" "web")))))
   :description "A blog system with Caveman2 + Mito"
