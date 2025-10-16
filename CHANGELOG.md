@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - HttpOnly and SameSite=Lax cookies for session security
   - Timing attack prevention in authentication flow
   - Input validation for username and password
-- REST API post management system (Phase 3.2: Post API Handlers)
+- REST API post management system (Phase 3.2-3.3: Post API Handlers)
   - Seven REST API endpoints for complete post lifecycle management
   - POST /api/posts - Create new post (draft or published)
   - GET /api/posts - List posts with status filtering (draft/published/all)
@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - PUT /api/posts/:id/publish - Publish draft to public
   - PUT /api/posts/:id/unpublish - Unpublish post back to draft
   - Caveman2 routing configuration with proper path parameter handling
+  - Username inclusion in post list and detail responses (Phase 3.3)
 
 ### Changed
 - **Technology Stack Migration (Phase 1):**
