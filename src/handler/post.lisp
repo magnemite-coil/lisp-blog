@@ -13,9 +13,11 @@
                 :unpublish-post
                 :check-post-ownership)
   (:import-from :lisp-blog.service.auth
-                :get-user-by-session)
+                :get-user-by-session
+                :get-user-by-id)
   (:import-from :lisp-blog.model.user
-                :user-id)
+                :user-id
+                :user-username)
   (:import-from :lisp-blog.model.post
                 :post-id
                 :post-user-id
@@ -67,6 +69,15 @@
    戻り値: セッションID文字列または NIL"
   (cdr (assoc "session_id" cookies :test #'string=)))
 
+(defun get-username-by-user-id (user-id)
+  "ユーザーIDからユーザー名を取得
+
+   user-id: ユーザーID
+   戻り値: ユーザー名文字列または NIL"
+  (let ((user (get-user-by-id user-id)))
+    (when user
+      (user-username user))))
+
 (defun get-current-user ()
   "現在ログイン中のユーザーを取得
 
@@ -76,11 +87,11 @@
     (when session-id
       (get-user-by-session session-id))))
 
-(defun post-to-json (post &optional include-username)
+(defun post-to-json (post &optional username)
   "postオブジェクトをJSON用のplistに変換
 
    post: postオブジェクト
-   include-username: ユーザー名を含めるか（T/NIL）
+   username: ユーザー名文字列（省略可）
    戻り値: plist"
   (let ((base-data (list :|id| (post-id post)
                          :|user_id| (post-user-id post)
@@ -89,8 +100,9 @@
                          :|status| (post-status post)
                          :|created_at| (format nil "~A" (post-created-at post))
                          :|updated_at| (format nil "~A" (post-updated-at post)))))
-    ;; ユーザー名を含める場合は後で追加（Phase 3.3で実装予定）
-    base-data))
+    (if username
+        (append base-data (list :|username| username))
+        base-data)))
 
 ;;; APIハンドラー
 
@@ -156,12 +168,16 @@
                (return-from list-posts-handler
                  (json-error "Authentication required" :status 401)))
              (let ((posts (get-user-drafts (user-id user))))
-               (json-success (mapcar #'post-to-json posts)))))
+               (json-success (mapcar (lambda (post)
+                                       (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                     posts)))))
 
           ;; 公開投稿一覧取得（認証不要）
           ((and status (string= status "published"))
            (let ((posts (get-published-posts)))
-             (json-success (mapcar #'post-to-json posts))))
+             (json-success (mapcar (lambda (post)
+                                     (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                   posts))))
 
           ;; 全投稿取得（認証必須、自分の投稿のみ）
           (t
@@ -170,7 +186,9 @@
                (return-from list-posts-handler
                  (json-error "Authentication required for listing all posts" :status 401)))
              (let ((posts (get-user-posts (user-id user))))
-               (json-success (mapcar #'post-to-json posts)))))))
+               (json-success (mapcar (lambda (post)
+                                       (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                     posts)))))))
     (error (e)
       (format t "List posts error: ~A~%" e)
       (json-error "Failed to list posts" :status 400))))
@@ -206,8 +224,8 @@
               (return-from get-post-handler
                 (json-error "Permission denied" :status 403)))))
 
-        ;; 投稿を返す
-        (json-success (post-to-json post)))
+        ;; 投稿を返す（ユーザー名を含める）
+        (json-success (post-to-json post (get-username-by-user-id (post-user-id post)))))
     (error (e)
       (format t "Get post error: ~A~%" e)
       (json-error "Failed to get post" :status 400))))
