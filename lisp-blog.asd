@@ -61,12 +61,12 @@
                   :components
                   ((:file "crypto-test")
                    (:file "json-test")))
-                 ;; Phase 4.3以降で実装予定
-                 ;; (:module "model"
-                 ;;  :depends-on ("setup" "fixtures")
-                 ;;  :components
-                 ;;  ((:file "user-test")
-                 ;;   (:file "post-test")))
+                 (:module "model"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "user-test")
+                   (:file "post-test")))
+                 ;; Phase 4.4以降で実装予定
                  ;; (:module "service"
                  ;;  :depends-on ("setup" "fixtures")
                  ;;  :components
