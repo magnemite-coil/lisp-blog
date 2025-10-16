@@ -10,8 +10,10 @@
                 :*redis-connection*
                 :connect-redis
                 :disconnect-redis)
-  (:export :run-all-tests
-           :lisp-blog-test-suite))
+  (:export :run-tests
+           :lisp-blog-test-suite
+           :setup-test-environment
+           :teardown-test-environment))
 (in-package :lisp-blog-test)
 
 ;;; テストスイート定義
@@ -19,7 +21,7 @@
 (def-suite lisp-blog-test-suite
   :description "lisp-blogの全テストスイート")
 
-(defun run-all-tests ()
+(defun run-tests ()
   "全テストを実行"
   (run! 'lisp-blog-test-suite))
 
@@ -38,12 +40,14 @@
 (defun connect-test-redis ()
   "テスト用Redis DB 1に接続"
   (setf *redis-connection*
-        (redis:connect :host "localhost" :port 6379 :db 1)))
+        (redis:connect :host "localhost" :port 6379))
+  ;; DB 1を選択（本番はDB 0、テストはDB 1）
+  (redis:red-select 1))
 
 (defun disconnect-test-redis ()
   "テスト用Redis接続を切断"
   (when *redis-connection*
-    (redis:disconnect *redis-connection*)
+    (redis:red-quit)
     (setf *redis-connection* nil)))
 
 ;;; クリーンアップ

@@ -1,26 +1,31 @@
 (in-package :lisp-blog-test)
 
-;;; トランザクション管理
-
-(define-condition rollback-for-test (error)
-  ()
-  (:documentation "テスト用のロールバックを強制するコンディション"))
+;;; テスト用データベース管理
+;;;
+;;; 注意: 現在はクリーンアップ方式を採用しています
+;;; （トランザクションロールバック方式は将来実装予定）
 
 (defmacro with-test-db (&body body)
-  "トランザクション内でテストを実行し、終了後に必ずロールバック
+  "テスト用データベースでテストを実行
+
+   このマクロは、テスト実行前にデータベースをクリーンアップし、
+   テスト実行後も状態をリセットします。
 
    使用例:
    (test my-test
      (with-test-db
        (let ((user (create-test-user)))
-         (is (= 1 (user-id user))))))"
-  `(handler-case
-       (mito:with-transaction
-         (unwind-protect
-              (progn ,@body)
-           ;; 常にロールバック（テストデータを残さない）
-           (error 'rollback-for-test)))
-     (rollback-for-test ())))
+         (is (not (null user))))))"
+  `(progn
+     ;; テスト前のクリーンアップ
+     (cleanup-test-db)
+     (setup-test-tables)
+     ;; テスト実行
+     (unwind-protect
+          (progn ,@body)
+       ;; テスト後のクリーンアップ（エラー時も必ず実行）
+       (cleanup-test-db)
+       (setup-test-tables))))
 
 (defmacro with-empty-db (&body body)
   "完全に空のDBでテストを実行

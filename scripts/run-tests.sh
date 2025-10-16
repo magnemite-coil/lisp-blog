@@ -22,7 +22,7 @@ echo "Running tests..."
 sbcl --noinform --non-interactive \
   --eval "(ql:quickload :lisp-blog/tests :silent t)" \
   --eval "(lisp-blog-test:setup-test-environment)" \
-  --eval "(lisp-blog-test:run-all-tests)" \
+  --eval "(lisp-blog-test:run-tests)" \
   --eval "(lisp-blog-test:teardown-test-environment)"
 
 echo ""

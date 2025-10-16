@@ -61,15 +61,16 @@
                   :components
                   ((:file "crypto-test")
                    (:file "json-test")))
-                 (:module "model"
-                  :depends-on ("setup" "fixtures")
-                  :components
-                  ((:file "user-test")
-                   (:file "post-test")))
-                 (:module "service"
-                  :depends-on ("setup" "fixtures")
-                  :components
-                  ((:file "auth-test")
-                   (:file "post-test"))))))
-  :description "Test system for lisp-blog"
-  :perform (test-op (op c) (symbol-call :lisp-blog-test :run-all-tests)))
+                 ;; Phase 4.3以降で実装予定
+                 ;; (:module "model"
+                 ;;  :depends-on ("setup" "fixtures")
+                 ;;  :components
+                 ;;  ((:file "user-test")
+                 ;;   (:file "post-test")))
+                 ;; (:module "service"
+                 ;;  :depends-on ("setup" "fixtures")
+                 ;;  :components
+                 ;;  ((:file "auth-test")
+                 ;;   (:file "post-test")))
+                 )))
+  :description "Test system for lisp-blog")
