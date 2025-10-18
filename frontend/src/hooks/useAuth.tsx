@@ -52,10 +52,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    */
   const checkAuthStatus = async () => {
     try {
+      console.log('🔍 ログイン状態を確認中...');
       const currentUser = await authApi.getCurrentUser();
+      console.log('✅ ユーザー情報を取得:', currentUser);
       setUser(currentUser);
     } catch (error) {
-      console.error('ログイン状態の確認に失敗:', error);
+      console.error('❌ ログイン状態の確認に失敗:', error);
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -66,7 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * ログイン処理
    */
   const login = async (data: LoginRequest) => {
+    console.log('🔐 ログイン中...');
     const userData = await authApi.login(data);
+    console.log('✅ ログイン成功、ユーザー情報:', userData);
     setUser(userData);
   };
 
@@ -74,7 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * ユーザー登録処理
    */
   const register = async (data: RegisterRequest) => {
+    console.log('📝 ユーザー登録中...');
     const userData = await authApi.register(data);
+    console.log('✅ 登録成功、ユーザー情報:', userData);
     setUser(userData);
   };
 

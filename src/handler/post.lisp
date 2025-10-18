@@ -125,7 +125,9 @@
         (let ((user (get-current-user)))
           (unless user
             (return-from create-post-handler
-              (json-error "Authentication required" :status 401)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Authentication required" :status 401)
+                (list status headers (list json)))))
 
           ;; リクエストボディ取得
           (let* ((json-data (lack.request:request-body-parameters *request*))
@@ -135,14 +137,20 @@
 
             (unless (and title content)
               (return-from create-post-handler
-                (json-error "Title and content are required" :status 400)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Title and content are required" :status 400)
+                  (list status headers (list json)))))
 
             ;; 投稿作成
             (let ((post (create-post (user-id user) title content status)))
-              (json-success (post-to-json post) :status 201)))))
+              (multiple-value-bind (json status headers)
+                  (json-success (post-to-json post) :status 201)
+                (list status headers (list json)))))))
     (error (e)
       (format t "Create post error: ~A~%" e)
-      (json-error (format nil "Failed to create post: ~A" e) :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error (format nil "Failed to create post: ~A" e) :status 400)
+        (list status headers (list json))))))
 
 (defun list-posts-handler (params)
   "GET /api/posts - 投稿一覧取得
@@ -166,32 +174,44 @@
            (let ((user (get-current-user)))
              (unless user
                (return-from list-posts-handler
-                 (json-error "Authentication required" :status 401)))
+                 (multiple-value-bind (json status headers)
+                     (json-error "Authentication required" :status 401)
+                   (list status headers (list json)))))
              (let ((posts (get-user-drafts (user-id user))))
-               (json-success (mapcar (lambda (post)
-                                       (post-to-json post (get-username-by-user-id (post-user-id post))))
-                                     posts)))))
+               (multiple-value-bind (json status headers)
+                   (json-success (mapcar (lambda (post)
+                                           (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                         posts))
+                 (list status headers (list json))))))
 
           ;; 公開投稿一覧取得（認証不要）
           ((and status (string= status "published"))
            (let ((posts (get-published-posts)))
-             (json-success (mapcar (lambda (post)
-                                     (post-to-json post (get-username-by-user-id (post-user-id post))))
-                                   posts))))
+             (multiple-value-bind (json status headers)
+                 (json-success (mapcar (lambda (post)
+                                         (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                       posts))
+               (list status headers (list json)))))
 
           ;; 全投稿取得（認証必須、自分の投稿のみ）
           (t
            (let ((user (get-current-user)))
              (unless user
                (return-from list-posts-handler
-                 (json-error "Authentication required for listing all posts" :status 401)))
+                 (multiple-value-bind (json status headers)
+                     (json-error "Authentication required for listing all posts" :status 401)
+                   (list status headers (list json)))))
              (let ((posts (get-user-posts (user-id user))))
-               (json-success (mapcar (lambda (post)
-                                       (post-to-json post (get-username-by-user-id (post-user-id post))))
-                                     posts)))))))
+               (multiple-value-bind (json status headers)
+                   (json-success (mapcar (lambda (post)
+                                           (post-to-json post (get-username-by-user-id (post-user-id post))))
+                                         posts))
+                 (list status headers (list json))))))))
     (error (e)
       (format t "List posts error: ~A~%" e)
-      (json-error "Failed to list posts" :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error "Failed to list posts" :status 400)
+        (list status headers (list json))))))
 
 (defun get-post-handler (params)
   "GET /api/posts/:id - 投稿詳細取得
@@ -212,23 +232,33 @@
 
         (unless post
           (return-from get-post-handler
-            (json-error "Post not found" :status 404)))
+            (multiple-value-bind (json status headers)
+                (json-error "Post not found" :status 404)
+              (list status headers (list json)))))
 
         ;; 下書きの場合は所有権チェック
         (when (string= (post-status post) "draft")
           (let ((user (get-current-user)))
             (unless user
               (return-from get-post-handler
-                (json-error "Authentication required" :status 401)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Authentication required" :status 401)
+                  (list status headers (list json)))))
             (unless (= (user-id user) (post-user-id post))
               (return-from get-post-handler
-                (json-error "Permission denied" :status 403)))))
+                (multiple-value-bind (json status headers)
+                    (json-error "Permission denied" :status 403)
+                  (list status headers (list json)))))))
 
         ;; 投稿を返す（ユーザー名を含める）
-        (json-success (post-to-json post (get-username-by-user-id (post-user-id post)))))
+        (multiple-value-bind (json status headers)
+            (json-success (post-to-json post (get-username-by-user-id (post-user-id post))))
+          (list status headers (list json))))
     (error (e)
       (format t "Get post error: ~A~%" e)
-      (json-error "Failed to get post" :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error "Failed to get post" :status 400)
+        (list status headers (list json))))))
 
 (defun update-post-handler (params)
   "PUT /api/posts/:id - 投稿更新
@@ -252,7 +282,9 @@
         (let ((user (get-current-user)))
           (unless user
             (return-from update-post-handler
-              (json-error "Authentication required" :status 401)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Authentication required" :status 401)
+                (list status headers (list json)))))
 
           ;; 投稿取得
           (let* ((post-id (parse-integer (getf params :|id|)))
@@ -260,12 +292,16 @@
 
             (unless post
               (return-from update-post-handler
-                (json-error "Post not found" :status 404)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Post not found" :status 404)
+                  (list status headers (list json)))))
 
             ;; 所有権チェック
             (unless (= (user-id user) (post-user-id post))
               (return-from update-post-handler
-                (json-error "Permission denied" :status 403)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Permission denied" :status 403)
+                  (list status headers (list json)))))
 
             ;; リクエストボディ取得
             (let* ((json-data (lack.request:request-body-parameters *request*))
@@ -274,14 +310,20 @@
 
               (unless (and title content)
                 (return-from update-post-handler
-                  (json-error "Title and content are required" :status 400)))
+                  (multiple-value-bind (json status headers)
+                      (json-error "Title and content are required" :status 400)
+                    (list status headers (list json)))))
 
               ;; 投稿更新
               (update-post post title content)
-              (json-success (post-to-json post))))))
+              (multiple-value-bind (json status headers)
+                  (json-success (post-to-json post))
+                (list status headers (list json)))))))
     (error (e)
       (format t "Update post error: ~A~%" e)
-      (json-error (format nil "Failed to update post: ~A" e) :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error (format nil "Failed to update post: ~A" e) :status 400)
+        (list status headers (list json))))))
 
 (defun delete-post-handler (params)
   "DELETE /api/posts/:id - 投稿削除
@@ -302,7 +344,9 @@
         (let ((user (get-current-user)))
           (unless user
             (return-from delete-post-handler
-              (json-error "Authentication required" :status 401)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Authentication required" :status 401)
+                (list status headers (list json)))))
 
           ;; 投稿取得
           (let* ((post-id (parse-integer (getf params :|id|)))
@@ -310,19 +354,27 @@
 
             (unless post
               (return-from delete-post-handler
-                (json-error "Post not found" :status 404)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Post not found" :status 404)
+                  (list status headers (list json)))))
 
             ;; 所有権チェック
             (unless (= (user-id user) (post-user-id post))
               (return-from delete-post-handler
-                (json-error "Permission denied" :status 403)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Permission denied" :status 403)
+                  (list status headers (list json)))))
 
             ;; 投稿削除
             (delete-post post)
-            (json-success nil :message "Post deleted successfully"))))
+            (multiple-value-bind (json status headers)
+                (json-success nil :message "Post deleted successfully")
+              (list status headers (list json))))))
     (error (e)
       (format t "Delete post error: ~A~%" e)
-      (json-error "Failed to delete post" :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error "Failed to delete post" :status 400)
+        (list status headers (list json))))))
 
 (defun publish-post-handler (params)
   "PUT /api/posts/:id/publish - 下書き公開
@@ -344,7 +396,9 @@
         (let ((user (get-current-user)))
           (unless user
             (return-from publish-post-handler
-              (json-error "Authentication required" :status 401)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Authentication required" :status 401)
+                (list status headers (list json)))))
 
           ;; 投稿取得
           (let* ((post-id (parse-integer (getf params :|id|)))
@@ -352,19 +406,27 @@
 
             (unless post
               (return-from publish-post-handler
-                (json-error "Post not found" :status 404)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Post not found" :status 404)
+                  (list status headers (list json)))))
 
             ;; 所有権チェック
             (unless (= (user-id user) (post-user-id post))
               (return-from publish-post-handler
-                (json-error "Permission denied" :status 403)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Permission denied" :status 403)
+                  (list status headers (list json)))))
 
             ;; 下書き公開
             (publish-draft post)
-            (json-success (post-to-json post)))))
+            (multiple-value-bind (json status headers)
+                (json-success (post-to-json post))
+              (list status headers (list json))))))
     (error (e)
       (format t "Publish post error: ~A~%" e)
-      (json-error (format nil "~A" e) :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error (format nil "~A" e) :status 400)
+        (list status headers (list json))))))
 
 (defun unpublish-post-handler (params)
   "PUT /api/posts/:id/unpublish - 公開記事を下書きに戻す
@@ -386,7 +448,9 @@
         (let ((user (get-current-user)))
           (unless user
             (return-from unpublish-post-handler
-              (json-error "Authentication required" :status 401)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Authentication required" :status 401)
+                (list status headers (list json)))))
 
           ;; 投稿取得
           (let* ((post-id (parse-integer (getf params :|id|)))
@@ -394,16 +458,24 @@
 
             (unless post
               (return-from unpublish-post-handler
-                (json-error "Post not found" :status 404)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Post not found" :status 404)
+                  (list status headers (list json)))))
 
             ;; 所有権チェック
             (unless (= (user-id user) (post-user-id post))
               (return-from unpublish-post-handler
-                (json-error "Permission denied" :status 403)))
+                (multiple-value-bind (json status headers)
+                    (json-error "Permission denied" :status 403)
+                  (list status headers (list json)))))
 
             ;; 公開記事を下書きに戻す
             (unpublish-post post)
-            (json-success (post-to-json post)))))
+            (multiple-value-bind (json status headers)
+                (json-success (post-to-json post))
+              (list status headers (list json))))))
     (error (e)
       (format t "Unpublish post error: ~A~%" e)
-      (json-error (format nil "~A" e) :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error (format nil "~A" e) :status 400)
+        (list status headers (list json))))))

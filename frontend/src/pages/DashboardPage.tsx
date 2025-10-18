@@ -11,7 +11,7 @@ import type { Post } from '../types/Post';
  * ログイン中のユーザーの投稿一覧を表示します。
  */
 export function DashboardPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,12 +19,13 @@ export function DashboardPage() {
 
   /**
    * 未ログインの場合はログインページへリダイレクト
+   * 認証状態の確認中（authLoading）は何もしない
    */
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [authLoading, isAuthenticated, navigate]);
 
   /**
    * 投稿一覧を取得
@@ -76,7 +77,7 @@ export function DashboardPage() {
    */
   const handleTogglePublish = async (post: Post) => {
     try {
-      if (post.published) {
+      if (post.status === 'published') {
         await postsApi.unpublishPost(post.id);
       } else {
         await postsApi.publishPost(post.id);
@@ -92,8 +93,8 @@ export function DashboardPage() {
   /**
    * 投稿を公開済みと下書きに分類
    */
-  const publishedPosts = posts.filter((post) => post.published);
-  const draftPosts = posts.filter((post) => !post.published);
+  const publishedPosts = posts.filter((post) => post.status === 'published');
+  const draftPosts = posts.filter((post) => post.status === 'draft');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -216,12 +217,12 @@ function PostCard({ post, onDelete, onTogglePublish }: PostCardProps) {
         <button
           onClick={() => onTogglePublish(post)}
           className={`flex-1 px-3 py-2 text-sm font-medium rounded-md ${
-            post.published
+            post.status === 'published'
               ? 'text-yellow-700 bg-yellow-100 hover:bg-yellow-200'
               : 'text-green-700 bg-green-100 hover:bg-green-200'
           }`}
         >
-          {post.published ? '非公開' : '公開'}
+          {post.status === 'published' ? '非公開' : '公開'}
         </button>
 
         {/* 削除ボタン */}

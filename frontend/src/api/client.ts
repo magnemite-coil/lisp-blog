@@ -8,7 +8,7 @@ import axios from 'axios';
  */
 export const apiClient = axios.create({
   // バックエンドサーバーのURL
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://localhost:8080',
 
   // Cookieを含めてリクエストを送る設定
   // これにより、セッション認証が機能します

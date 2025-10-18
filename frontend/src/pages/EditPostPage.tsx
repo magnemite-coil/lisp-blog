@@ -12,7 +12,7 @@ import type { UpdatePostRequest } from '../types/Post';
  */
 export function EditPostPage() {
   const { id } = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,12 +33,13 @@ export function EditPostPage() {
 
   /**
    * 未ログインの場合はログインページへリダイレクト
+   * 認証確認中は何もしない
    */
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [authLoading, isAuthenticated, navigate]);
 
   /**
    * 投稿データを取得
@@ -61,7 +62,7 @@ export function EditPostPage() {
       // フォームに値をセット
       setValue('title', post.title);
       setValue('content', post.content);
-      setValue('published', post.published);
+      setValue('status', post.status);
     } catch (err: any) {
       console.error('投稿の取得に失敗:', err);
       setError('投稿の取得に失敗しました。');
@@ -99,14 +100,14 @@ export function EditPostPage() {
    * 下書きとして保存
    */
   const handleSaveDraft = () => {
-    handleSubmit((data) => onSubmit({ ...data, published: false }))();
+    handleSubmit((data) => onSubmit({ ...data, status: 'draft' }))();
   };
 
   /**
    * 公開する
    */
   const handlePublish = () => {
-    handleSubmit((data) => onSubmit({ ...data, published: true }))();
+    handleSubmit((data) => onSubmit({ ...data, status: 'published' }))();
   };
 
   if (isLoading) {

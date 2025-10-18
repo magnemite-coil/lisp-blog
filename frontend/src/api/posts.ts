@@ -4,6 +4,8 @@ import type {
   CreatePostRequest,
   UpdatePostRequest,
   ListPostsQuery,
+  PostResponse,
+  PostsResponse,
 } from '../types/Post';
 
 /**
@@ -19,10 +21,10 @@ import type {
  * @returns 投稿の配列
  */
 export async function listPosts(query?: ListPostsQuery): Promise<Post[]> {
-  const response = await apiClient.get<Post[]>('/api/posts', {
+  const response = await apiClient.get<PostsResponse>('/api/posts', {
     params: query,
   });
-  return response.data;
+  return response.data.data;
 }
 
 /**
@@ -32,8 +34,8 @@ export async function listPosts(query?: ListPostsQuery): Promise<Post[]> {
  * @returns 投稿情報
  */
 export async function getPost(id: number): Promise<Post> {
-  const response = await apiClient.get<Post>(`/api/posts/${id}`);
-  return response.data;
+  const response = await apiClient.get<PostResponse>(`/api/posts/${id}`);
+  return response.data.data;
 }
 
 /**
@@ -43,8 +45,8 @@ export async function getPost(id: number): Promise<Post> {
  * @returns 作成された投稿情報
  */
 export async function createPost(data: CreatePostRequest): Promise<Post> {
-  const response = await apiClient.post<Post>('/api/posts', data);
-  return response.data;
+  const response = await apiClient.post<PostResponse>('/api/posts', data);
+  return response.data.data;
 }
 
 /**
@@ -58,8 +60,8 @@ export async function updatePost(
   id: number,
   data: UpdatePostRequest
 ): Promise<Post> {
-  const response = await apiClient.put<Post>(`/api/posts/${id}`, data);
-  return response.data;
+  const response = await apiClient.put<PostResponse>(`/api/posts/${id}`, data);
+  return response.data.data;
 }
 
 /**
@@ -78,8 +80,8 @@ export async function deletePost(id: number): Promise<void> {
  * @returns 更新された投稿情報
  */
 export async function publishPost(id: number): Promise<Post> {
-  const response = await apiClient.put<Post>(`/api/posts/${id}/publish`);
-  return response.data;
+  const response = await apiClient.put<PostResponse>(`/api/posts/${id}/publish`);
+  return response.data.data;
 }
 
 /**
@@ -89,6 +91,6 @@ export async function publishPost(id: number): Promise<Post> {
  * @returns 更新された投稿情報
  */
 export async function unpublishPost(id: number): Promise<Post> {
-  const response = await apiClient.put<Post>(`/api/posts/${id}/unpublish`);
-  return response.data;
+  const response = await apiClient.put<PostResponse>(`/api/posts/${id}/unpublish`);
+  return response.data.data;
 }

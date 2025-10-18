@@ -72,6 +72,19 @@
   "PUT /api/posts/:id/unpublish - 公開記事を下書きに戻す"
   (unpublish-post-handler (list :|id| id)))
 
+;; CORS プリフライトリクエスト対応
+(defroute ("/api/*" :method :OPTIONS) (&rest params)
+  "OPTIONS /api/* - CORS プリフライトリクエスト"
+  (declare (ignore params))
+  (list 200
+        '(:content-type "text/plain"
+          :access-control-allow-origin "http://localhost:5173"
+          :access-control-allow-credentials "true"
+          :access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS"
+          :access-control-allow-headers "Content-Type, Authorization"
+          :access-control-max-age "86400")
+        '("")))
+
 ;; ヘルスチェック用エンドポイント
 (defroute "/" ()
   "GET / - ヘルスチェック"

@@ -7,9 +7,10 @@ export interface Post {
   user_id: number;
   title: string;
   content: string;
-  published: boolean;
+  status: 'draft' | 'published'; // バックエンドは status フィールドを使用
   created_at: string; // ISO 8601 形式の日時文字列
   updated_at: string; // ISO 8601 形式の日時文字列
+  username?: string; // バックエンドが付与するユーザー名（オプショナル）
 }
 
 /**
@@ -18,7 +19,7 @@ export interface Post {
 export interface CreatePostRequest {
   title: string;
   content: string;
-  published?: boolean; // オプショナル: 省略時は下書き
+  status?: 'draft' | 'published'; // オプショナル: 省略時は draft
 }
 
 /**
@@ -27,7 +28,7 @@ export interface CreatePostRequest {
 export interface UpdatePostRequest {
   title?: string;
   content?: string;
-  published?: boolean;
+  status?: 'draft' | 'published';
 }
 
 /**
@@ -36,4 +37,24 @@ export interface UpdatePostRequest {
 export interface ListPostsQuery {
   user_id?: number;
   published?: boolean;
+}
+
+/**
+ * API レスポンスの型（単一投稿）
+ */
+export interface PostResponse {
+  success: boolean;
+  data: Post;
+  message?: string;
+  error?: string;
+}
+
+/**
+ * API レスポンスの型（投稿配列）
+ */
+export interface PostsResponse {
+  success: boolean;
+  data: Post[];
+  message?: string;
+  error?: string;
 }

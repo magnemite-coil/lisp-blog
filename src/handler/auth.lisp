@@ -49,7 +49,9 @@
 
    session-id: セッションID文字列
    戻り値: Set-Cookie ヘッダー文字列"
-  (format nil "session_id=~A; Path=/; HttpOnly; SameSite=Lax; Max-Age=~A"
+  ;; 開発環境: SameSite属性なし（クロスオリジンでCookie送信を許可）
+  ;; 本番環境: SameSite=Lax または SameSite=Strict を設定すべき
+  (format nil "session_id=~A; Path=/; HttpOnly; Max-Age=~A"
           session-id
           (* 7 24 60 60))) ; 7日間
 
@@ -172,15 +174,20 @@
 
         (unless session-id
           (return-from logout-handler
-            (json-error "Not authenticated" :status 401)))
+            (multiple-value-bind (json status headers)
+                (json-error "Not authenticated" :status 401)
+              (list status headers (list json)))))
 
         (delete-session session-id)
 
-        (json-success nil
-                     :message "Logged out successfully"))
+        (multiple-value-bind (json status headers)
+            (json-success nil :message "Logged out successfully")
+          (list status headers (list json))))
     (error (e)
       (format t "Logout error: ~A~%" e)
-      (json-error "Logout failed" :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error "Logout failed" :status 400)
+        (list status headers (list json))))))
 
 (defun me-handler (params)
   "GET /api/auth/me - 現在のユーザー情報を取得
@@ -199,12 +206,20 @@
 
         (unless session-id
           (return-from me-handler
-            (json-error "Not authenticated" :status 401)))
+            (multiple-value-bind (json status headers)
+                (json-error "Not authenticated" :status 401)
+              (list status headers (list json)))))
 
         (let ((user (get-user-by-session session-id)))
           (if user
-              (json-success (user-to-json user))
-              (json-error "Not authenticated" :status 401))))
+              (multiple-value-bind (json status headers)
+                  (json-success (user-to-json user))
+                (list status headers (list json)))
+              (multiple-value-bind (json status headers)
+                  (json-error "Not authenticated" :status 401)
+                (list status headers (list json))))))
     (error (e)
       (format t "Me error: ~A~%" e)
-      (json-error "Failed to get user info" :status 400))))
+      (multiple-value-bind (json status headers)
+          (json-error "Failed to get user info" :status 400)
+        (list status headers (list json))))))

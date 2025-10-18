@@ -14,8 +14,8 @@ import type { User, LoginRequest, RegisterRequest, LoginResponse } from '../type
  * @returns 作成されたユーザー情報
  */
 export async function register(data: RegisterRequest): Promise<User> {
-  const response = await apiClient.post<User>('/api/auth/register', data);
-  return response.data;
+  const response = await apiClient.post<LoginResponse>('/api/auth/register', data);
+  return response.data.data;
 }
 
 /**
@@ -26,7 +26,7 @@ export async function register(data: RegisterRequest): Promise<User> {
  */
 export async function login(data: LoginRequest): Promise<User> {
   const response = await apiClient.post<LoginResponse>('/api/auth/login', data);
-  return response.data.user;
+  return response.data.data;
 }
 
 /**
@@ -43,10 +43,11 @@ export async function logout(): Promise<void> {
  */
 export async function getCurrentUser(): Promise<User | null> {
   try {
-    const response = await apiClient.get<User>('/api/auth/me');
-    return response.data;
+    const response = await apiClient.get<LoginResponse>('/api/auth/me');
+    return response.data.data;
   } catch (error) {
     // 401エラー（未ログイン）の場合はnullを返す
+    console.log('getCurrentUser failed:', error);
     return null;
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
@@ -9,9 +9,18 @@ import type { RegisterRequest } from '../types/User';
  */
 export function RegisterPage() {
   const navigate = useNavigate();
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, isAuthenticated, isLoading } = useAuth();
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /**
+   * すでにログイン済みの場合はダッシュボードへリダイレクト
+   */
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   // React Hook Formのセットアップ
   const {

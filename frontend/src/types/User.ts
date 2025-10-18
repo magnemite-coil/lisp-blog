@@ -26,7 +26,11 @@ export interface RegisterRequest {
 
 /**
  * ログインレスポンスの型
+ * バックエンドは {success: true, data: {...}} 形式で返す
  */
 export interface LoginResponse {
-  user: User;
+  success: boolean;
+  data: User;
+  message?: string;
+  error?: string;
 }

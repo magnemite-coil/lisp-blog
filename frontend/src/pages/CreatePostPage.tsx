@@ -11,7 +11,7 @@ import type { CreatePostRequest } from '../types/Post';
  * 投稿作成ページ
  */
 export function CreatePostPage() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
@@ -30,7 +30,16 @@ export function CreatePostPage() {
 
   /**
    * 未ログインの場合はログインページへリダイレクト
+   * 認証確認中は待機
    */
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">読み込み中...</p>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     navigate('/login');
     return null;
@@ -63,14 +72,14 @@ export function CreatePostPage() {
    * 下書きとして保存
    */
   const handleSaveDraft = () => {
-    handleSubmit((data) => onSubmit({ ...data, published: false }))();
+    handleSubmit((data) => onSubmit({ ...data, status: 'draft' }))();
   };
 
   /**
    * 公開する
    */
   const handlePublish = () => {
-    handleSubmit((data) => onSubmit({ ...data, published: true }))();
+    handleSubmit((data) => onSubmit({ ...data, status: 'published' }))();
   };
 
   return (
