@@ -71,5 +71,10 @@
                   :components
                   ((:file "auth-test")
                    (:file "post-test")))
+                 (:module "handler"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "auth-test")
+                   (:file "post-test")))
                  )))
   :description "Test system for lisp-blog")
