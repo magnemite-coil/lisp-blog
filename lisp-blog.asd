@@ -54,6 +54,31 @@
                "fiveam")
   :components ((:module "test"
                 :components
-                ((:file "utils-test"))))
-  :description "Test system for lisp-blog"
-  :perform (test-op (op c) (symbol-call :fiveam :run! :lisp-blog-test-suite)))
+                ((:file "setup")
+                 (:file "fixtures" :depends-on ("setup"))
+                 (:module "util"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "crypto-test")
+                   (:file "json-test")))
+                 (:module "model"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "user-test")
+                   (:file "post-test")))
+                 (:module "middleware"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "session-test")))
+                 (:module "service"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "auth-test")
+                   (:file "post-test")))
+                 (:module "handler"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "auth-test")
+                   (:file "post-test")))
+                 )))
+  :description "Test system for lisp-blog")

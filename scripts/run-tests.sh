@@ -1,10 +1,29 @@
 #!/bin/bash
+set -e
 
-cd /Users/key-person/projects/lisp-blog
+echo "=== lisp-blog Test Suite ==="
+echo ""
 
-sbcl --non-interactive \
-  --load scripts/setup-cache.lisp \
-  --eval '(push *default-pathname-defaults* asdf:*central-registry*)' \
-  --eval '(handler-case (ql:quickload :lisp-blog-test :silent t) (error (e) (format t "Load error: ~A~%" e) (sb-ext:exit :code 1)))' \
-  --eval '(in-package :lisp-blog-test)' \
-  --eval '(run-tests)'
+# テスト用データベースが存在しない場合は作成
+if ! psql -U bloguser -lqt | cut -d \| -f 1 | grep -qw lisp_blog_test; then
+  echo "Creating test database..."
+  createdb -U bloguser lisp_blog_test
+fi
+
+# Redisが起動しているか確認
+if ! redis-cli ping > /dev/null 2>&1; then
+  echo "Error: Redis is not running"
+  echo "Please start Redis server: redis-server"
+  exit 1
+fi
+
+# テスト実行
+echo "Running tests..."
+sbcl --noinform --non-interactive \
+  --eval "(ql:quickload :lisp-blog/tests :silent t)" \
+  --eval "(lisp-blog-test:setup-test-environment)" \
+  --eval "(lisp-blog-test:run-tests)" \
+  --eval "(lisp-blog-test:teardown-test-environment)"
+
+echo ""
+echo "=== Tests completed ==="
