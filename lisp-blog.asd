@@ -66,6 +66,10 @@
                   :components
                   ((:file "user-test")
                    (:file "post-test")))
+                 (:module "middleware"
+                  :depends-on ("setup" "fixtures")
+                  :components
+                  ((:file "session-test")))
                  (:module "service"
                   :depends-on ("setup" "fixtures")
                   :components
