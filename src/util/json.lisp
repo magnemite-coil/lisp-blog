@@ -17,7 +17,11 @@
    戻り値: (values json-string status headers)"
   (values (jonathan:to-json data)
           status
-          '(:content-type "application/json; charset=utf-8")))
+          '(:content-type "application/json; charset=utf-8"
+            :access-control-allow-origin "http://localhost:5173"
+            :access-control-allow-credentials "true"
+            :access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS"
+            :access-control-allow-headers "Content-Type, Authorization")))
 
 (defun json-success (data &key (status 200) message)
   "成功レスポンスのJSON
