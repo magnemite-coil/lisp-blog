@@ -7,8 +7,10 @@ import axios from 'axios';
  * 共通の設定（ベースURL、認証情報など）が適用されます。
  */
 export const apiClient = axios.create({
-  // バックエンドサーバーのURL
-  baseURL: 'http://localhost:8080',
+  // バックエンドサーバーのURL（環境変数から取得）
+  // 開発環境: http://localhost:8080
+  // 本番環境: 空文字列（相対URLとして扱われる）
+  baseURL: import.meta.env.VITE_API_URL || '',
 
   // Cookieを含めてリクエストを送る設定
   // これにより、セッション認証が機能します

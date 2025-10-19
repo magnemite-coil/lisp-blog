@@ -127,3 +127,7 @@ docker-compose.override.yml
 ssl/
 certs/
 certificates/
+
+# Frontend - Build artifacts
+static/*
+!static/.gitkeep

@@ -17,6 +17,14 @@
   (:export :*app*))
 (in-package :lisp-blog.web)
 
+;;
+;; 静的ファイル配信設定
+;;
+
+(defparameter *static-directory*
+  (asdf:system-relative-pathname :lisp-blog "static/")
+  "静的ファイルのルートディレクトリ")
+
 (defclass <web> (<app>) ())
 (defvar *app* (make-instance '<web>))
 
@@ -85,7 +93,70 @@
           :access-control-max-age "86400")
         '("")))
 
-;; ヘルスチェック用エンドポイント
-(defroute "/" ()
-  "GET / - ヘルスチェック"
-  (format nil "lisp-blog API is running"))
+;;
+;; 静的ファイル配信ヘルパー関数
+;;
+
+(defun get-content-type (filename)
+  "ファイル拡張子からContent-Typeを判定する"
+  (let ((extension (pathname-type filename)))
+    (cond
+      ((string-equal extension "html") "text/html; charset=utf-8")
+      ((string-equal extension "css")  "text/css; charset=utf-8")
+      ((string-equal extension "js")   "application/javascript; charset=utf-8")
+      ((string-equal extension "json") "application/json; charset=utf-8")
+      ((string-equal extension "png")  "image/png")
+      ((string-equal extension "jpg")  "image/jpeg")
+      ((string-equal extension "jpeg") "image/jpeg")
+      ((string-equal extension "gif")  "image/gif")
+      ((string-equal extension "svg")  "image/svg+xml")
+      ((string-equal extension "ico")  "image/x-icon")
+      (t "application/octet-stream"))))
+
+(defun serve-static-file (file-path)
+  "静的ファイルを読み込んでHTTPレスポンスを返す"
+  (if (and (probe-file file-path)
+           (not (uiop:directory-pathname-p file-path)))
+      ;; ファイルが存在する場合
+      (with-open-file (stream file-path :direction :input :element-type '(unsigned-byte 8))
+        (let* ((length (file-length stream))
+               (content (make-array length :element-type '(unsigned-byte 8))))
+          (read-sequence content stream)
+          (list 200
+                (list :content-type (get-content-type file-path))
+                (list content))))
+      ;; ファイルが存在しない場合は404
+      (list 404
+            '(:content-type "text/plain")
+            '("File not found"))))
+
+;;
+;; 静的ファイル配信ルーティング
+;;
+
+;; /assets/* ルート（JS/CSSファイル配信）
+(defroute ("/assets/*" :method :GET) (&key splat)
+  "GET /assets/* - 静的ファイル配信（JS/CSS）"
+  (let ((file-path (merge-pathnames
+                     (format nil "assets/~{~A~^/~}" splat)
+                     *static-directory*)))
+    (serve-static-file file-path)))
+
+;; SPAフォールバックルート（すべてのパスでindex.htmlを返す）
+;; ただし /api/* は除外（上記のAPIルートが優先される）
+(defroute "*" ()
+  "GET * - SPAフォールバック（index.htmlを返す）"
+  (let ((index-path (merge-pathnames "index.html" *static-directory*)))
+    (if (probe-file index-path)
+        ;; index.htmlを読み込んで返す
+        (with-open-file (stream index-path :direction :input :element-type 'character)
+          (let* ((length (file-length stream))
+                 (content (make-string length)))
+            (read-sequence content stream)
+            (list 200
+                  '(:content-type "text/html; charset=utf-8")
+                  (list content))))
+        ;; index.htmlが存在しない場合は404
+        (list 404
+              '(:content-type "text/plain")
+              '("index.html not found. Please run: ./build.sh")))))
