@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Database performance optimization with strategic indexes
+  - Added indexes on post table for improved query performance
+  - Individual indexes: user_id, status, created_at
+  - Composite index: (user_id, status, created_at) for complex queries
+  - Database migration script for existing installations
+  - Performance verification tools (EXPLAIN ANALYZE)
 - Test execution script (run-tests.sh) for easy test suite running
   - Normal mode with summary output
   - Verbose mode (-v flag) for full output

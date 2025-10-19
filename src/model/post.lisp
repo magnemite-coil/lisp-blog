@@ -29,6 +29,8 @@
            :accessor post-status
            :initform "draft"
            :documentation "投稿ステータス（draft | published）"))
+  (:indexes (user-id status created-at))  ; 個別カラムインデックス
+  (:keys (user-id status created-at))     ; 複合インデックス（user_id, status, created_at）
   (:documentation "ブログ投稿モデル"))
 
 ;;; アクセサー関数（Mitoが自動生成するフィールド用）
