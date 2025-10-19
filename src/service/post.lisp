@@ -10,6 +10,9 @@
                 :post-status
                 :post-created-at
                 :post-updated-at)
+  (:import-from :lisp-blog.util.conditions
+                :validation-error
+                :business-logic-error)
   (:import-from :mito
                 :create-dao
                 :find-dao
@@ -79,15 +82,21 @@
 
    戻り値:
    - 成功: post オブジェクト
-   - 失敗: エラーを投げる"
+   - 失敗: Conditionを signal（validation-error）"
   (unless (validate-title title)
-    (error "Invalid title: must be 1-255 characters"))
+    (error 'validation-error
+           :message "Invalid title (1-255 chars required)"
+           :field "title"))
 
   (unless (validate-content content)
-    (error "Invalid content: must be 1-100,000 characters"))
+    (error 'validation-error
+           :message "Invalid content (1-100,000 chars required)"
+           :field "content"))
 
   (unless (validate-status status)
-    (error "Invalid status: must be 'draft' or 'published'"))
+    (error 'validation-error
+           :message "Invalid status (must be 'draft' or 'published')"
+           :field "status"))
 
   (mito:create-dao 'post
                    :user-id user-id
@@ -140,12 +149,17 @@
    title: 新しいタイトル（1-255文字）
    content: 新しい本文（1-100,000文字）
 
-   戻り値: 更新された post オブジェクト"
+   戻り値: 更新された post オブジェクト
+   失敗: Conditionを signal（validation-error）"
   (unless (validate-title title)
-    (error "Invalid title: must be 1-255 characters"))
+    (error 'validation-error
+           :message "Invalid title (1-255 chars required)"
+           :field "title"))
 
   (unless (validate-content content)
-    (error "Invalid content: must be 1-100,000 characters"))
+    (error 'validation-error
+           :message "Invalid content (1-100,000 chars required)"
+           :field "content"))
 
   (setf (post-title post) title)
   (setf (post-content post) content)
@@ -164,9 +178,12 @@
   "下書きを公開する
 
    post: 公開する post オブジェクト
-   戻り値: 更新された post オブジェクト"
+   戻り値: 更新された post オブジェクト
+   失敗: Conditionを signal（business-logic-error）"
   (when (string= (post-status post) "published")
-    (error "Post is already published"))
+    (error 'business-logic-error
+           :code :post-already-published
+           :message "Post is already published"))
 
   (setf (post-status post) "published")
   (mito:save-dao post)
@@ -176,9 +193,12 @@
   "公開記事を下書きに戻す
 
    post: 下書きに戻す post オブジェクト
-   戻り値: 更新された post オブジェクト"
+   戻り値: 更新された post オブジェクト
+   失敗: Conditionを signal（business-logic-error）"
   (when (string= (post-status post) "draft")
-    (error "Post is already a draft"))
+    (error 'business-logic-error
+           :code :post-already-draft
+           :message "Post is already a draft"))
 
   (setf (post-status post) "draft")
   (mito:save-dao post)
