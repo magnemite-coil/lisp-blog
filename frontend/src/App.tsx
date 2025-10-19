@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
+import { ToastProvider } from './contexts/ToastContext';
+import { ToastContainer } from './components/Toast/ToastContainer';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
@@ -12,30 +14,35 @@ import { EditPostPage } from './pages/EditPostPage';
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          {/* ルートパス - ログインページにリダイレクト */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+      <ToastProvider>
+        <AuthProvider>
+          <Routes>
+            {/* ルートパス - ログインページにリダイレクト */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
 
-          {/* ログインページ */}
-          <Route path="/login" element={<LoginPage />} />
+            {/* ログインページ */}
+            <Route path="/login" element={<LoginPage />} />
 
-          {/* ユーザー登録ページ */}
-          <Route path="/register" element={<RegisterPage />} />
+            {/* ユーザー登録ページ */}
+            <Route path="/register" element={<RegisterPage />} />
 
-          {/* ダッシュボード */}
-          <Route path="/dashboard" element={<DashboardPage />} />
+            {/* ダッシュボード */}
+            <Route path="/dashboard" element={<DashboardPage />} />
 
-          {/* 投稿作成 */}
-          <Route path="/posts/new" element={<CreatePostPage />} />
+            {/* 投稿作成 */}
+            <Route path="/posts/new" element={<CreatePostPage />} />
 
-          {/* 投稿編集 */}
-          <Route path="/posts/:id/edit" element={<EditPostPage />} />
+            {/* 投稿編集 */}
+            <Route path="/posts/:id/edit" element={<EditPostPage />} />
 
-          {/* 404 Not Found */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </AuthProvider>
+            {/* 404 Not Found */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+
+          {/* トースト通知コンテナ */}
+          <ToastContainer position="top-right" />
+        </AuthProvider>
+      </ToastProvider>
     </BrowserRouter>
   );
 }

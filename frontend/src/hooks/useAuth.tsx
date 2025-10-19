@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import * as authApi from '../api/auth';
 import type { User, LoginRequest, RegisterRequest } from '../types/User';
+import { useToast } from '../contexts/ToastContext';
+import { AppError } from '../types/Error';
 
 /**
  * 認証コンテキストの型定義
@@ -39,6 +41,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { showSuccess, showError } = useToast();
 
   /**
    * 初回レンダリング時にログイン状態を確認
@@ -68,28 +71,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * ログイン処理
    */
   const login = async (data: LoginRequest) => {
-    console.log('🔐 ログイン中...');
-    const userData = await authApi.login(data);
-    console.log('✅ ログイン成功、ユーザー情報:', userData);
-    setUser(userData);
+    try {
+      console.log('🔐 ログイン中...');
+      const userData = await authApi.login(data);
+      console.log('✅ ログイン成功、ユーザー情報:', userData);
+      setUser(userData);
+      showSuccess(`ようこそ、${userData.username}さん！`);
+    } catch (error) {
+      if (error instanceof AppError) {
+        showError(error.getUserMessage());
+      } else {
+        showError('ログインに失敗しました');
+      }
+      throw error;
+    }
   };
 
   /**
    * ユーザー登録処理
    */
   const register = async (data: RegisterRequest) => {
-    console.log('📝 ユーザー登録中...');
-    const userData = await authApi.register(data);
-    console.log('✅ 登録成功、ユーザー情報:', userData);
-    setUser(userData);
+    try {
+      console.log('📝 ユーザー登録中...');
+      const userData = await authApi.register(data);
+      console.log('✅ 登録成功、ユーザー情報:', userData);
+      setUser(userData);
+      showSuccess(`アカウントを作成しました。ようこそ、${userData.username}さん！`);
+    } catch (error) {
+      if (error instanceof AppError) {
+        showError(error.getUserMessage());
+      } else {
+        showError('ユーザー登録に失敗しました');
+      }
+      throw error;
+    }
   };
 
   /**
    * ログアウト処理
    */
   const logout = async () => {
-    await authApi.logout();
-    setUser(null);
+    try {
+      await authApi.logout();
+      setUser(null);
+      showSuccess('ログアウトしました');
+    } catch (error) {
+      if (error instanceof AppError) {
+        showError(error.getUserMessage());
+      } else {
+        showError('ログアウトに失敗しました');
+      }
+      throw error;
+    }
   };
 
   // コンテキストの値
