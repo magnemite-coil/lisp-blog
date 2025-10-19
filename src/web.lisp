@@ -118,13 +118,9 @@
   (if (and (probe-file file-path)
            (not (uiop:directory-pathname-p file-path)))
       ;; ファイルが存在する場合
-      (with-open-file (stream file-path :direction :input :element-type '(unsigned-byte 8))
-        (let* ((length (file-length stream))
-               (content (make-array length :element-type '(unsigned-byte 8))))
-          (read-sequence content stream)
-          (list 200
-                (list :content-type (get-content-type file-path))
-                (list content))))
+      (list 200
+            (list :content-type (get-content-type file-path))
+            file-path)  ; Lack/Clack will handle file serving
       ;; ファイルが存在しない場合は404
       (list 404
             '(:content-type "text/plain")
@@ -143,20 +139,31 @@
     (serve-static-file file-path)))
 
 ;; SPAフォールバックルート（すべてのパスでindex.htmlを返す）
-;; ただし /api/* は除外（上記のAPIルートが優先される）
-(defroute "*" ()
-  "GET * - SPAフォールバック（index.htmlを返す）"
-  (let ((index-path (merge-pathnames "index.html" *static-directory*)))
-    (if (probe-file index-path)
-        ;; index.htmlを読み込んで返す
-        (with-open-file (stream index-path :direction :input :element-type 'character)
-          (let* ((length (file-length stream))
-                 (content (make-string length)))
-            (read-sequence content stream)
-            (list 200
-                  '(:content-type "text/html; charset=utf-8")
-                  (list content))))
-        ;; index.htmlが存在しない場合は404
-        (list 404
-              '(:content-type "text/plain")
-              '("index.html not found. Please run: ./build.sh")))))
+;; ただし /api/* と実際のファイルは除外
+(defroute "*" (&key splat)
+  "GET * - SPAフォールバック（静的ファイルまたはindex.htmlを返す）"
+  (let* ((path-string (format nil "~{~A~^/~}" splat))
+         ;; 先頭のスラッシュを削除（絶対パスを避けるため）
+         (relative-path (if (and (> (length path-string) 0)
+                                  (char= (char path-string 0) #\/))
+                             (subseq path-string 1)
+                             path-string))
+         (file-path (merge-pathnames relative-path *static-directory*)))
+    ;; 実際のファイルが存在する場合はそれを返す
+    (if (and (probe-file file-path)
+             (not (uiop:directory-pathname-p file-path)))
+        (serve-static-file file-path)
+        ;; ファイルが存在しない場合はindex.htmlを返す（SPAルーティング）
+        (let ((index-path (merge-pathnames "index.html" *static-directory*)))
+          (if (probe-file index-path)
+              (with-open-file (stream index-path :direction :input :element-type 'character)
+                (let* ((length (file-length stream))
+                       (content (make-string length)))
+                  (read-sequence content stream)
+                  (list 200
+                        '(:content-type "text/html; charset=utf-8")
+                        (list content))))
+              ;; index.htmlが存在しない場合は404
+              (list 404
+                    '(:content-type "text/plain")
+                    '("index.html not found. Please run: ./build.sh")))))))

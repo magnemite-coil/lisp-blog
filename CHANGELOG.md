@@ -76,6 +76,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - PUT /api/posts/:id/unpublish - Unpublish post back to draft
   - Caveman2 routing configuration with proper path parameter handling
   - Username inclusion in post list and detail responses (Phase 3.3)
+- Production build and deployment system (Phase 5: Frontend Integration)
+  - Automated build script (build.sh) for one-command frontend deployment
+  - Vite production build configuration with code splitting
+  - Manual chunk splitting for vendor libraries (React, Axios, React Hook Form)
+  - Environment variable support for development and production
+  - Static file serving from Caveman2 with proper Content-Type headers
+  - SPA routing fallback for React Router client-side navigation
+  - Production deployment guide with systemd, Nginx, and SSL configuration
 
 ### Changed
 - **Technology Stack Migration (Phase 1):**
@@ -122,6 +130,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Caveman2 path parameter handling (Phase 3.2)
   - Use &key instead of &rest for path parameters in route definitions
   - Pipe-symbol keywords (:|id|) for proper parameter access in handlers
+- Static file path handling in wildcard route (Phase 5)
+  - Fixed absolute path creation when merging paths with leading slash
+  - Implemented slash stripping for proper relative path resolution
+  - Resolved vite.svg and other root-level static files returning HTML instead of correct MIME types
 
 ## [0.1.0] - 2025-10-04
 
