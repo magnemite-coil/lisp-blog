@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Test execution script (run-tests.sh) for easy test suite running
+  - Normal mode with summary output
+  - Verbose mode (-v flag) for full output
+  - Automatic test environment setup and cleanup
 - Migration to Caveman2 web framework and Mito ORM (Phase 1: Foundation)
   - User model with Mito's `deftable` macro
   - Automatic ID and timestamp generation
@@ -119,6 +123,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Consistent permission checks across all post management endpoints
 
 ### Fixed
+- Test suite failures (11 tests fixed, achieving 100% pass rate)
+  - Fixed keyword argument usage in session middleware tests
+  - Corrected create-test-user function calls to use keyword arguments
+  - All 377 test checks now passing successfully
+- Session cookie security enhancement
+  - Added missing SameSite=Lax attribute to session cookies
+  - Improves CSRF attack protection
 - Vue directive rendering in Spinneret templates (logout and create post buttons)
 - Session timeout issues
 - Database connection handling

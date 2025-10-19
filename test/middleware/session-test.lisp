@@ -51,7 +51,7 @@
 (test create-session-success
   "セッションが正常に作成される"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser1" "password123"))
+    (let* ((user (create-test-user :username "sessionuser1" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id)))
       (is (stringp session-id))
@@ -64,8 +64,8 @@
 (test create-session-multiple-users
   "複数ユーザーのセッションを作成できる"
   (with-empty-db
-    (let* ((user1 (create-test-user "sessionuser2" "password123"))
-           (user2 (create-test-user "sessionuser3" "password456"))
+    (let* ((user1 (create-test-user :username "sessionuser2" :password "password123"))
+           (user2 (create-test-user :username "sessionuser3" :password "password456"))
            (session-id1 (create-session (lisp-blog.model.user:user-id user1)))
            (session-id2 (create-session (lisp-blog.model.user:user-id user2))))
       (is (not (string= session-id1 session-id2)))
@@ -78,7 +78,7 @@
 (test create-session-same-user-multiple-times
   "同じユーザーが複数回ログインできる（複数セッション）"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser4" "password123"))
+    (let* ((user (create-test-user :username "sessionuser4" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id1 (create-session user-id))
            (session-id2 (create-session user-id)))
@@ -92,7 +92,7 @@
 (test get-session-success
   "有効なセッションが取得できる"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser5" "password123"))
+    (let* ((user (create-test-user :username "sessionuser5" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id))
            (session (get-session session-id)))
@@ -108,7 +108,7 @@
 (test get-session-user-id-success
   "有効なセッションからユーザーIDが取得できる"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser6" "password123"))
+    (let* ((user (create-test-user :username "sessionuser6" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id))
            (retrieved-user-id (get-session-user-id session-id)))
@@ -124,7 +124,7 @@
 (test delete-session-success
   "セッションが正常に削除される"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser7" "password123"))
+    (let* ((user (create-test-user :username "sessionuser7" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id)))
       ;; 削除前は取得できる
@@ -145,7 +145,7 @@
 (test delete-session-twice
   "同じセッションを2回削除してもエラーにならない"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser8" "password123"))
+    (let* ((user (create-test-user :username "sessionuser8" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id)))
       ;; 1回目の削除は成功
@@ -158,8 +158,8 @@
 (test session-isolation-between-users
   "異なるユーザーのセッションは独立している"
   (with-empty-db
-    (let* ((user1 (create-test-user "sessionuser9" "password123"))
-           (user2 (create-test-user "sessionuser10" "password456"))
+    (let* ((user1 (create-test-user :username "sessionuser9" :password "password123"))
+           (user2 (create-test-user :username "sessionuser10" :password "password456"))
            (session-id1 (create-session (lisp-blog.model.user:user-id user1)))
            (session-id2 (create-session (lisp-blog.model.user:user-id user2))))
       ;; セッション1を削除
@@ -173,7 +173,7 @@
 (test create-session-with-large-user-id
   "大きなユーザーIDでもセッションを作成できる"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser11" "password123"))
+    (let* ((user (create-test-user :username "sessionuser11" :password "password123"))
            ;; ユーザーIDは自動生成されるが、大きな数値でもテスト
            (session-id (create-session (lisp-blog.model.user:user-id user))))
       (is (not (null session-id)))
@@ -190,7 +190,7 @@
 (test session-data-consistency
   "セッション作成後、データが正しく保持される"
   (with-empty-db
-    (let* ((user (create-test-user "sessionuser12" "password123"))
+    (let* ((user (create-test-user :username "sessionuser12" :password "password123"))
            (user-id (lisp-blog.model.user:user-id user))
            (session-id (create-session user-id))
            (session (get-session session-id)))

@@ -49,9 +49,7 @@
 
    session-id: セッションID文字列
    戻り値: Set-Cookie ヘッダー文字列"
-  ;; 開発環境: SameSite属性なし（クロスオリジンでCookie送信を許可）
-  ;; 本番環境: SameSite=Lax または SameSite=Strict を設定すべき
-  (format nil "session_id=~A; Path=/; HttpOnly; Max-Age=~A"
+  (format nil "session_id=~A; Path=/; HttpOnly; SameSite=Lax; Max-Age=~A"
           session-id
           (* 7 24 60 60))) ; 7日間
 
