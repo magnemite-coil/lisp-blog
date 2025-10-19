@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Condition-based error handling system (Phase 2-3)
+  - Migrated authentication service from plist-based errors to Condition signals
+  - Migrated post service from string-based errors to Condition signals
+  - Four Condition types: validation-error, business-logic-error, authentication-error, resource-conflict-error
+  - Field-specific validation error reporting (e.g., :field "username")
+  - Business logic error codes (e.g., :code :post-already-published)
+  - Comprehensive test coverage with Condition type verification (92 test cases)
 - Database performance optimization with strategic indexes
   - Added indexes on post table for improved query performance
   - Individual indexes: user_id, status, created_at
@@ -98,6 +105,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Production deployment guide with systemd, Nginx, and SSL configuration
 
 ### Changed
+- **Improved error handling architecture (Phase 2-3):**
+  - Simplified handler code by removing 37 lines of legacy plist error checking
+  - Unified service layer return values (success path only)
+  - Centralized error handling with handler-case macro
+  - Enhanced test robustness with specific Condition type verification
 - **Technology Stack Migration (Phase 1):**
   - Replaced Hunchentoot with Caveman2 web framework
   - Replaced Postmodern with Mito ORM

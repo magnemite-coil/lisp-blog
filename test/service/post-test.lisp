@@ -81,7 +81,7 @@
     (let* ((user (create-test-user))
            (user-id (lisp-blog.model.user:user-id user)))
       ;; 空タイトル
-      (signals error
+      (signals lisp-blog.util.conditions:validation-error
         (lisp-blog.service.post:create-post user-id "" "Content")))))
 
 (test create-post-invalid-content
@@ -90,7 +90,7 @@
     (let* ((user (create-test-user))
            (user-id (lisp-blog.model.user:user-id user)))
       ;; 空本文
-      (signals error
+      (signals lisp-blog.util.conditions:validation-error
         (lisp-blog.service.post:create-post user-id "Title" "")))))
 
 (test create-post-invalid-status
@@ -98,7 +98,7 @@
   (with-empty-db
     (let* ((user (create-test-user))
            (user-id (lisp-blog.model.user:user-id user)))
-      (signals error
+      (signals lisp-blog.util.conditions:validation-error
         (lisp-blog.service.post:create-post user-id "Title" "Content" "invalid")))))
 
 ;;; 投稿取得のテスト
@@ -213,7 +213,7 @@
                   (lisp-blog.model.user:user-id user)
                   "Title"
                   "Content")))
-      (signals error
+      (signals lisp-blog.util.conditions:validation-error
         (lisp-blog.service.post:update-post post "" "New Content")))))
 
 (test update-post-invalid-content
@@ -224,7 +224,7 @@
                   (lisp-blog.model.user:user-id user)
                   "Title"
                   "Content")))
-      (signals error
+      (signals lisp-blog.util.conditions:validation-error
         (lisp-blog.service.post:update-post post "New Title" "")))))
 
 ;;; 投稿削除のテスト
@@ -266,7 +266,7 @@
                   "Published Post"
                   "Content"
                   "published")))
-      (signals error
+      (signals lisp-blog.util.conditions:business-logic-error
         (lisp-blog.service.post:publish-draft post)))))
 
 (test unpublish-post-success
@@ -291,7 +291,7 @@
                   "Draft Post"
                   "Content"
                   "draft")))
-      (signals error
+      (signals lisp-blog.util.conditions:business-logic-error
         (lisp-blog.service.post:unpublish-post post)))))
 
 ;;; 権限チェックのテスト
