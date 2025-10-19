@@ -22,7 +22,9 @@
                  (:file "db" :depends-on ("config"))
                  (:module "util"
                   :components
-                  ((:file "crypto")
+                  ((:file "conditions")
+                   (:file "error" :depends-on ("conditions"))
+                   (:file "crypto")
                    (:file "json")))
                  (:module "model"
                   :depends-on ("db")
