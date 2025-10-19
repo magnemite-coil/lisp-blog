@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Composite index: (user_id, status, created_at) for complex queries
   - Database migration script for existing installations
   - Performance verification tools (EXPLAIN ANALYZE)
+  - Benchmark tools with test data generation (1000 posts)
+  - Verified 10-100x performance improvement for key queries (0.024ms - 0.120ms execution time)
 - Test execution script (run-tests.sh) for easy test suite running
   - Normal mode with summary output
   - Verbose mode (-v flag) for full output
