@@ -10,6 +10,10 @@
   (:import-from :lisp-blog.util.crypto
                 :hash-password
                 :verify-password)
+  (:import-from :lisp-blog.util.conditions
+                :validation-error
+                :authentication-error
+                :resource-conflict-error)
   (:import-from :lisp-blog.middleware.session
                 :create-session
                 :get-session-user-id
@@ -70,22 +74,27 @@
    password: パスワード（8-255文字）
 
    戻り値:
-   - 成功: (:success T :user <user-object> :session-id <session-id>)
-   - 失敗: (:success NIL :error <error-message>)
+   - 成功: (:user <user-object> :session-id <session-id>)
+   - 失敗: Conditionを signal（validation-error または resource-conflict-error）
 
-   エラーの種類:
-   - 'invalid-username' - ユーザー名が無効
-   - 'invalid-password' - パスワードが無効
-   - 'username-exists' - ユーザー名が既に存在"
+   発生する可能性のあるCondition:
+   - validation-error - ユーザー名またはパスワードが無効
+   - resource-conflict-error - ユーザー名が既に存在"
   (cond
     ((not (validate-username username))
-     (list :success nil :error "invalid-username"))
+     (error 'validation-error
+            :message "Invalid username (3-50 chars, alphanumeric and underscore only)"
+            :field "username"))
 
     ((not (validate-password password))
-     (list :success nil :error "invalid-password"))
+     (error 'validation-error
+            :message "Invalid password (8-255 chars required)"
+            :field "password"))
 
     ((username-exists-p username)
-     (list :success nil :error "username-exists"))
+     (error 'resource-conflict-error
+            :message "Username already exists"
+            :resource-type "user"))
 
     (t
      ;; ユーザー作成
@@ -94,8 +103,7 @@
                                    :username username
                                    :password hashed-password))
             (session-id (create-session (mito:object-id user))))
-       (list :success t
-             :user user
+       (list :user user
              :session-id session-id)))))
 
 ;;; 認証
@@ -107,8 +115,11 @@
    password: パスワード
 
    戻り値:
-   - 成功: (:success T :user <user-object> :session-id <session-id>)
-   - 失敗: (:success NIL :error 'invalid-credentials')
+   - 成功: (:user <user-object> :session-id <session-id>)
+   - 失敗: authentication-error を signal
+
+   発生する可能性のあるCondition:
+   - authentication-error - 認証情報が不正（ユーザー名またはパスワードが間違い）
 
    セキュリティ:
    - タイミング攻撃対策: ユーザーが存在しない場合もダミーのパスワード検証を実行"
@@ -118,16 +129,19 @@
         (if (verify-password password (user-password user))
             ;; パスワード正しい
             (let ((session-id (create-session (mito:object-id user))))
-              (list :success t
-                    :user user
+              (list :user user
                     :session-id session-id))
             ;; パスワード間違い
-            (list :success nil :error "invalid-credentials"))
+            (error 'authentication-error
+                   :code :auth-invalid-credentials
+                   :message "Invalid credentials"))
         ;; ユーザーが存在しない場合
         ;; タイミング攻撃対策: ダミーのパスワード検証を実行
         (progn
           (hash-password "dummy-password-for-timing-attack-prevention")
-          (list :success nil :error "invalid-credentials")))))
+          (error 'authentication-error
+                 :code :auth-invalid-credentials
+                 :message "Invalid credentials")))))
 
 ;;; ユーザー取得
 
