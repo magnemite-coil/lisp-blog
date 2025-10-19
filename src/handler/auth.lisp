@@ -81,37 +81,16 @@
                 (validation-error-response "Username and password are required")
               (list status headers (list json)))))
 
-        ;; ユーザー登録処理
-        (let ((result (register-user username password)))
-          (if (getf result :success)
-              ;; 成功
-              (let ((user (getf result :user))
-                    (session-id (getf result :session-id)))
-                (multiple-value-bind (json status headers)
-                    (json-success (user-to-json user) :status 201)
-                  (list status
-                        (append headers
-                                (list :set-cookie (set-session-cookie session-id)))
-                        (list json))))
-              ;; 失敗（レガシー形式のエラー処理）
-              (let ((error-type (getf result :error)))
-                (multiple-value-bind (json status headers)
-                    (cond
-                      ((string= error-type "invalid-username")
-                       (validation-error-response
-                        "Invalid username (3-50 chars, alphanumeric and underscore only)"
-                        :field "username"))
-                      ((string= error-type "invalid-password")
-                       (validation-error-response
-                        "Invalid password (8-255 chars required)"
-                        :field "password"))
-                      ((string= error-type "username-exists")
-                       (resource-error-response :already-exists
-                                               :message "Username already exists"
-                                               :resource-type "user"))
-                      (t
-                       (validation-error-response "Registration failed")))
-                  (list status headers (list json)))))))
+        ;; ユーザー登録処理（Conditionベース）
+        (let* ((result (register-user username password))
+               (user (getf result :user))
+               (session-id (getf result :session-id)))
+          (multiple-value-bind (json status headers)
+              (json-success (user-to-json user) :status 201)
+            (list status
+                  (append headers
+                          (list :set-cookie (set-session-cookie session-id)))
+                  (list json)))))
 
     ;; 構造化されたConditionのハンドリング
     (validation-error (e)
@@ -161,22 +140,16 @@
                 (validation-error-response "Username and password are required")
               (list status headers (list json)))))
 
-        ;; 認証処理
-        (let ((result (authenticate-user username password)))
-          (if (getf result :success)
-              ;; 成功
-              (let ((user (getf result :user))
-                    (session-id (getf result :session-id)))
-                (multiple-value-bind (json status headers)
-                    (json-success (user-to-json user))
-                  (list status
-                        (append headers
-                                (list :set-cookie (set-session-cookie session-id)))
-                        (list json))))
-              ;; 失敗
-              (multiple-value-bind (json status headers)
-                  (auth-error-response :invalid-credentials)
-                (list status headers (list json))))))
+        ;; 認証処理（Conditionベース）
+        (let* ((result (authenticate-user username password))
+               (user (getf result :user))
+               (session-id (getf result :session-id)))
+          (multiple-value-bind (json status headers)
+              (json-success (user-to-json user))
+            (list status
+                  (append headers
+                          (list :set-cookie (set-session-cookie session-id)))
+                  (list json)))))
 
     ;; 構造化されたConditionのハンドリング
     (authentication-error (e)

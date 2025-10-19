@@ -72,8 +72,7 @@
   (with-empty-db
     ;; 登録サービスを呼び出し
     (let ((result (lisp-blog.service.auth:register-user "flowtest" "password123")))
-      ;; 成功確認
-      (is (getf result :success))
+      ;; 成功確認（戻り値に:successキーは無い）
       (let* ((user (getf result :user))
              (session-id (getf result :session-id))
              ;; JSON変換
@@ -97,7 +96,7 @@
     (lisp-blog.service.auth:register-user "loginflow" "password123")
     ;; ログイン
     (let ((result (lisp-blog.service.auth:authenticate-user "loginflow" "password123")))
-      (is (getf result :success))
+      ;; 成功確認（戻り値に:successキーは無い）
       (let* ((user (getf result :user))
              (session-id (getf result :session-id))
              (json-data (lisp-blog.handler.auth::user-to-json user))
@@ -143,20 +142,18 @@
   (with-empty-db
     ;; 1人目登録
     (lisp-blog.service.auth:register-user "duplicate" "password123")
-    ;; 2人目登録（同じユーザー名）
-    (let ((result (lisp-blog.service.auth:register-user "duplicate" "password456")))
-      (is (not (getf result :success)))
-      (is (string= "username-exists" (getf result :error))))))
+    ;; 2人目登録（同じユーザー名） - Conditionを投げる
+    (signals lisp-blog.util.conditions:resource-conflict-error
+      (lisp-blog.service.auth:register-user "duplicate" "password456"))))
 
 (test login-flow-invalid-credentials
   "無効な認証情報でのエラー"
   (with-empty-db
     ;; ユーザー登録
     (lisp-blog.service.auth:register-user "credtest" "password123")
-    ;; 間違ったパスワードでログイン
-    (let ((result (lisp-blog.service.auth:authenticate-user "credtest" "wrongpassword")))
-      (is (not (getf result :success)))
-      (is (string= "invalid-credentials" (getf result :error))))))
+    ;; 間違ったパスワードでログイン - Conditionを投げる
+    (signals lisp-blog.util.conditions:authentication-error
+      (lisp-blog.service.auth:authenticate-user "credtest" "wrongpassword"))))
 
 (test me-flow-invalid-session
   "無効なセッションでのエラー"

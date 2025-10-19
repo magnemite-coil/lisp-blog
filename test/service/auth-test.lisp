@@ -66,16 +66,14 @@
 (test register-user-invalid-username
   "無効なユーザー名での登録"
   (with-empty-db
-    (let ((result (lisp-blog.service.auth:register-user "ab" "password123")))
-      (is (not (getf result :success)))
-      (is (string= "invalid-username" (getf result :error))))))
+    (signals lisp-blog.util.conditions:validation-error
+      (lisp-blog.service.auth:register-user "ab" "password123"))))
 
 (test register-user-invalid-password
   "無効なパスワードでの登録"
   (with-empty-db
-    (let ((result (lisp-blog.service.auth:register-user "testuser" "short")))
-      (is (not (getf result :success)))
-      (is (string= "invalid-password" (getf result :error))))))
+    (signals lisp-blog.util.conditions:validation-error
+      (lisp-blog.service.auth:register-user "testuser" "short"))))
 
 (test register-user-duplicate-username
   "重複ユーザー名での登録"
@@ -83,9 +81,8 @@
     ;; 1人目のユーザー登録
     (lisp-blog.service.auth:register-user "duplicate" "password123")
     ;; 2人目の登録（同じユーザー名）
-    (let ((result (lisp-blog.service.auth:register-user "duplicate" "password456")))
-      (is (not (getf result :success)))
-      (is (string= "username-exists" (getf result :error))))))
+    (signals lisp-blog.util.conditions:resource-conflict-error
+      (lisp-blog.service.auth:register-user "duplicate" "password456"))))
 
 (test register-user-session-creation
   "登録時にセッションが作成される"
@@ -106,7 +103,6 @@
     (lisp-blog.service.auth:register-user "authtest" "password123")
     ;; 認証
     (let ((result (lisp-blog.service.auth:authenticate-user "authtest" "password123")))
-      (is (getf result :success))
       (is (not (null (getf result :user))))
       (is (not (null (getf result :session-id))))
       (is (string= "authtest" (lisp-blog.model.user:user-username (getf result :user)))))))
@@ -117,16 +113,14 @@
     ;; ユーザー登録
     (lisp-blog.service.auth:register-user "authtest" "password123")
     ;; 間違ったパスワードで認証
-    (let ((result (lisp-blog.service.auth:authenticate-user "authtest" "wrongpassword")))
-      (is (not (getf result :success)))
-      (is (string= "invalid-credentials" (getf result :error))))))
+    (signals lisp-blog.util.conditions:authentication-error
+      (lisp-blog.service.auth:authenticate-user "authtest" "wrongpassword"))))
 
 (test authenticate-user-nonexistent
   "存在しないユーザーでの認証"
   (with-empty-db
-    (let ((result (lisp-blog.service.auth:authenticate-user "nonexistent" "password123")))
-      (is (not (getf result :success)))
-      (is (string= "invalid-credentials" (getf result :error))))))
+    (signals lisp-blog.util.conditions:authentication-error
+      (lisp-blog.service.auth:authenticate-user "nonexistent" "password123"))))
 
 (test authenticate-user-session-creation
   "認証時にセッションが作成される"
