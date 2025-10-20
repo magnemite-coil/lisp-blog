@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
@@ -12,6 +12,7 @@ export function LoginPage() {
   const { login, isAuthenticated, isLoading } = useAuth();
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /**
    * すでにログイン済みの場合はダッシュボードへリダイレクト
@@ -21,6 +22,17 @@ export function LoginPage() {
       navigate('/dashboard');
     }
   }, [isLoading, isAuthenticated, navigate]);
+
+  /**
+   * クリーンアップ: コンポーネントアンマウント時にタイマーをクリア
+   */
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+      }
+    };
+  }, []);
 
   // React Hook Formのセットアップ
   const {
@@ -43,7 +55,7 @@ export function LoginPage() {
       await login(data);
 
       // トーストを表示してから少し待ってリダイレクト
-      setTimeout(() => {
+      timeoutIdRef.current = setTimeout(() => {
         navigate('/dashboard');
       }, 500);
     } catch (err: any) {

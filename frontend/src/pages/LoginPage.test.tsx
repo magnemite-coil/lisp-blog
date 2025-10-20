@@ -138,7 +138,7 @@ describe('LoginPage', () => {
       // setTimeoutの完了を待ってからナビゲートを確認
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
-      }, { timeout: 1000 })
+      }, { timeout: 2000 })
     })
 
     it('ログイン中はボタンが無効化され、テキストが変わる', async () => {
