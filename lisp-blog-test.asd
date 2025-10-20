@@ -3,7 +3,7 @@
   :author "Your Name"
   :license "MIT"
   :depends-on (:lisp-blog :fiveam)
-  :components ((:module "tests"
+  :components ((:module "test"
                 :components
                 ((:file "package")
                  (:file "setup" :depends-on ("package"))
