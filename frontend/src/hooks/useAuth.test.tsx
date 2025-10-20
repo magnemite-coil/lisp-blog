@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { renderHook, waitFor } from '@testing-library/react'
-import { AuthProvider, useAuth } from './useAuth'
+import { renderHook, waitFor } from '../test/test-utils'
+import { useAuth } from './useAuth'
 import * as authApi from '../api/auth'
 import type { User } from '../types/User'
 
@@ -21,9 +21,7 @@ describe('useAuth', () => {
     it('初期状態ではユーザーがnullでローディング中である', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       expect(result.current.user).toBeNull()
       expect(result.current.isAuthenticated).toBe(false)
@@ -33,9 +31,7 @@ describe('useAuth', () => {
     it('初期化時にログイン状態を確認する', async () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(mockUser)
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -49,9 +45,7 @@ describe('useAuth', () => {
     it('getCurrentUserが失敗した場合、ユーザーはnullのまま', async () => {
       vi.mocked(authApi.getCurrentUser).mockRejectedValue(new Error('Unauthorized'))
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -67,9 +61,7 @@ describe('useAuth', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
       vi.mocked(authApi.login).mockResolvedValue(mockUser)
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -77,7 +69,10 @@ describe('useAuth', () => {
 
       await result.current.login({ username: 'testuser', password: 'password123' })
 
-      expect(result.current.user).toEqual(mockUser)
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser)
+      })
+
       expect(result.current.isAuthenticated).toBe(true)
       expect(authApi.login).toHaveBeenCalledWith({
         username: 'testuser',
@@ -89,9 +84,7 @@ describe('useAuth', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
       vi.mocked(authApi.login).mockRejectedValue(new Error('Invalid credentials'))
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -111,9 +104,7 @@ describe('useAuth', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
       vi.mocked(authApi.register).mockResolvedValue(mockUser)
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -121,7 +112,10 @@ describe('useAuth', () => {
 
       await result.current.register({ username: 'newuser', password: 'password123' })
 
-      expect(result.current.user).toEqual(mockUser)
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser)
+      })
+
       expect(result.current.isAuthenticated).toBe(true)
       expect(authApi.register).toHaveBeenCalledWith({
         username: 'newuser',
@@ -133,9 +127,7 @@ describe('useAuth', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
       vi.mocked(authApi.register).mockRejectedValue(new Error('Username already exists'))
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -155,9 +147,7 @@ describe('useAuth', () => {
       vi.mocked(authApi.getCurrentUser).mockResolvedValue(mockUser)
       vi.mocked(authApi.logout).mockResolvedValue()
 
-      const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      })
+      const { result } = renderHook(() => useAuth())
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
@@ -168,7 +158,10 @@ describe('useAuth', () => {
 
       await result.current.logout()
 
-      expect(result.current.user).toBeNull()
+      await waitFor(() => {
+        expect(result.current.user).toBeNull()
+      })
+
       expect(result.current.isAuthenticated).toBe(false)
       expect(authApi.logout).toHaveBeenCalledTimes(1)
     })
@@ -176,8 +169,11 @@ describe('useAuth', () => {
 
   describe('エラーハンドリング', () => {
     it('AuthProvider外でuseAuthを使用するとエラーがスローされる', () => {
+      // test-utilsのrenderHookではなく、直接@testing-library/reactのrenderHookを使用
+      const { renderHook: plainRenderHook } = require('@testing-library/react')
+
       expect(() => {
-        renderHook(() => useAuth())
+        plainRenderHook(() => useAuth())
       }).toThrow('useAuth must be used within an AuthProvider')
     })
   })

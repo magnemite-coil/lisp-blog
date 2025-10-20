@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- CI/CD pipeline with GitHub Actions
+  - Backend CI: Automated testing with SBCL, PostgreSQL, and Redis service containers
+  - Frontend CI: Lint, type check, unit tests, build verification, and security audit
+  - 307 backend test cases automated execution
+  - Multi-version Node.js testing (18, 20)
+  - Coverage report generation and artifact upload
+  - CI status badges in README
 - Comprehensive test suite for error handling system (Phase 1-4)
   - 71 test cases with 196 checks covering all error handling components
   - Condition system tests (validation-error, authentication-error, authorization-error, resource-not-found-error, resource-conflict-error, business-logic-error, system-error)

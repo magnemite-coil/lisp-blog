@@ -26,6 +26,7 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockNavigate.mockClear()
     vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
   })
 
@@ -134,13 +135,17 @@ describe('LoginPage', () => {
         })
       })
 
-      expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
+      // setTimeoutの完了を待ってからナビゲートを確認
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
+      }, { timeout: 2000 })
     })
 
     it('ログイン中はボタンが無効化され、テキストが変わる', async () => {
       const user = userEvent.setup()
+      // ログインを永遠に保留状態にする（次のテストへの影響を防ぐ）
       vi.mocked(authApi.login).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(mockUser), 100))
+        () => new Promise(() => {}) // 解決されないPromise
       )
 
       render(<LoginPage />)
@@ -177,6 +182,7 @@ describe('LoginPage', () => {
 
       render(<LoginPage />)
 
+      // 初期ローディングが完了するまで待つ
       await waitFor(() => {
         expect(screen.getByPlaceholderText('ユーザー名')).toBeInTheDocument()
       })
@@ -195,6 +201,7 @@ describe('LoginPage', () => {
         ).toBeInTheDocument()
       })
 
+      // ログイン失敗時はナビゲートが呼ばれないはず
       expect(mockNavigate).not.toHaveBeenCalled()
     })
 

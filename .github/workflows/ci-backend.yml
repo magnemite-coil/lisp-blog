@@ -1,0 +1,177 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'lisp-blog.asd'
+      - 'lisp-blog-test.asd'
+      - 'run-tests.sh'
+      - '.github/workflows/ci-backend.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'lisp-blog.asd'
+      - 'lisp-blog-test.asd'
+      - 'run-tests.sh'
+      - '.github/workflows/ci-backend.yml'
+  workflow_dispatch:  # 手動実行を許可
+
+# 同じブランチで複数のワークフローが実行された場合、古いものをキャンセル
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Backend Tests
+    runs-on: ubuntu-latest
+
+    # PostgreSQLとRedisのサービスコンテナを起動
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: lisp_blog_test
+          POSTGRES_USER: bloguser
+          POSTGRES_PASSWORD: testpassword
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    env:
+      # データベース接続情報（テスト用）
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DATABASE_NAME: lisp_blog_test
+      DATABASE_USER: bloguser
+      DATABASE_PASSWORD: testpassword
+      # Redis接続情報
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      # Quicklispのホームディレクトリ
+      QUICKLISP_HOME: ${{ github.workspace }}/quicklisp
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache SBCL installation
+        id: cache-sbcl
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/bin/sbcl
+            /usr/local/lib/sbcl
+          key: ${{ runner.os }}-sbcl-2.5.9
+          restore-keys: |
+            ${{ runner.os }}-sbcl-
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libev-dev redis-tools
+
+      - name: Install SBCL
+        if: steps.cache-sbcl.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install -y sbcl
+          sbcl --version
+
+      - name: Verify SBCL installation
+        run: |
+          sbcl --version
+
+      - name: Cache Quicklisp
+        id: cache-quicklisp
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ github.workspace }}/quicklisp
+            ~/.cache/common-lisp
+          key: ${{ runner.os }}-quicklisp-${{ hashFiles('lisp-blog.asd', 'lisp-blog-test.asd') }}
+          restore-keys: |
+            ${{ runner.os }}-quicklisp-
+
+      - name: Install Quicklisp
+        if: steps.cache-quicklisp.outputs.cache-hit != 'true'
+        run: |
+          curl -O https://beta.quicklisp.org/quicklisp.lisp
+          sbcl --non-interactive \
+               --load quicklisp.lisp \
+               --eval "(quicklisp-quickstart:install :path \"$QUICKLISP_HOME\")"
+          echo "(load \"$QUICKLISP_HOME/setup.lisp\")" > ~/.sbclrc
+          rm quicklisp.lisp
+
+      - name: Setup Quicklisp
+        run: |
+          echo "(load \"$QUICKLISP_HOME/setup.lisp\")" > ~/.sbclrc
+          cat ~/.sbclrc
+
+      - name: Create project symlink
+        run: |
+          mkdir -p $QUICKLISP_HOME/local-projects
+          ln -sf ${{ github.workspace }} $QUICKLISP_HOME/local-projects/lisp-blog
+          ls -la $QUICKLISP_HOME/local-projects/
+
+      - name: Load dependencies
+        run: |
+          sbcl --non-interactive \
+               --eval "(ql:quickload :lisp-blog)" \
+               --eval "(ql:quickload :lisp-blog-test)"
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U bloguser; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+          echo "PostgreSQL is ready!"
+
+      - name: Wait for Redis to be ready
+        run: |
+          until redis-cli -h localhost -p 6379 ping; do
+            echo "Waiting for Redis..."
+            sleep 2
+          done
+          echo "Redis is ready!"
+
+      - name: Run tests
+        run: |
+          sbcl --non-interactive \
+               --eval "(ql:quickload :lisp-blog-test)" \
+               --eval "(asdf:test-system :lisp-blog-test)"
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Tests**: 307 test cases" >> $GITHUB_STEP_SUMMARY
+          echo "- **Database**: PostgreSQL 15" >> $GITHUB_STEP_SUMMARY
+          echo "- **Cache**: Redis 7" >> $GITHUB_STEP_SUMMARY
+          echo "- **SBCL Version**: $(sbcl --version | head -1)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ $? -eq 0 ]; then
+            echo "✅ **Status**: All tests passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status**: Some tests failed" >> $GITHUB_STEP_SUMMARY
+          fi

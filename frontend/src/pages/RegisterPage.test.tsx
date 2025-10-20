@@ -26,6 +26,7 @@ describe('RegisterPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockNavigate.mockClear()
     vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
   })
 
@@ -165,8 +166,9 @@ describe('RegisterPage', () => {
 
     it('登録中はボタンが無効化され、テキストが変わる', async () => {
       const user = userEvent.setup()
+      // 登録を永遠に保留状態にする（次のテストへの影響を防ぐ）
       vi.mocked(authApi.register).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(mockUser), 100))
+        () => new Promise(() => {}) // 解決されないPromise
       )
 
       render(<RegisterPage />)
@@ -195,6 +197,7 @@ describe('RegisterPage', () => {
 
     it('登録に失敗するとエラーメッセージが表示される', async () => {
       const user = userEvent.setup()
+      // 登録が失敗するように設定
       vi.mocked(authApi.register).mockRejectedValue({
         response: {
           data: {
@@ -205,6 +208,7 @@ describe('RegisterPage', () => {
 
       render(<RegisterPage />)
 
+      // 初期ローディングが完了するまで待つ
       await waitFor(() => {
         expect(screen.getByPlaceholderText('ユーザー名（3-50文字）')).toBeInTheDocument()
       })
@@ -225,6 +229,7 @@ describe('RegisterPage', () => {
         ).toBeInTheDocument()
       })
 
+      // 登録失敗時はナビゲートが呼ばれないはず
       expect(mockNavigate).not.toHaveBeenCalled()
     })
 
