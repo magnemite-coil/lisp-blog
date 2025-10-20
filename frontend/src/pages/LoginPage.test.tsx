@@ -26,6 +26,7 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockNavigate.mockClear()
     vi.mocked(authApi.getCurrentUser).mockResolvedValue(null)
   })
 
