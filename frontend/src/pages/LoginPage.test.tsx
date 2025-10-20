@@ -163,6 +163,11 @@ describe('LoginPage', () => {
 
       const submittingButton = screen.getByRole('button', { name: 'ログイン中...' })
       expect(submittingButton).toBeDisabled()
+
+      // ログインが完了するまで待つ（次のテストへの影響を防ぐ）
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
+      }, { timeout: 1000 })
     })
 
     it('ログインに失敗するとエラーメッセージが表示される', async () => {

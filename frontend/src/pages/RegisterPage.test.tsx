@@ -191,6 +191,11 @@ describe('RegisterPage', () => {
 
       const submittingButton = screen.getByRole('button', { name: '登録中...' })
       expect(submittingButton).toBeDisabled()
+
+      // 登録が完了するまで待つ（次のテストへの影響を防ぐ）
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
+      }, { timeout: 1000 })
     })
 
     it('登録に失敗するとエラーメッセージが表示される', async () => {
