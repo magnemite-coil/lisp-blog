@@ -188,12 +188,6 @@ describe('LoginPage', () => {
         expect(screen.getByPlaceholderText('ユーザー名')).toBeInTheDocument()
       })
 
-      // useEffectのリダイレクトが起きないよう少し待つ
-      await new Promise(resolve => setTimeout(resolve, 100))
-
-      // この時点ではまだナビゲートされていないはず
-      const initialNavigateCalls = mockNavigate.mock.calls.length
-
       const usernameInput = screen.getByPlaceholderText('ユーザー名')
       const passwordInput = screen.getByPlaceholderText('パスワード')
       const submitButton = screen.getByRole('button', { name: 'ログイン' })
@@ -208,8 +202,8 @@ describe('LoginPage', () => {
         ).toBeInTheDocument()
       })
 
-      // ログイン失敗時は新たなナビゲート呼び出しがないはず
-      expect(mockNavigate).toHaveBeenCalledTimes(initialNavigateCalls)
+      // ログイン失敗時はナビゲートが呼ばれないはず
+      expect(mockNavigate).not.toHaveBeenCalled()
     })
 
     it('ログインエラー時、エラーメッセージがない場合はデフォルトメッセージを表示', async () => {

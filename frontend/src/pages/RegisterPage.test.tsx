@@ -217,12 +217,6 @@ describe('RegisterPage', () => {
         expect(screen.getByPlaceholderText('ユーザー名（3-50文字）')).toBeInTheDocument()
       })
 
-      // useEffectのリダイレクトが起きないよう少し待つ
-      await new Promise(resolve => setTimeout(resolve, 100))
-
-      // この時点ではまだナビゲートされていないはず
-      const initialNavigateCalls = mockNavigate.mock.calls.length
-
       const usernameInput = screen.getByPlaceholderText('ユーザー名（3-50文字）')
       const passwordInput = screen.getByPlaceholderText('パスワード（8-100文字）')
       const passwordConfirmInput = screen.getByPlaceholderText('パスワード（確認）')
@@ -239,8 +233,8 @@ describe('RegisterPage', () => {
         ).toBeInTheDocument()
       })
 
-      // 登録失敗時は新たなナビゲート呼び出しがないはず
-      expect(mockNavigate).toHaveBeenCalledTimes(initialNavigateCalls)
+      // 登録失敗時はナビゲートが呼ばれないはず
+      expect(mockNavigate).not.toHaveBeenCalled()
     })
 
     it('登録エラー時、エラーメッセージがない場合はデフォルトメッセージを表示', async () => {
