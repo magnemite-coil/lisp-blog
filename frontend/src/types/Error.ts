@@ -63,9 +63,13 @@ export class AppError extends Error {
 export const ERROR_MESSAGES: Record<string, string> = {
   // 認証関連
   AUTH_REQUIRED: 'ログインが必要です',
+  'AUTH-REQUIRED': 'ログインが必要です',
   AUTH_INVALID_CREDENTIALS: 'ユーザー名またはパスワードが正しくありません',
+  'AUTH-INVALID-CREDENTIALS': 'ユーザー名またはパスワードが正しくありません',
   AUTH_SESSION_EXPIRED: 'セッションの有効期限が切れました。再度ログインしてください',
+  'AUTH-SESSION-EXPIRED': 'セッションの有効期限が切れました。再度ログインしてください',
   AUTH_PERMISSION_DENIED: 'この操作を行う権限がありません',
+  'AUTH-PERMISSION-DENIED': 'この操作を行う権限がありません',
 
   // バリデーション関連
   VALIDATION_ERROR: '入力内容に誤りがあります',
