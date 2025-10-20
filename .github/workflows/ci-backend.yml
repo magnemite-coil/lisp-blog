@@ -158,15 +158,7 @@ jobs:
         run: |
           sbcl --non-interactive \
                --eval "(ql:quickload :lisp-blog-test)" \
-               --eval "(setf lisp-blog.config:*database-host* \"$DATABASE_HOST\")" \
-               --eval "(setf lisp-blog.config:*database-port* $DATABASE_PORT)" \
-               --eval "(setf lisp-blog.config:*database-name* \"$DATABASE_NAME\")" \
-               --eval "(setf lisp-blog.config:*database-user* \"$DATABASE_USER\")" \
-               --eval "(setf lisp-blog.config:*database-password* \"$DATABASE_PASSWORD\")" \
-               --eval "(setf lisp-blog.config:*redis-host* \"$REDIS_HOST\")" \
-               --eval "(setf lisp-blog.config:*redis-port* $REDIS_PORT)" \
-               --eval "(in-package :lisp-blog.test)" \
-               --eval "(run-all-tests)"
+               --eval "(asdf:test-system :lisp-blog-test)"
 
       - name: Test Summary
         if: always()
