@@ -28,7 +28,9 @@ export function RegisterPage() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<RegisterRequest & { passwordConfirm: string }>();
+  } = useForm<RegisterRequest & { passwordConfirm: string }>({
+    mode: 'onBlur', // バリデーションをblurイベントで実行
+  });
 
   // パスワード確認用にパスワードを監視
   const password = watch('password');

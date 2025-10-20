@@ -69,7 +69,10 @@ describe('useAuth', () => {
 
       await result.current.login({ username: 'testuser', password: 'password123' })
 
-      expect(result.current.user).toEqual(mockUser)
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser)
+      })
+
       expect(result.current.isAuthenticated).toBe(true)
       expect(authApi.login).toHaveBeenCalledWith({
         username: 'testuser',
@@ -109,7 +112,10 @@ describe('useAuth', () => {
 
       await result.current.register({ username: 'newuser', password: 'password123' })
 
-      expect(result.current.user).toEqual(mockUser)
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser)
+      })
+
       expect(result.current.isAuthenticated).toBe(true)
       expect(authApi.register).toHaveBeenCalledWith({
         username: 'newuser',
@@ -152,7 +158,10 @@ describe('useAuth', () => {
 
       await result.current.logout()
 
-      expect(result.current.user).toBeNull()
+      await waitFor(() => {
+        expect(result.current.user).toBeNull()
+      })
+
       expect(result.current.isAuthenticated).toBe(false)
       expect(authApi.logout).toHaveBeenCalledTimes(1)
     })
@@ -160,8 +169,11 @@ describe('useAuth', () => {
 
   describe('エラーハンドリング', () => {
     it('AuthProvider外でuseAuthを使用するとエラーがスローされる', () => {
+      // test-utilsのrenderHookではなく、直接@testing-library/reactのrenderHookを使用
+      const { renderHook: plainRenderHook } = require('@testing-library/react')
+
       expect(() => {
-        renderHook(() => useAuth())
+        plainRenderHook(() => useAuth())
       }).toThrow('useAuth must be used within an AuthProvider')
     })
   })

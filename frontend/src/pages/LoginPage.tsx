@@ -27,7 +27,9 @@ export function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginRequest>();
+  } = useForm<LoginRequest>({
+    mode: 'onBlur', // バリデーションをblurイベントで実行
+  });
 
   /**
    * ログインフォーム送信処理

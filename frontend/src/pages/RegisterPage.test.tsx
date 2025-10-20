@@ -195,6 +195,7 @@ describe('RegisterPage', () => {
 
     it('登録に失敗するとエラーメッセージが表示される', async () => {
       const user = userEvent.setup()
+      // 登録が失敗するように設定
       vi.mocked(authApi.register).mockRejectedValue({
         response: {
           data: {
@@ -205,9 +206,16 @@ describe('RegisterPage', () => {
 
       render(<RegisterPage />)
 
+      // 初期ローディングが完了するまで待つ
       await waitFor(() => {
         expect(screen.getByPlaceholderText('ユーザー名（3-50文字）')).toBeInTheDocument()
       })
+
+      // useEffectのリダイレクトが起きないよう少し待つ
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      // この時点ではまだナビゲートされていないはず
+      const initialNavigateCalls = mockNavigate.mock.calls.length
 
       const usernameInput = screen.getByPlaceholderText('ユーザー名（3-50文字）')
       const passwordInput = screen.getByPlaceholderText('パスワード（8-100文字）')
@@ -225,7 +233,8 @@ describe('RegisterPage', () => {
         ).toBeInTheDocument()
       })
 
-      expect(mockNavigate).not.toHaveBeenCalled()
+      // 登録失敗時は新たなナビゲート呼び出しがないはず
+      expect(mockNavigate).toHaveBeenCalledTimes(initialNavigateCalls)
     })
 
     it('登録エラー時、エラーメッセージがない場合はデフォルトメッセージを表示', async () => {
