@@ -40,8 +40,10 @@ export function LoginPage() {
       // ログイン実行
       await login(data);
 
-      // 成功したらダッシュボードへリダイレクト
-      navigate('/dashboard');
+      // トーストを表示してから少し待ってリダイレクト
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 500);
     } catch (err: any) {
       // エラーメッセージを表示
       const message =

@@ -34,11 +34,12 @@ export function ToastContainer({ position = 'top-right' }: ToastContainerProps) 
 
   return (
     <div
-      className={`fixed ${positionStyles[position]} z-50 pointer-events-none`}
+      className={`fixed ${positionStyles[position]} z-[9999]`}
       aria-live="polite"
       aria-atomic="true"
+      style={{ pointerEvents: 'none' }}
     >
-      <div className="flex flex-col pointer-events-auto">
+      <div className="flex flex-col gap-2" style={{ pointerEvents: 'auto' }}>
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={dismissToast} />
         ))}

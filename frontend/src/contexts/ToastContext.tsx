@@ -44,6 +44,13 @@ export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   /**
+   * 特定のトーストを消去
+   */
+  const dismissToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  }, []);
+
+  /**
    * トーストを表示
    */
   const showToast = useCallback((message: string, options?: ToastOptions) => {
@@ -71,7 +78,7 @@ export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
         dismissToast(id);
       }, newToast.duration);
     }
-  }, [maxToasts]);
+  }, [maxToasts, dismissToast]);
 
   /**
    * 成功トーストを表示
@@ -100,13 +107,6 @@ export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
   const showInfo = useCallback((message: string, duration?: number) => {
     showToast(message, { type: 'info', duration });
   }, [showToast]);
-
-  /**
-   * 特定のトーストを消去
-   */
-  const dismissToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  }, []);
 
   /**
    * すべてのトーストを消去

@@ -10,32 +10,21 @@ interface ToastItemProps {
 }
 
 /**
- * トーストの種類ごとのスタイル設定
+ * トーストの種類ごとのスタイル設定（Twitter風）
+ * すべて同じ水色で統一
  */
-const toastStyles: Record<ToastType, { bg: string; border: string; icon: string; iconColor: string }> = {
+const toastStyles: Record<ToastType, { icon: string }> = {
   success: {
-    bg: 'bg-green-50',
-    border: 'border-green-200',
     icon: '✓',
-    iconColor: 'text-green-500',
   },
   error: {
-    bg: 'bg-red-50',
-    border: 'border-red-200',
     icon: '✕',
-    iconColor: 'text-red-500',
   },
   warning: {
-    bg: 'bg-yellow-50',
-    border: 'border-yellow-200',
     icon: '⚠',
-    iconColor: 'text-yellow-500',
   },
   info: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
     icon: 'ℹ',
-    iconColor: 'text-blue-500',
   },
 };
 
@@ -68,25 +57,27 @@ export function ToastItem({ toast, onDismiss }: ToastItemProps) {
   return (
     <div
       className={`
-        transform transition-all duration-300 ease-in-out mb-2
-        ${isVisible && !isLeaving ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+        transform transition-all duration-300 ease-in-out
+        ${isVisible && !isLeaving ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'}
       `}
       role="alert"
     >
       <div
-        className={`
-          flex items-center gap-3 p-4 rounded-lg shadow-lg border
-          ${style.bg} ${style.border}
-          min-w-[300px] max-w-[500px]
-        `}
+        className="flex items-center gap-3 px-4 py-3 rounded-full shadow-lg mb-2"
+        style={{
+          minWidth: '280px',
+          maxWidth: '400px',
+          backgroundColor: '#1DA1F2', // Twitter blue
+          color: 'white',
+        }}
       >
         {/* アイコン */}
-        <div className={`flex-shrink-0 text-xl ${style.iconColor}`}>
+        <div className="flex-shrink-0 text-base font-bold">
           {style.icon}
         </div>
 
         {/* メッセージ */}
-        <div className="flex-1 text-sm font-medium text-gray-800">
+        <div className="flex-1 text-sm font-medium">
           {toast.message}
         </div>
 
@@ -94,11 +85,11 @@ export function ToastItem({ toast, onDismiss }: ToastItemProps) {
         {toast.dismissible && (
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded"
+            className="flex-shrink-0 text-white hover:text-gray-200 focus:outline-none ml-2"
             aria-label="閉じる"
           >
             <svg
-              className="h-5 w-5"
+              className="h-4 w-4"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"

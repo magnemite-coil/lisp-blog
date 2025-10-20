@@ -15,6 +15,9 @@ function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
+        {/* トースト通知コンテナ - ToastProviderの直下に配置 */}
+        <ToastContainer position="top-right" />
+
         <AuthProvider>
           <Routes>
             {/* ルートパス - ログインページにリダイレクト */}
@@ -38,9 +41,6 @@ function App() {
             {/* 404 Not Found */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
-
-          {/* トースト通知コンテナ */}
-          <ToastContainer position="top-right" />
         </AuthProvider>
       </ToastProvider>
     </BrowserRouter>

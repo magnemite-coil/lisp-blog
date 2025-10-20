@@ -9,6 +9,8 @@
   (:import-from :lisp-blog.middleware.session
                 :connect-redis
                 :disconnect-redis)
+  (:import-from :lisp-blog.middleware.cors
+                :cors-middleware)
   (:import-from :lisp-blog.web
                 :*app*)
   (:export :start
@@ -30,9 +32,12 @@
   (format t "Connecting to Redis...~%")
   (connect-redis)
 
-  ;; サーバー起動
+  ;; サーバー起動（CORSミドルウェアを適用）
   (format t "Starting Woo server...~%")
-  (setf *server* (clack:clackup *app* :port port :server :woo))
+  (setf *server* (clack:clackup
+                  (cors-middleware *app*)
+                  :port port
+                  :server :woo))
 
   (format t "~%✅ Server started successfully!~%")
   (format t "   API endpoint: http://localhost:~A/~%~%" port)

@@ -33,7 +33,8 @@
                    (:file "post")))
                  (:module "middleware"
                   :components
-                  ((:file "session")))
+                  ((:file "session")
+                   (:file "cors")))
                  (:module "service"
                   :depends-on ("model" "util" "middleware")
                   :components

@@ -72,9 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    */
   const login = async (data: LoginRequest) => {
     try {
-      console.log('🔐 ログイン中...');
       const userData = await authApi.login(data);
-      console.log('✅ ログイン成功、ユーザー情報:', userData);
       setUser(userData);
       showSuccess(`ようこそ、${userData.username}さん！`);
     } catch (error) {
