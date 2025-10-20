@@ -166,8 +166,9 @@ describe('RegisterPage', () => {
 
     it('登録中はボタンが無効化され、テキストが変わる', async () => {
       const user = userEvent.setup()
+      // 登録を永遠に保留状態にする（次のテストへの影響を防ぐ）
       vi.mocked(authApi.register).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(mockUser), 100))
+        () => new Promise(() => {}) // 解決されないPromise
       )
 
       render(<RegisterPage />)
@@ -192,11 +193,6 @@ describe('RegisterPage', () => {
 
       const submittingButton = screen.getByRole('button', { name: '登録中...' })
       expect(submittingButton).toBeDisabled()
-
-      // 登録が完了するまで待つ（次のテストへの影響を防ぐ）
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
-      }, { timeout: 1000 })
     })
 
     it('登録に失敗するとエラーメッセージが表示される', async () => {

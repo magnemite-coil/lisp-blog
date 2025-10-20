@@ -140,8 +140,9 @@ describe('LoginPage', () => {
 
     it('ログイン中はボタンが無効化され、テキストが変わる', async () => {
       const user = userEvent.setup()
+      // ログインを永遠に保留状態にする（次のテストへの影響を防ぐ）
       vi.mocked(authApi.login).mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(mockUser), 100))
+        () => new Promise(() => {}) // 解決されないPromise
       )
 
       render(<LoginPage />)
@@ -164,11 +165,6 @@ describe('LoginPage', () => {
 
       const submittingButton = screen.getByRole('button', { name: 'ログイン中...' })
       expect(submittingButton).toBeDisabled()
-
-      // ログインが完了するまで待つ（次のテストへの影響を防ぐ）
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
-      }, { timeout: 1000 })
     })
 
     it('ログインに失敗するとエラーメッセージが表示される', async () => {
