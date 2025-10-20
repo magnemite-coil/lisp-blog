@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - CI/CD pipeline with GitHub Actions
-  - Backend CI: Automated testing with SBCL, PostgreSQL, and Redis service containers
+  - Backend CI: Automated testing with SBCL 2.5.9, PostgreSQL 15, and Redis 7 service containers
   - Frontend CI: Lint, type check, unit tests, build verification, and security audit
-  - 307 backend test cases automated execution
-  - Multi-version Node.js testing (18, 20)
-  - Coverage report generation and artifact upload
+  - 307 backend test cases automated execution (FiveAM)
+  - 36 frontend test cases automated execution (Vitest)
+  - Node.js 20 LTS support (dropped Node.js 18 due to dependency compatibility)
+  - Parallel job execution for frontend CI (Lint/Test/Build/Security)
+  - Dependency caching for faster builds (Quicklisp, npm)
+  - Path-based workflow triggers for efficiency
+  - Manual workflow dispatch support
+  - Concurrency control to cancel outdated workflows
   - CI status badges in README
 - Comprehensive test suite for error handling system (Phase 1-4)
   - 71 test cases with 196 checks covering all error handling components
@@ -131,6 +136,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Production deployment guide with systemd, Nginx, and SSL configuration
 
 ### Changed
+- **Improved test reliability and component cleanup:**
+  - Added useRef and useEffect cleanup for setTimeout in LoginPage and RegisterPage
+  - Proper timer cleanup on component unmount prevents test interference
+  - All 36 frontend tests now pass reliably in CI environment
 - **Enhanced user experience with modern error feedback (Phase 4):**
   - Toast notifications replace inline error messages for better visibility
   - Automatic retry on transient network failures improves reliability
@@ -174,6 +183,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Consistent permission checks across all post management endpoints
 
 ### Fixed
+- Frontend test isolation issues in CI environment
+  - Fixed timer cleanup in LoginPage and RegisterPage components
+  - Resolved mockNavigate interference between tests
+  - All tests now pass consistently in both local and CI environments
 - Test suite failures (11 tests fixed, achieving 100% pass rate)
   - Fixed keyword argument usage in session middleware tests
   - Corrected create-test-user function calls to use keyword arguments
