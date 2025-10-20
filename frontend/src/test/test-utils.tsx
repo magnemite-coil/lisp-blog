@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { render, type RenderOptions } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '../hooks/useAuth'
+import { ToastProvider } from '../contexts/ToastContext'
 
 interface AllTheProvidersProps {
   children: React.ReactNode
@@ -10,7 +11,9 @@ interface AllTheProvidersProps {
 function AllTheProviders({ children }: AllTheProvidersProps) {
   return (
     <BrowserRouter>
-      <AuthProvider>{children}</AuthProvider>
+      <ToastProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </ToastProvider>
     </BrowserRouter>
   )
 }
