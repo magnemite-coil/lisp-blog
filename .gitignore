@@ -51,6 +51,10 @@ test_auth.sh
 test_static.sh
 test_errors.sh
 
+# Development - Coverage reports
+coverage-report/
+*.coverage
+
 # Security - Environment Variables
 .env
 .env.local
