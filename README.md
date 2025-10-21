@@ -292,13 +292,15 @@ REPL内で：
 
 ## テスト実行
 
-### 全テストの実行
+### バックエンドテスト
+
+全テストの実行:
 
 ```bash
 ./run-tests.sh
 ```
 
-### テストスイート詳細
+**テストスイート詳細:**
 
 - **Phase 4.1**: テスト環境セットアップ（2テスト）
 - **Phase 4.2**: ユーティリティ関数テスト（106テスト）
@@ -307,6 +309,39 @@ REPL内で：
 - **Phase 4.5**: ハンドラーテスト（46テスト）
 
 **合計**: 307テストケース（100%成功率）
+
+### フロントエンドテスト
+
+通常のテスト実行:
+
+```bash
+cd frontend
+npm test              # Watch モード
+npm run test:run      # 1回のみ実行
+```
+
+カバレッジレポート付きテスト実行:
+
+```bash
+cd frontend
+npm run test:coverage
+```
+
+HTMLレポートは `coverage/index.html` に生成されます。
+
+**テストスイート詳細:**
+
+- Hooks (useAuth)
+- Pages (Login, Register, Post List, Post Detail, etc.)
+- Components (Header)
+
+**合計**: 36テストケース（100%成功率）
+
+**カバレッジ指標:**
+- Lines: 33.27%
+- Functions: 48.93%
+- Branches: 86.4%
+- Statements: 33.27%
 
 ---
 
