@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Test coverage reporting for backend and frontend
+  - Backend coverage using SBCL sb-cover (Expression and Branch coverage)
+  - Frontend coverage using Vitest @vitest/coverage-v8 (Lines, Functions, Branches, Statements)
+  - Automated coverage report generation scripts (run-tests-coverage.sh)
+  - HTML reports for visual coverage inspection
+  - Coverage thresholds: Backend (Service 90%+, Util 80%+), Frontend (Lines 30%, Functions 45%, Branches 85%)
+  - Comprehensive coverage documentation in docs/testing/ directory
+  - Backend guide: sb-cover execution, report interpretation, color coding, FAQs
+  - Frontend guide: Vitest coverage execution, metrics explanation, threshold management
+  - Quick start README for both coverage systems
 - CI/CD pipeline with GitHub Actions
   - Backend CI: Automated testing with SBCL 2.5.9, PostgreSQL 15, and Redis 7 service containers
   - Frontend CI: Lint, type check, unit tests, build verification, and security audit
