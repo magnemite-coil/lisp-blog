@@ -35,9 +35,10 @@ describe('LoginPage', () => {
       render(<LoginPage />)
 
       await waitFor(() => {
-        expect(screen.getByRole('heading', { name: 'ログイン' })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'MyBlog' })).toBeInTheDocument()
       })
 
+      expect(screen.getByText('アカウントにログイン')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('ユーザー名')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('パスワード')).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'ログイン' })).toBeInTheDocument()
