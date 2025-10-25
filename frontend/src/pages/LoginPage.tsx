@@ -69,34 +69,27 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* ヘッダー */}
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            ログイン
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            または{' '}
-            <Link
-              to="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              新規登録
-            </Link>
+    <div className="min-h-screen bg-gradient-to-br from-tumblr-navy to-tumblr-navy-light flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        {/* カード */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-10">
+          {/* ブランド名 */}
+          <h1 className="text-5xl font-bold text-center mb-2 text-gray-900 tracking-tight">
+            MyBlog
+          </h1>
+          <p className="text-center text-gray-600 mb-8">
+            アカウントにログイン
           </p>
-        </div>
 
-        {/* ログインフォーム */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          {/* エラーメッセージ */}
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
+          {/* ログインフォーム */}
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+            {/* エラーメッセージ */}
+            {error && (
+              <div className="rounded-lg bg-red-50 p-4 border border-red-200">
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
+            )}
 
-          <div className="rounded-md shadow-sm -space-y-px">
             {/* ユーザー名入力 */}
             <div>
               <label htmlFor="username" className="sr-only">
@@ -106,9 +99,9 @@ export function LoginPage() {
                 id="username"
                 type="text"
                 autoComplete="username"
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                className={`appearance-none relative block w-full px-4 py-3 border ${
                   errors.username ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                } placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-tumblr-blue focus:border-transparent transition-all sm:text-sm`}
                 placeholder="ユーザー名"
                 {...register('username', {
                   required: 'ユーザー名を入力してください',
@@ -119,7 +112,7 @@ export function LoginPage() {
                 })}
               />
               {errors.username && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-2 text-sm text-red-600">
                   {errors.username.message}
                 </p>
               )}
@@ -134,9 +127,9 @@ export function LoginPage() {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                className={`appearance-none relative block w-full px-4 py-3 border ${
                   errors.password ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                } placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-tumblr-blue focus:border-transparent transition-all sm:text-sm`}
                 placeholder="パスワード"
                 {...register('password', {
                   required: 'パスワードを入力してください',
@@ -147,28 +140,58 @@ export function LoginPage() {
                 })}
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-2 text-sm text-red-600">
                   {errors.password.message}
                 </p>
               )}
             </div>
+
+            {/* ログインボタン */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white transition-all ${
+                  isSubmitting
+                    ? 'bg-tumblr-blue/50 cursor-not-allowed'
+                    : 'bg-tumblr-blue hover:bg-tumblr-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tumblr-blue shadow-lg hover:shadow-xl'
+                }`}
+              >
+                {isSubmitting ? 'ログイン中...' : 'ログイン'}
+              </button>
+            </div>
+          </form>
+
+          {/* 区切り線 */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-3 bg-white text-gray-500">または</span>
+            </div>
           </div>
 
-          {/* ログインボタン */}
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isSubmitting
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
-            >
-              {isSubmitting ? 'ログイン中...' : 'ログイン'}
-            </button>
+          {/* OAuth用プレースホルダー（Phase 3で実装） */}
+          <div className="text-center">
+            <p className="text-sm text-gray-500 mb-4">
+              Google認証は Phase 3 で実装予定
+            </p>
           </div>
-        </form>
+
+          {/* リンク */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              アカウントをお持ちでない方は{' '}
+              <Link
+                to="/register"
+                className="font-semibold text-tumblr-blue hover:text-tumblr-blue-dark transition-colors"
+              >
+                新規登録
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

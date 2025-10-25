@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated authentication UI design with modern Tumblr-inspired styling
+  - Login and registration pages now feature a navy blue gradient background
+  - Semi-transparent card design with improved visual hierarchy
+  - Bright blue accent color for interactive elements
+  - Preparation for future OAuth integration (Google sign-in)
+
 ### Added
 - Test coverage reporting for backend and frontend
   - Backend coverage using SBCL sb-cover (Expression and Branch coverage)

@@ -35,9 +35,10 @@ describe('RegisterPage', () => {
       render(<RegisterPage />)
 
       await waitFor(() => {
-        expect(screen.getByRole('heading', { name: '新規登録' })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'MyBlog' })).toBeInTheDocument()
       })
 
+      expect(screen.getByText('新しいアカウントを作成')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('ユーザー名（3-50文字）')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('パスワード（8-100文字）')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('パスワード（確認）')).toBeInTheDocument()

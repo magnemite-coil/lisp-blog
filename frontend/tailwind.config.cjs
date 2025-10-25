@@ -5,7 +5,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'tumblr-blue': '#00b8ff',
+        'tumblr-blue-dark': '#0090cc',
+        'tumblr-navy': '#001935',
+        'tumblr-navy-light': '#003d5c',
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

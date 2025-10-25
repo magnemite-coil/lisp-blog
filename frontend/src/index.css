@@ -1,3 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-tumblr-blue: #00b8ff;
+  --color-tumblr-blue-dark: #0090cc;
+  --color-tumblr-navy: #001935;
+  --color-tumblr-navy-light: #003d5c;
+}
